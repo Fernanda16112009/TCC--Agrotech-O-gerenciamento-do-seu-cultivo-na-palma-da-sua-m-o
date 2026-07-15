@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Rotas
 app.use('/usuarios', usuarioRoutes)
+
 /*app.use('/produtos', produtoRoutes)
 app.use('/adm', admRoutes)*/
 
