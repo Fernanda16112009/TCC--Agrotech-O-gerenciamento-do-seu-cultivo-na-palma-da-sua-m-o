@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
     <title>Login</title>
 </head>
 <body>
@@ -11,18 +12,19 @@
         <h3 class="subtitulo">É muito bom ter você com a gente!</h3>
     </header>
     <main>
-        <div class="div">
+        <div class="pg_inicial_form">
             <form action="/usuarios/login" method="post">
                 <div class="login_form">
                     <label for="email" class="form_pergunta">Qual é o seu email?</label><br>
-                    <input type="email" name="email" class="form_pergunta" placeholder= "joao@email.com" id="email_login"><br><br>
+                    <input type="email" name="email" class="form_pergunta" placeholder= "joao@email.com"><br><br>
                 </div
                 <div class="login_form">
                     <label for="senha" class="form_pergunta">Qual é a sua senha?</label><br>
-                    <input type="password" name="senha" class="form_pergunta" id="senha_login"><br><br>
+                    <input type="password" name="senha" class="form_pergunta"><br><br>
                 </div>
-
+                <div class="login_form">
                 <button type="submit" class="btn_login_usuario">Logar</button>
+                </div>
             </form>
         </div>    
     </main>

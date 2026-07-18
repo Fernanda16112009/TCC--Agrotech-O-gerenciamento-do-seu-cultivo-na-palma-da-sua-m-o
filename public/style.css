@@ -1,0 +1,27 @@
+body{
+    margin: 0;
+    padding: 0%;
+    background-color: rgb(152,251,152);
+}
+
+div{
+  display: flex;
+  flex-direction: column; /* Coloca os itens um acima do outro */
+  align-items: center;    /* Centraliza os itens horizontalmente */
+  justify-content: center; /* Centraliza os itens verticalmente (se a div tiver altura) */
+               /* Cria um espaço opcional entre o texto e os botões */
+  text-align: center;     /* Garante que as linhas do texto fiquem centralizadas */
+}
+
+.cadastro_Usuario_form{
+    gap: 10px; 
+}
+h1, h3, p{
+    display: flex;
+    justify-content: center; /* Centraliza na horizontal */
+    align-items: center;    /* Centraliza na vertical */
+}
+
+button{
+    display: block;
+}

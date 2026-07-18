@@ -1,4 +1,5 @@
 const conexao = require('../Config/config')
+
 function criarUsuario(usuario, callback) {
     const sql = `
         INSERT INTO usuarios

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro da planta</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1 class="titulo">AgroTech</h1>
+    </header>
+    <main>
+        <h3 class="subtitulo">Cadastre sua planta</h3>
+        <div class="cadastro">
+            <form action="/planta" method="post">
+
+                <div class="cadastro_form">
+                    <label for="nomePlanta" class="form_pergunta">Qual é a sua planta?</label><br>
+                    <select name="nomePlanta">
+                        <option value="">Selecione uma planta</option>
+                        <option value="morango">Morango</option>
+                        <option value="tomate">Tomate</option>
+                        <option value="pepino">Pepino</option>
+                        <option value="cenoura">Cenoura</option>
+                    </select>
+                </div><br>
+
+                <div class="cadastro_form">
+                    <label for="quantidade" class="form_pergunta">Quantas sementes serão plantadas?</label><br>
+                    <input type="text" name="quantidade" required>
+                </div><br>
+
+                <div class="cadastro_form">
+                    <label for="localizacao" class="form_pergunta">Onde sua planta será plantada?</label><br>
+                    <input type="text" name="localizacao" required>
+                </div><br>
+
+                <!-- O campo localização precisaria ser feito de um jeito que o usuario clicasse e fosse direcionado para um mapa onde ele poderia
+                 escolher onde será plantada a planta, isso teria que estar ligada tambem as informações de previsão do tempo, não sei como fazer 
+                 isso ainda-->
+
+                <div class="cadastro_form">
+                    <label for="data_plantacao" class="form_pergunta">Quando sua planta foi plantado?</label><br>
+                    <input type="date" name="data_plantacao" required>
+                </div><br>
+                
+                <div class="cadastro_form">
+                    <label for="agrotoxico" class="form_pergunta">Será utilizado algum tipo de agrotóxico?</label><br>
+                    <select name="agrotoxico">
+                        <option value=""></option>
+                        <option value="sim">Sim</option>
+                        <option value="nao">Não</option>
+                    </select>
+                </div><br>
+
+                <div>
+                <button type="submit" class="btn_cadastro_usuario">Cadastrar planta</button>
+                </div>
+            </form>
+        </div>
+    </main>  
+</body>
+</html>
