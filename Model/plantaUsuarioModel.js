@@ -2,6 +2,8 @@ const conexao = require('../Config/config')
 
 function criarPlantaUsuario(plantausuario, callback) {
     const sql = `
+
+        
         INSERT INTO plantausuario
         (nomePlanta, quantidade, localizacao, data_plantacao, agrotoxico)
         VALUES (?, ?, ?, ?, ?)

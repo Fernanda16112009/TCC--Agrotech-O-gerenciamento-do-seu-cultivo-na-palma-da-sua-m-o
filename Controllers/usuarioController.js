@@ -11,7 +11,7 @@ function criarUsuario(req, res) {
 }
 
 function logarUsuario(req, res){
-    usuarioModel.pegarEmailSenha((erro, loginValor) => {
+    usuarioModel.login((erro, loginValor) => {
     if (erro) {
         console.log(erro);
         return send("Erro");
@@ -36,6 +36,7 @@ function logarUsuario(req, res){
 
 });
 }
+
 
 
 module.exports = {
