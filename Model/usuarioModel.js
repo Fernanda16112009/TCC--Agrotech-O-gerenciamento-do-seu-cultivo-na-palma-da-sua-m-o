@@ -15,12 +15,12 @@ function criarUsuario(usuario, callback) {
     ], callback)
 }
 
-function login(callback) {
+function pegarLogin(callback) {
     const sql = `SELECT * FROM usuarios`
     conexao.query(sql, callback)
 }
 
 module.exports = {
     criarUsuario,
-    login
+    pegarLogin
 }

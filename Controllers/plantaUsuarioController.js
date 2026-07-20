@@ -2,6 +2,9 @@ const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 
 
 function criarPlantaUsuario(req, res) {
+
+    req.body.idUsuario = req.session.usuario.idUsuario;
+
     plantaUsuarioModel.criarPlantaUsuario(req.body, (erro) => {
         if (erro) {
             console.log(erro)
@@ -11,19 +14,19 @@ function criarPlantaUsuario(req, res) {
         switch (req.body.nomePlanta){
 
             case "morango":
-                res.redirect('/instrucoesPlantas/morango.html');
+                res.redirect('/privado/instrucoesPlantas/morango');
                 break;
             case "cenoura":
-                res.redirect('instrucoesPlantas/cenoura.html');
+                res.redirect('/privado/instrucoesPlantas/cenoura');
                 break;
             case "pepino":
-                res.redirect('/instrucoesPlantas/pepino.html');
+                res.redirect('/privado/instrucoesPlantas/pepino');
                 break;
             case "tomate":
-                res.redirect('/instrucoesPlantas/tomate.html');
+                res.redirect('/privado/instrucoesPlantas/tomate');
                 break;
         }
-      
+    
         
     })
 }

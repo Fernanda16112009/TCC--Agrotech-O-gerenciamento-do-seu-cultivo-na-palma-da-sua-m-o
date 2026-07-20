@@ -11,7 +11,7 @@ function criarUsuario(req, res) {
 }
 
 function logarUsuario(req, res){
-    usuarioModel.login((erro, loginValor) => {
+    usuarioModel.pegarLogin((erro, loginValor) => {
     if (erro) {
         console.log(erro);
         return send("Erro");
@@ -24,16 +24,18 @@ function logarUsuario(req, res){
     for (let i in loginValor){
 
         if(usuarioemail === loginValor[i].email && usuariosenha === loginValor[i].senha){
+            req.session.usuario = loginValor[i];
             verifica = true
             break
         }      
     }
     if(verifica === true){
-        res.redirect('/pg_entrar.html')
+        res.redirect('/privado/pg_entrar')
     }else{
         res.send("Email ou senha incorretos")
     }
 
+       
 });
 }
 
