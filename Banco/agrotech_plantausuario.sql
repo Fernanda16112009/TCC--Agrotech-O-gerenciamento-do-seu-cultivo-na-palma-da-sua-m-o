@@ -27,13 +27,14 @@ CREATE TABLE `plantausuario` (
   `idUsuario` int NOT NULL,
   `nomePlanta` enum('morango','tomate','pepino','cenoura') NOT NULL,
   `quantidade` int NOT NULL,
-  `localizacao` varchar(100) NOT NULL,
+  `longitude` varchar(100) NOT NULL,
+  `latitude` varchar(100) NOT NULL,
   `data_plantacao` date NOT NULL,
   `agrotoxico` enum('sim','nao') NOT NULL,
   PRIMARY KEY (`idPlanta`),
   KEY `idUsuario` (`idUsuario`),
   CONSTRAINT `plantausuario_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +43,7 @@ CREATE TABLE `plantausuario` (
 
 LOCK TABLES `plantausuario` WRITE;
 /*!40000 ALTER TABLE `plantausuario` DISABLE KEYS */;
-INSERT INTO `plantausuario` VALUES (1,13,'morango',33,'Medianeira','2026-07-21','sim'),(2,13,'pepino',55,'Brasil','2026-07-17','nao'),(3,2,'morango',666,'Medianeira','2026-07-14','nao'),(4,1,'tomate',55,'Persa','2026-07-16','sim'),(5,6,'cenoura',888,'Persa','2026-07-15','sim'),(6,2,'morango',55,'Italia','2026-07-23','sim'),(7,2,'morango',33,'Japao','2026-07-06','sim'),(8,2,'morango',33,'Japao','2026-07-06','sim'),(9,2,'tomate',33,'Japao','2026-07-06','sim'),(10,2,'pepino',33,'Japao','2026-07-06','sim'),(11,2,'cenoura',33,'Japao','2026-07-06','sim'),(12,11,'pepino',77,'brasilia','2026-07-20','nao'),(13,2,'cenoura',88,'india','2026-07-24','sim');
+INSERT INTO `plantausuario` VALUES (1,2,'pepino',5,'-54.08329518264305','-25.29904636513118','2026-07-08','sim');
 /*!40000 ALTER TABLE `plantausuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-21 19:45:23
+-- Dump completed on 2026-07-26  2:19:31

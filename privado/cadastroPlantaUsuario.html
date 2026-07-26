@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,13 +32,13 @@
                 </div><br>
 
                 <div class="cadastro_form">
-                    <label for="localizacao" class="form_pergunta">Onde sua planta será plantada?</label><br>
-                    <input type="text" name="localizacao" required>
-                </div><br>
+                    <label for="localizacao" class="form_pergunta">Onde está localizado a sua planta? Certifique-se de que seu aparelho esteja no local da plantação</label><br>
+                    <input type="hidden"  id="longitude" name="longitude" required>
+                    <input type="hidden" id="latitude" name="latitude" required>
+                    <button type="button" id="btn_mapa">Selecionar localização</button>
 
-                <!-- O campo localização precisaria ser feito de um jeito que o usuario clicasse e fosse direcionado para um mapa onde ele poderia
-                 escolher onde será plantada a planta, isso teria que estar ligada tambem as informações de previsão do tempo, não sei como fazer 
-                 isso ainda-->
+                    <p id="mensagemLocalizacao"></p>
+                </div><br>
 
                 <div class="cadastro_form">
                     <label for="data_plantacao" class="form_pergunta">Quando sua planta foi plantado?</label><br>
@@ -62,3 +62,5 @@
     </main>  
 </body>
 </html>
+
+<script src="/privado/cadastroPlantaUsuario.js"></script>

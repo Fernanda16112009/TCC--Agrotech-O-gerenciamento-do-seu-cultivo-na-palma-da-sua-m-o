@@ -1,6 +1,5 @@
 const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 
-
 function criarPlantaUsuario(req, res) {
 
     req.body.idUsuario = req.session.usuario.idUsuario;

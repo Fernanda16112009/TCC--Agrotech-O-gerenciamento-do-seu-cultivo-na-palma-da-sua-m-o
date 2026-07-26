@@ -8,6 +8,11 @@ router.get('/pg_entrar', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'pg_entrar.html'));
 });
 
+router.get('/cadastroPlantaUsuario.js', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'cadastroPlantaUsuario.js'));
+});
+
+
 router.get('/cadastroPlanta', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'cadastroPlantaUsuario.html'));
 });
