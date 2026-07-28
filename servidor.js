@@ -6,8 +6,7 @@ const bodyParser = require('body-parser')
 const usuarioRoutes = require('./routes/usuarioRoutes')
 const plantasUsuarioRoutes = require('./routes/plantasUsuarioRoutes')
 const privadoRoutes = require('./routes/privadoRoutes')
-
-/*const admRoutes = require('./routes/admRoutes')*/
+const admRoutes = require('./routes/admRoutes')
 
 const app = express()
 const port = 8000
@@ -37,8 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/usuarios', usuarioRoutes)
 
 app.use('/planta', plantasUsuarioRoutes)
-/*
-app.use('/adm', admRoutes)*/
+
+app.use('/adm', admRoutes)
 
 // Página inicial
 

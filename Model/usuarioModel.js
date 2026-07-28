@@ -20,7 +20,50 @@ function pegarLogin(callback) {
     conexao.query(sql, callback)
 }
 
+
+function listarUsuarios(callback) {
+    const sql = `SELECT * FROM usuarios ORDER BY nome`
+    conexao.query(sql, callback)
+}
+
+function buscarUsuarioPorId(idUsuario, callback) {
+    const sql = `SELECT * FROM usuarios WHERE idUsuario = ?`
+    conexao.query(sql, [idUsuario], callback)
+}
+
+function buscarUsuarioPorNome(nome, callback) {
+    const sql = `SELECT * FROM usuarios WHERE nome LIKE ? ORDER BY nome`
+    conexao.query(sql, [`%${nome}%`], callback)
+}
+
+function atualizarUsuario(idUsuario, usuario, callback) {
+    const sql = `
+        UPDATE usuarios
+        SET nome = ?, email = ?, telefone = ?, senha = ?, nome_usuario = ?
+        WHERE idUsuario = ?
+    `
+    conexao.query(sql, [
+        usuario.nome,
+        usuario.email,
+        usuario.telefone,
+        usuario.senha,
+        usuario.nome_usuario,
+        idUsuario
+    ], callback)
+}
+
+function deletarUsuario(idUsuario, callback) {
+    const sql = `DELETE FROM usuarios WHERE idUsuario = ?`
+    conexao.query(sql, [idUsuario], callback)
+}
+
+
 module.exports = {
     criarUsuario,
-    pegarLogin
+    pegarLogin,
+    listarUsuarios,
+    buscarUsuarioPorId,
+    buscarUsuarioPorNome,
+    atualizarUsuario,
+    deletarUsuario
 }
