@@ -1,45 +1,77 @@
 const usuarioModel = require('../Model/usuarioModel');
+const bcrypt = require('bcryptjs')
 
-function criarUsuario(req, res) {
-    usuarioModel.criarUsuario(req.body, (erro) => {
-        if (erro) {
-            console.log(erro)
-            return res.send('Erro ao cadastrar usuário.')
-        }
-        res.redirect('/')
-    })
+
+ async function criarUsuario(req, res) {
+
+    req.body.email = req.body.email.trim().toLowerCase();
+
+    if (req.body.senha.length < 6) {
+        return res.status(400).send(
+            "A senha precisa ter pelo menos 6 caracteres."
+            );
+    }
+    
+    try{
+
+        req.body.senha = await bcrypt.hash(req.body.senha, 10);
+
+        usuarioModel.criarUsuario(req.body, (erro) => {
+            if (erro) {
+                console.log(erro)
+                return res.send('Erro ao cadastrar usuário.')
+            }
+        
+            console.log(req.body)
+
+            res.redirect('/login.html')
+        })
+
+    }catch(erro){
+        console.log(erro);
+        res.status(500).res.send("Erro ao criptografar a senha.");
+    }
+    
 }
 
-function logarUsuario(req, res){
-    usuarioModel.pegarLogin((erro, loginValor) => {
+async function logarUsuario(req, res){
+    
+    usuarioModel.pegarLogin(async (erro, loginValor) => {
     if (erro) {
         console.log(erro);
         return send("Erro");
     }
 
-    let usuarioemail = req.body.email
+    let usuarioemail = req.body.email.trim().toLowerCase()
     let usuariosenha = req.body.senha
-    let verifica = false
+    let verificar = false
 
-    for (let i in loginValor){
 
-        if(usuarioemail === loginValor[i].email && usuariosenha === loginValor[i].senha){
-            req.session.usuario = loginValor[i];
-            verifica = true
-            break
-        }      
+    for (let i = 0; i < loginValor.length; i++){
+
+        if(usuarioemail === loginValor[i].email){
+
+            const senhaCorreta = await bcrypt.compare(
+                usuariosenha,
+                loginValor[i].senha
+            )
+
+            if(senhaCorreta){
+            req.session.usuario = loginValor[i]
+            return res.redirect('/privado/pg_entrar')
+            }
+            
+        }
+        
     }
-    if(verifica === true){
-        res.redirect('/privado/pg_entrar')
-    }else{
-        res.send("Email ou senha incorretos")
-    }
+    res.send("Email ou senha incorretos")
+
 
        
 });
 }
 
-function mostrarFormularioEdicao(req, res) {
+function mostrarFormularioEdicao(req, res){
     const { idUsuario } = req.params
 
     usuarioModel.buscarUsuarioPorId(idUsuario, (erro, resultados) => {

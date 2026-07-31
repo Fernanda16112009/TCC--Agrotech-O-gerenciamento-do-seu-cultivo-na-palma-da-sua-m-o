@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const session = require('express-session')
 const bodyParser = require('body-parser')
+const bcrypt = require('bcryptjs')
 
 const usuarioRoutes = require('./routes/usuarioRoutes')
 const plantasUsuarioRoutes = require('./routes/plantasUsuarioRoutes')
@@ -37,7 +38,7 @@ app.use('/usuarios', usuarioRoutes)
 
 app.use('/planta', plantasUsuarioRoutes)
 
-app.use('/adm', admRoutes)
+app.use('/adm', verificarLogin, admRoutes)
 
 // Página inicial
 
