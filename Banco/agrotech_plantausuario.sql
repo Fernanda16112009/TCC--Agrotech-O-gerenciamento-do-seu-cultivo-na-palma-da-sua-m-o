@@ -25,16 +25,18 @@ DROP TABLE IF EXISTS `plantausuario`;
 CREATE TABLE `plantausuario` (
   `idPlanta` int NOT NULL AUTO_INCREMENT,
   `idUsuario` int NOT NULL,
-  `nomePlanta` enum('morango','tomate','pepino','cenoura') NOT NULL,
+  `tipoPlanta` enum('morango','tomate','pepino','cenoura') NOT NULL,
+  `nomePlanta` varchar(100) NOT NULL,
   `quantidade` int NOT NULL,
   `longitude` varchar(100) NOT NULL,
   `latitude` varchar(100) NOT NULL,
   `data_plantacao` date NOT NULL,
   `agrotoxico` enum('sim','nao') NOT NULL,
+  `comentarios` text,
   PRIMARY KEY (`idPlanta`),
   KEY `idUsuario` (`idUsuario`),
   CONSTRAINT `plantausuario_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +45,7 @@ CREATE TABLE `plantausuario` (
 
 LOCK TABLES `plantausuario` WRITE;
 /*!40000 ALTER TABLE `plantausuario` DISABLE KEYS */;
-INSERT INTO `plantausuario` VALUES (1,2,'pepino',5,'-54.08329518264305','-25.29904636513118','2026-07-08','sim');
+INSERT INTO `plantausuario` VALUES (1,36,'tomate','Tomatudo',666,'-54.083286','-25.299034000000002','2026-08-18','nao',NULL),(2,36,'pepino','Pepinninho',55,'-54.083286','-25.299034000000002','2026-08-21','nao',NULL),(3,36,'cenoura','Cenorudo',5,'-54.083286','-25.299034000000002','2026-08-23','nao',NULL),(4,36,'morango','Moranguete',666,'-54.083286','-25.299034000000002','2026-08-24','sim',NULL),(5,36,'tomate','Tomatento',63,'-54.083286','-25.299034000000002','2026-08-03','sim',NULL),(6,36,'pepino','Pepinita',33,'-54.083286','-25.299034000000002','2026-08-21','nao',NULL);
 /*!40000 ALTER TABLE `plantausuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-26  2:19:31
+-- Dump completed on 2026-08-06  1:50:07

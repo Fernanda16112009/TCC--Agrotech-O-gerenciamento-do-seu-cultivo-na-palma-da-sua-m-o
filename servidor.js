@@ -8,6 +8,7 @@ const usuarioRoutes = require('./routes/usuarioRoutes')
 const plantasUsuarioRoutes = require('./routes/plantasUsuarioRoutes')
 const privadoRoutes = require('./routes/privadoRoutes')
 const admRoutes = require('./routes/admRoutes')
+const usuarioRoutesPrivado = require('./routes/usuarioPrivadoRoutes')
 
 const app = express()
 const port = 8000
@@ -17,7 +18,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(session({secret:'1234'}))
 app.use(bodyParser.urlencoded({extended:true}))
-
 
 
 function verificarLogin(req, res, next){
@@ -30,17 +30,19 @@ function verificarLogin(req, res, next){
 
 }
 
-app.use('/privado', verificarLogin, privadoRoutes);
-
 // Arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Rotas
 app.use('/usuarios', usuarioRoutes)
 
-app.use('/planta', plantasUsuarioRoutes)
+app.use('/priUsuarios', verificarLogin, usuarioRoutesPrivado)
+
+app.use('/planta', verificarLogin, plantasUsuarioRoutes)
 
 app.use('/adm', verificarLogin, admRoutes)
+
+app.use('/privado', verificarLogin, privadoRoutes);
 
 // Página inicial
 

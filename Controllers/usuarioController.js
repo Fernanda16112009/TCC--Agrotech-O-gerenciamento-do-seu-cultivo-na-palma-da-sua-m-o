@@ -106,7 +106,7 @@ function perfil(req, res){
             </head>
             <body>
 
-                <form action="/usuarios/${u.idUsuario}/editar" method="POST">
+                <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
                     <fieldset>
                         <legend><b>Meu Perfil</b></legend>
 
@@ -152,6 +152,7 @@ function perfil(req, res){
     })
 
 }
+
 function mostrarFormularioEdicao(req, res){
     const { idUsuario } = req.params 
 
@@ -181,7 +182,7 @@ function mostrarFormularioEdicao(req, res){
             </head>
             <body>
 
-                <form action="/usuarios/${u.idUsuario}/editar" method="POST">
+                <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
                     <fieldset>
                         <legend><b>Editar Usuário</b></legend>
 

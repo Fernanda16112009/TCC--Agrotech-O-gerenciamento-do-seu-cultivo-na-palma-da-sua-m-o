@@ -16,14 +16,19 @@
             <form action="/planta" method="post">
 
                 <div class="cadastro_form">
-                    <label for="nomePlanta" class="form_pergunta">Qual é a sua planta?</label><br>
-                    <select name="nomePlanta">
+                    <label for="tipoPlanta" class="form_pergunta">Qual é a sua planta?</label><br>
+                    <select name="tipoPlanta">
                         <option value="">Selecione uma planta</option>
                         <option value="morango">Morango</option>
                         <option value="tomate">Tomate</option>
                         <option value="pepino">Pepino</option>
                         <option value="cenoura">Cenoura</option>
                     </select>
+                </div><br>
+
+                <div class="cadastro_form">
+                    <label for="nomePlanta" class="form_pergunta">Dê um nome para a sua planta?</label><br>
+                    <input type="text" name="nomePlanta" required>
                 </div><br>
 
                 <div class="cadastro_form">
