@@ -33,8 +33,8 @@ router.get('/instrucoesPlantas/tomate', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','tomate.html'));
 });
 
-router.get('/confinguracoes', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'privado', 'confinguracoes.html'));
+router.get('/configuracoes', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'configuracoes.html'));
 });
 
 module.exports = router

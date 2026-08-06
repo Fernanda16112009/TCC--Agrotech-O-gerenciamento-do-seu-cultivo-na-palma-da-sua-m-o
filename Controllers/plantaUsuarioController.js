@@ -2,7 +2,16 @@ const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 
 function criarPlantaUsuario(req, res) {
 
+    
     req.body.idUsuario = req.session.usuario.idUsuario;
+    
+    console.log(req.body)
+    
+    if(!req.body.latitude || !req.body.longitude){
+        return res.status(400).send(
+            "A localização é necessaria"
+        )
+    }
 
     plantaUsuarioModel.criarPlantaUsuario(req.body, (erro) => {
         if (erro) {

@@ -37,19 +37,35 @@ function buscarUsuarioPorNome(nome, callback) {
 }
 
 function atualizarUsuario(idUsuario, usuario, callback) {
-    const sql = `
+
+    if(!usuario.senha){
+        const sql = `
         UPDATE usuarios
-        SET nome = ?, email = ?, telefone = ?, senha = ?, nome_usuario = ?
+        SET nome = ?, email = ?, telefone = ?, nome_usuario = ?
         WHERE idUsuario = ?
     `
     conexao.query(sql, [
         usuario.nome,
         usuario.email,
         usuario.telefone,
-        usuario.senha,
         usuario.nome_usuario,
         idUsuario
     ], callback)
+    }else{
+        const sql = `
+            UPDATE usuarios
+            SET nome = ?, email = ?, telefone = ?, senha = ?, nome_usuario = ?
+            WHERE idUsuario = ?
+        `
+        conexao.query(sql, [
+            usuario.nome,
+            usuario.email,
+            usuario.telefone,
+            usuario.senha,
+            usuario.nome_usuario,
+            idUsuario
+        ], callback)
+    }
 }
 
 function deletarUsuario(idUsuario, callback) {

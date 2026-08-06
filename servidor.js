@@ -18,6 +18,8 @@ app.use(express.json())
 app.use(session({secret:'1234'}))
 app.use(bodyParser.urlencoded({extended:true}))
 
+
+
 function verificarLogin(req, res, next){
 
     if(req.session.usuario){
