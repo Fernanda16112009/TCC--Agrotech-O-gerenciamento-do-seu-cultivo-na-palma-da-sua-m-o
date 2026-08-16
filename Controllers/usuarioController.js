@@ -42,10 +42,17 @@ async function logarUsuario(req, res){
         return send("Erro");
     }
 
+    const emailAdm = "admin@gmail";
+    const senhaAdm = "admin123";
     let usuarioemail = req.body.email.trim().toLowerCase()
     let usuariosenha = req.body.senha
     let verificar = false
 
+    if (usuarioemail === emailAdm && usuariosenha === senhaAdm){
+        req.session.usuario = req.body
+        return res.redirect('/adm')
+
+    }
 
     for (let i = 0; i < loginValor.length; i++){
 

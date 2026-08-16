@@ -48,16 +48,13 @@ function mostrarPlantasUsuario(req, res) {
             console.log(erro)
             return res.send('Erro ao buscar planta.')
         }
-        if (resultados.length === 0) {
-            return res.send('Plantas não encontradas.')
-        }
 
 
         const cardPlanta = resultados.map(p => `
 
             <h3>${p.nomePlanta}</h3><br>
 
-            <a href="/planta/${p.idPlanta}">Ver Mais informações</a>
+            <a href="/planta/${p.idPlanta}">Ver Mais informações</a><br>
             
         `).join("<Br>")
 
@@ -77,7 +74,7 @@ function mostrarPlantasUsuario(req, res) {
                         <button class="btn_pg_inicial">Cadastrar nova planta</button><br><br>
                     </form>
                     <div>
-                        ${cardPlanta}
+                        ${cardPlanta}<br>
                     </div>
                     <form action="/" method="get" required>
                         <button class="btn_pg_inicial">Voltar</button><br><br>
@@ -101,9 +98,6 @@ function mostrarPlanta(req,res){
         if (erro) {
             console.log(erro)
             return res.send('Erro ao buscar planta.')
-        }
-        if (resultados.length === 0) {
-            return res.send('Plantas não encontradas.')
         }
 
         const p = resultados[0];
@@ -145,6 +139,15 @@ function mostrarPlanta(req,res){
                     
                     <br>
 
+                    <form action="/planta/${p.idPlanta}/anotacoes" method="get" required>
+                        <button class="btn_pg_inicial">Suas anotações</button><br><br>
+                    </form>
+
+
+                    <form action="/planta/${p.idPlanta}/deletar" method="post" required>
+                        <button class="btn_pg_inicial">Deletar planta</button><br><br>
+                    </form>
+
                     </fieldset>
 
                 <br>
@@ -161,8 +164,61 @@ function mostrarPlanta(req,res){
 
 }
 
+function anotacoesPlanta(req,res){
+    const idUsuario = req.session.usuario.idUsuario;
+    const idPlanta = req.params.idPlanta;
+
+        plantaUsuarioModel.buscarAnotacoes(idUsuario, idPlanta, (erro, resultados) => {
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao buscar Anotações.')
+        }
+
+        const a = resultados[0]
+
+        const html = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=, initial-scale=1.0">
+                <title>Anotações</title>
+                <link rel="stylesheet" href="/style.css">
+            </head>
+            <body>
+            <header>
+                <h1>Anotações</h1>
+            </header>
+            <main>
+                <form action="/planta" method="post">
+                <label for="comentario" class="form_pergunta">Escreva suas anotações</label><br>
+                <input type="text" class="form_pergunta" name="comentario">
+                </form>
+            </main>
+            </body>
+            </html>
+        `
+        res.send(html)
+    })
+}
+
+function deletarPlanta(req, res) {
+    const idUsuario = req.session.usuario.idUsuario;
+    const idPlanta = req.params.idPlanta;
+
+    plantaUsuarioModel.deletarPlanta(idUsuario, idPlanta,  (erro) => {
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao excluir planta.')
+        }
+        res.redirect('/planta/minhasPlantas')
+    })
+}
+
 module.exports = {
     criarPlantaUsuario,
     mostrarPlantasUsuario,
-    mostrarPlanta
+    mostrarPlanta,
+    deletarPlanta,
+    anotacoesPlanta
 } 

@@ -19,6 +19,13 @@ function criarPlantaUsuario(plantausuario,  callback) {
     ], callback)
 }
 
+function adicionarComentarios( plantausuario, callback){
+    const sql = `
+
+        INSERT INTO plantausuario
+    `
+}
+
 function listarPlantas(callback) { // Só será usado no ADM
     const sql = `SELECT * FROM plantausuario ORDER BY nomePlanta`
     conexao.query(sql, callback)
@@ -39,6 +46,12 @@ function buscarPlantaPorNome(idUsuario,nomePlanta, callback) {
     conexao.query(sql, [idUsuario,`%${nomePlanta}%`], callback)
 }
 
+function buscarAnotacoes(idUsuario, idPlanta, callback){
+    const sql = `SELECT comentarios FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
+    conexao.query(sql, [idUsuario,idPlanta], callback)
+}
+
+
 function deletarPlanta(idUsuario, idPlanta, callback) {
     const sql = `DELETE FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql,[idUsuario,idPlanta], callback)
@@ -49,5 +62,6 @@ module.exports = {
     buscarPlantaPorUsuario,
     buscarPlantaPorIdPlanta,
     buscarPlantaPorNome,
-    deletarPlanta
+    deletarPlanta,
+    buscarAnotacoes
 }

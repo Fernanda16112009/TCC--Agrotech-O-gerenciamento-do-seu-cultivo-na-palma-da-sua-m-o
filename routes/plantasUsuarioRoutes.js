@@ -6,5 +6,9 @@ const plantaUsuarioController = require('../Controllers/plantaUsuarioController'
 router.post('/', plantaUsuarioController.criarPlantaUsuario)
 router.get('/minhasPlantas', plantaUsuarioController.mostrarPlantasUsuario)
 router.get('/:idPlanta', plantaUsuarioController.mostrarPlanta)
+router.post('/:idPlanta/deletar', plantaUsuarioController.deletarPlanta)
+router.get('/:idPlanta/anotacoes', plantaUsuarioController.anotacoesPlanta)
+
+
 
 module.exports = router

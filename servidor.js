@@ -19,7 +19,6 @@ app.use(express.json())
 app.use(session({secret:'1234'}))
 app.use(bodyParser.urlencoded({extended:true}))
 
-
 function verificarLogin(req, res, next){
 
     if(req.session.usuario){
@@ -28,6 +27,16 @@ function verificarLogin(req, res, next){
         res.redirect('/');
     }
 
+}
+
+const emailAdm = "admin@gmail";
+
+function verificarADM(req,res, next){
+    if(req.session.usuario.email === emailAdm){
+        next()
+    }else{
+        res.redirect('/');
+    }
 }
 
 // Arquivos estáticos
@@ -40,7 +49,7 @@ app.use('/priUsuarios', verificarLogin, usuarioRoutesPrivado)
 
 app.use('/planta', verificarLogin, plantasUsuarioRoutes)
 
-app.use('/adm', verificarLogin, admRoutes)
+app.use('/adm', verificarLogin, verificarADM, admRoutes)
 
 app.use('/privado', verificarLogin, privadoRoutes);
 
