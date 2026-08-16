@@ -84,8 +84,8 @@ const obterUsuarios = buscaUsuario
                     <span class="nav-label">Usuários</span>
                     <a href="/adm#usuarios">Listar usuários</a>
                     <a href="/cadastroUsuario.html">Novo usuário</a>
-
-                    <a href="/" class="nav-sair">Sair</a>
+                    <a href= "/priUsuarios/sair">Sair</a>
+                    
                 </nav>
             </aside>
 

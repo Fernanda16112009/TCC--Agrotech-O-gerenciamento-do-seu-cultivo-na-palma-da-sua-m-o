@@ -118,3 +118,7 @@ input::placeholder{
 .btn_login_usuario:active{
     transform: scale(.98);
 }
+
+.sidebar{
+    margin-left: 50px;
+}

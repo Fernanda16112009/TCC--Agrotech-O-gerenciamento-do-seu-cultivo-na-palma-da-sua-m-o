@@ -30,9 +30,10 @@ function verificarLogin(req, res, next){
 }
 
 const emailAdm = "admin@gmail";
+const senhaAdm = "admin123";
 
 function verificarADM(req,res, next){
-    if(req.session.usuario.email === emailAdm){
+    if(req.session.usuario.email === emailAdm && req.session.usuario.senha === senhaAdm){
         next()
     }else{
         res.redirect('/');

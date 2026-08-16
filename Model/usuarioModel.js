@@ -16,7 +16,7 @@ function criarUsuario(usuario, callback) {
 }
 
 function pegarLogin(callback) {
-    const sql = `SELECT * FROM usuarios`
+    const sql = `SELECT idUsuario, email, senha FROM usuarios`
     conexao.query(sql, callback)
 }
 
