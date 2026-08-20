@@ -164,8 +164,11 @@ function mostrarPlanta(req,res){
 }
 
 function anotacoesPlanta(req,res){
+
+
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
+
 
         plantaUsuarioModel.buscarAnotacoes(idUsuario, idPlanta, (erro, resultados) => {
         if (erro) {
@@ -188,7 +191,7 @@ function anotacoesPlanta(req,res){
                 <h1>Anotações</h1>
             </header>
             <main>
-                <form action="/planta/anotacao" method="post">
+                <form action="/planta/${idPlanta}/anotacoes" method="post">
                 <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
                 <input type="text" class="form_pergunta" name="anotacao">
                 <button type="submit">Salvar anotações</button>
@@ -202,7 +205,6 @@ function anotacoesPlanta(req,res){
 }
 
 function cadastrarAnotacao(req,res){
-
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
 
