@@ -19,11 +19,19 @@ function criarPlantaUsuario(plantausuario,  callback) {
     ], callback)
 }
 
-function adicionarComentarios( plantausuario, callback){
+function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
     const sql = `
-
-        INSERT INTO plantausuario
-    `
+        UPDATE plantausuario
+        SET anotacao = ?
+        WHERE idUsuario = ?
+        AND idPlanta = ?
+        `
+    console.log(anotacao)
+    conexao.query(sql, [
+        anotacao.anotacao,
+        idUsuario,
+        idPlanta,
+    ], callback)
 }
 
 function listarPlantas(callback) { // Só será usado no ADM
@@ -47,7 +55,7 @@ function buscarPlantaPorNome(idUsuario,nomePlanta, callback) {
 }
 
 function buscarAnotacoes(idUsuario, idPlanta, callback){
-    const sql = `SELECT comentarios FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
+    const sql = `SELECT anotacao FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql, [idUsuario,idPlanta], callback)
 }
 
@@ -58,10 +66,12 @@ function deletarPlanta(idUsuario, idPlanta, callback) {
 }
 module.exports = {
     criarPlantaUsuario,
+    cadastrarAnotacao,
     listarPlantas,
     buscarPlantaPorUsuario,
     buscarPlantaPorIdPlanta,
     buscarPlantaPorNome,
     deletarPlanta,
     buscarAnotacoes
+    
 }

@@ -5,7 +5,6 @@ function criarPlantaUsuario(req, res) {
     
     req.body.idUsuario = req.session.usuario.idUsuario;
     
-    console.log(req.body)
     
     if(!req.body.latitude || !req.body.longitude){
         return res.status(400).send(
@@ -181,7 +180,6 @@ function anotacoesPlanta(req,res){
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <meta name="viewport" content="width=, initial-scale=1.0">
                 <title>Anotações</title>
                 <link rel="stylesheet" href="/style.css">
             </head>
@@ -190,15 +188,31 @@ function anotacoesPlanta(req,res){
                 <h1>Anotações</h1>
             </header>
             <main>
-                <form action="/planta" method="post">
-                <label for="comentario" class="form_pergunta">Escreva suas anotações</label><br>
-                <input type="text" class="form_pergunta" name="comentario">
+                <form action="/planta/anotacao" method="post">
+                <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
+                <input type="text" class="form_pergunta" name="anotacao">
+                <button type="submit">Salvar anotações</button>
                 </form>
             </main>
             </body>
             </html>
         `
         res.send(html)
+    })
+}
+
+function cadastrarAnotacao(req,res){
+
+    const idUsuario = req.session.usuario.idUsuario;
+    const idPlanta = req.params.idPlanta;
+
+    plantaUsuarioModel.cadastrarAnotacao(req.body, idUsuario, idPlanta,  (erro) => {
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao cadastrar planta.')
+        }
+
+        res.redirect('/planta/${idPlanta}/anotacoes')
     })
 }
 
@@ -220,5 +234,6 @@ module.exports = {
     mostrarPlantasUsuario,
     mostrarPlanta,
     deletarPlanta,
-    anotacoesPlanta
+    anotacoesPlanta,
+    cadastrarAnotacao
 } 

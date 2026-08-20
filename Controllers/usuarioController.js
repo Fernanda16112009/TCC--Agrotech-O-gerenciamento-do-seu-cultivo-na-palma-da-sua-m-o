@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs')
     if (req.body.senha.length < 6) {
         return res.status(400).send(
             "A senha precisa ter pelo menos 6 caracteres."
-            );
+        );
     }
     
     try{
