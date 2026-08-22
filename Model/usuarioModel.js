@@ -20,7 +20,6 @@ function pegarLogin(callback) {
     conexao.query(sql, callback)
 }
 
-
 function listarUsuarios(callback) {
     const sql = `SELECT * FROM usuarios ORDER BY nome`
     conexao.query(sql, callback)

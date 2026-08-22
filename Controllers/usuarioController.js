@@ -2,7 +2,7 @@ const usuarioModel = require('../Model/usuarioModel');
 const bcrypt = require('bcryptjs')
 
 
- async function criarUsuario(req, res) {
+async function criarUsuario(req, res) {
 
     req.body.email = req.body.email.trim().toLowerCase();
 

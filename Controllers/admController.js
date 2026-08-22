@@ -2,19 +2,20 @@ const usuarioModel = require('../Model/usuarioModel')
 
 
 function painelAdm(req, res) {
+
     const buscaUsuario = req.query.busca_usuario || ''
 
 
-const obterUsuarios = buscaUsuario
+    const obterUsuarios = buscaUsuario
     
-? (cb) => usuarioModel.buscarUsuarioPorNome(buscaUsuario, cb)
-: usuarioModel.listarUsuarios
+    ? (cb) => usuarioModel.buscarUsuarioPorNome(buscaUsuario, cb)
+    : usuarioModel.listarUsuarios
 
- obterUsuarios((erroU, usuarios) => {
-    if (erroU) {
-        console.log(erroU)
-        return res.send('Erro ao buscar usuários.')
-    }
+    obterUsuarios((erroU, usuarios) => {
+        if (erroU) {
+            console.log(erroU)
+            return res.send('Erro ao buscar usuários.')
+        }
 
     const linhasUsuarios = usuarios.map(u => `
         <tr>
@@ -59,7 +60,6 @@ const obterUsuarios = buscaUsuario
         </div>
     ` : ''
 
-    
     const infoUsuario = buscaUsuario
         ? `<p class="search-info">${usuarios.length} resultado(s) para "${buscaUsuario}"</p>`
         : ''
@@ -115,11 +115,10 @@ const obterUsuarios = buscaUsuario
         </body>
         </html>
     `
-
     res.send(html)
+    
     })
 }
-
 
 module.exports = {
     painelAdm

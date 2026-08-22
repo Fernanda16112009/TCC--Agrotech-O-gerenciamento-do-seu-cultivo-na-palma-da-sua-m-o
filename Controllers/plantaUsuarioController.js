@@ -1,10 +1,8 @@
 const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 
 function criarPlantaUsuario(req, res) {
-
     
     req.body.idUsuario = req.session.usuario.idUsuario;
-    
     
     if(!req.body.latitude || !req.body.longitude){
         return res.status(400).send(
@@ -38,16 +36,16 @@ function criarPlantaUsuario(req, res) {
     })
 }
 
-function mostrarPlantasUsuario(req, res) {
+function mostrarPlantas(req, res) {
 
     const idUsuario = req.session.usuario.idUsuario;
 
     plantaUsuarioModel.buscarPlantaPorUsuario(idUsuario, (erro, resultados) => {
+        
         if (erro) {
             console.log(erro)
             return res.send('Erro ao buscar planta.')
         }
-
 
         const cardPlanta = resultados.map(p =>`
 
@@ -90,7 +88,7 @@ function mostrarPlantasUsuario(req, res) {
     })
 }
 
-function mostrarPlanta(req,res){
+function mostrarPlantaUsuario(req,res){
 
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
@@ -144,7 +142,6 @@ function mostrarPlanta(req,res){
                         <button class="btn_pg_inicial">Suas anotações</button><br><br>
                     </form>
 
-
                     <form action="/planta/${p.idPlanta}/deletar" method="post" required>
                         <button class="btn_pg_inicial">Deletar planta</button><br><br>
                     </form>
@@ -168,6 +165,7 @@ function mostrarPlanta(req,res){
 }
 
 function cadastrarAnotacao(req,res){
+
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
 
@@ -180,7 +178,6 @@ function cadastrarAnotacao(req,res){
         res.redirect(`/planta/${idPlanta}/anotacoes`)
     })
 }
-
 
 function anotacoesPlanta(req,res){
 
@@ -225,8 +222,8 @@ function anotacoesPlanta(req,res){
     })
 }
 
-
 function deletarPlanta(req, res) {
+    
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
 
@@ -241,8 +238,8 @@ function deletarPlanta(req, res) {
 
 module.exports = {
     criarPlantaUsuario,
-    mostrarPlantasUsuario,
-    mostrarPlanta,
+    mostrarPlantas,
+    mostrarPlantaUsuario,
     deletarPlanta,
     anotacoesPlanta,
     cadastrarAnotacao

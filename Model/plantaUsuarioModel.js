@@ -34,6 +34,10 @@ function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
     ], callback)
 }
 
+function buscarAnotacoes( idUsuario, idPlanta, callback){
+    const sql = `SELECT anotacao FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
+    conexao.query(sql, [idUsuario,idPlanta], callback)
+}
 
 function listarPlantas(callback) { // Só será usado no ADM
     const sql = `SELECT * FROM plantausuario ORDER BY nomePlanta`
@@ -55,12 +59,6 @@ function buscarPlantaPorNome(idUsuario,nomePlanta, callback) {
     conexao.query(sql, [idUsuario,`%${nomePlanta}%`], callback)
 }
 
-function buscarAnotacoes( idUsuario, idPlanta, callback){
-    const sql = `SELECT anotacao FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
-    conexao.query(sql, [idUsuario,idPlanta], callback)
-}
-
-
 function deletarPlanta(idUsuario, idPlanta, callback) {
     const sql = `DELETE FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql,[idUsuario,idPlanta], callback)
@@ -68,11 +66,10 @@ function deletarPlanta(idUsuario, idPlanta, callback) {
 module.exports = {
     criarPlantaUsuario,
     cadastrarAnotacao,
+    buscarAnotacoes,
     listarPlantas,
     buscarPlantaPorUsuario,
     buscarPlantaPorIdPlanta,
     buscarPlantaPorNome,
-    deletarPlanta,
-    buscarAnotacoes
-    
+    deletarPlanta 
 }
