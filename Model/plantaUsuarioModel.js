@@ -26,13 +26,14 @@ function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
         WHERE idUsuario = ?
         AND idPlanta = ?
         `
-
+    console.log(anotacao)
     conexao.query(sql, [
         anotacao.anotacao,
         idUsuario,
         idPlanta,
     ], callback)
 }
+
 
 function listarPlantas(callback) { // Só será usado no ADM
     const sql = `SELECT * FROM plantausuario ORDER BY nomePlanta`
@@ -54,7 +55,7 @@ function buscarPlantaPorNome(idUsuario,nomePlanta, callback) {
     conexao.query(sql, [idUsuario,`%${nomePlanta}%`], callback)
 }
 
-function buscarAnotacoes(idUsuario, idPlanta, callback){
+function buscarAnotacoes( idUsuario, idPlanta, callback){
     const sql = `SELECT anotacao FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql, [idUsuario,idPlanta], callback)
 }

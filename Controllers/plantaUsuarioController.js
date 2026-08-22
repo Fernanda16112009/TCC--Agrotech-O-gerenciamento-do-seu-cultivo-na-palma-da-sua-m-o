@@ -49,11 +49,13 @@ function mostrarPlantasUsuario(req, res) {
         }
 
 
-        const cardPlanta = resultados.map(p => `
+        const cardPlanta = resultados.map(p =>`
 
             <h3>${p.nomePlanta}</h3><br>
 
-            <a href="/planta/${p.idPlanta}">Ver Mais informações</a><br>
+            <form action="/planta/${p.idPlanta}" method="get" required>
+                    <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
+            </form>
             
         `).join("<Br>")
 
@@ -150,7 +152,9 @@ function mostrarPlanta(req,res){
                     </fieldset>
 
                 <br>
-                <a href="/planta/minhasPlantas">Voltar</a>
+                <form action="/planta/minhasPlantas" method="get" required>
+                    <button class="btn_pg_inicial">Voltar</button><br><br>
+                </form>
 
             </body>
             </html>
@@ -163,20 +167,34 @@ function mostrarPlanta(req,res){
 
 }
 
-function anotacoesPlanta(req,res){
+function cadastrarAnotacao(req,res){
+    const idUsuario = req.session.usuario.idUsuario;
+    const idPlanta = req.params.idPlanta;
 
+    plantaUsuarioModel.cadastrarAnotacao(req.body, idUsuario, idPlanta,  (erro,) => {
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao cadastrar planta.')
+        }
+
+        res.redirect(`/planta/${idPlanta}/anotacoes`)
+    })
+}
+
+
+function anotacoesPlanta(req,res){
 
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
 
-
-        plantaUsuarioModel.buscarAnotacoes(idUsuario, idPlanta, (erro, resultados) => {
+    plantaUsuarioModel.buscarAnotacoes(idUsuario, idPlanta, (erro, resultado) => {
         if (erro) {
-            console.log(erro)
-            return res.send('Erro ao buscar Anotações.')
+            console.log(erro);
+            return res.send('Erro ao buscar anotação');
         }
 
-        const a = resultados[0]
+    const a = resultado[0]
+
 
         const html = `
             <!DOCTYPE html>
@@ -191,10 +209,13 @@ function anotacoesPlanta(req,res){
                 <h1>Anotações</h1>
             </header>
             <main>
-                <form action="/planta/${idPlanta}/anotacoes" method="post">
+                <form action="/planta/${idUsuario}/${idPlanta}/anotacoes" method="post">
                 <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
-                <input type="text" class="form_pergunta" name="anotacao">
+                <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.anotacao}</textarea>
                 <button type="submit">Salvar anotações</button>
+                </form><br>
+                <form action="/planta/${idPlanta}" method="get" required>
+                    <button class="btn_pg_inicial">Voltar</button><br><br>
                 </form>
             </main>
             </body>
@@ -204,19 +225,6 @@ function anotacoesPlanta(req,res){
     })
 }
 
-function cadastrarAnotacao(req,res){
-    const idUsuario = req.session.usuario.idUsuario;
-    const idPlanta = req.params.idPlanta;
-
-    plantaUsuarioModel.cadastrarAnotacao(req.body, idUsuario, idPlanta,  (erro) => {
-        if (erro) {
-            console.log(erro)
-            return res.send('Erro ao cadastrar planta.')
-        }
-
-        res.redirect('/planta/${idPlanta}/anotacoes')
-    })
-}
 
 function deletarPlanta(req, res) {
     const idUsuario = req.session.usuario.idUsuario;

@@ -163,6 +163,8 @@ function perfil(req, res){
 function mostrarFormularioEdicao(req, res){
     const { idUsuario } = req.params 
 
+    console.log(req.body)
+
     usuarioModel.buscarUsuarioPorId(idUsuario, (erro, resultados) => {
 
         console.log(resultados)

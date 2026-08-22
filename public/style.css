@@ -122,3 +122,9 @@ input::placeholder{
 .sidebar{
     margin-left: 50px;
 }
+
+.caixa_anotacao{
+    resize: none;
+    width: 850px;
+    height: 1000px;
+}

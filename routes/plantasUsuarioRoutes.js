@@ -8,7 +8,7 @@ router.get('/minhasPlantas', plantaUsuarioController.mostrarPlantasUsuario);
 router.get('/:idPlanta', plantaUsuarioController.mostrarPlanta);
 router.post('/:idPlanta/deletar', plantaUsuarioController.deletarPlanta);
 router.get('/:idPlanta/anotacoes', plantaUsuarioController.anotacoesPlanta);
-router.post('/:idPlanta/anotacoes', plantaUsuarioController.cadastrarAnotacao);
+router.post('/:idUsuario/:idPlanta/anotacoes', plantaUsuarioController.cadastrarAnotacao);
 
 
 module.exports = router
