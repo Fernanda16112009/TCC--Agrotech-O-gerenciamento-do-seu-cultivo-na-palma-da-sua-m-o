@@ -261,10 +261,10 @@ function deletarUsuario(req, res) {
 module.exports = {
     criarUsuario,
     logarUsuario,
+    logout,
+    perfil,
     mostrarFormularioEdicao,
     atualizarUsuario,
-    deletarUsuario,
-    perfil,
-    logout
+    deletarUsuario
 
 }
