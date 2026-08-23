@@ -1,6 +1,28 @@
 const usuarioModel = require('../Model/usuarioModel');
 const bcrypt = require('bcryptjs')
 
+function buscarEmail (req,res){
+
+    usuarioModel.buscarEmail((erro, emails) => {
+        if(erro){
+            console.log(erro)
+            return res.send('Erro ao buscar os emails')
+        }
+        return res.json(emails)
+    })
+}
+
+function buscarNomeUsuario(req,res){
+    
+    usuarioModel.buscarNomeUsuario((erro, nomes) =>{
+        if (erro){
+            console.log(erro)
+            return res.send('Erro ao buscar nome de usuario.')
+        }
+        return res.json(nomes);
+
+    })
+}
 
 async function criarUsuario(req, res) {
 
@@ -13,7 +35,6 @@ async function criarUsuario(req, res) {
     }
     
     try{
-
         req.body.senha = await bcrypt.hash(req.body.senha, 10);
 
         usuarioModel.criarUsuario(req.body, (erro) => {
@@ -26,7 +47,6 @@ async function criarUsuario(req, res) {
 
             res.redirect('/login.html')
         })
-
     }catch(erro){
         console.log(erro);
         res.status(500).res.send("Erro ao criptografar a senha.");
@@ -259,6 +279,8 @@ function deletarUsuario(req, res) {
 
 
 module.exports = {
+    buscarNomeUsuario,
+    buscarEmail,
     criarUsuario,
     logarUsuario,
     logout,

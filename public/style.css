@@ -25,7 +25,7 @@ main{
     justify-content: center;
 }
 
-.pg_inicial_form{
+.form{
     width: 100%;
     max-width: 380px;
     padding: 30px;
@@ -94,7 +94,7 @@ input::placeholder{
 
 /* Botão */
 
-.btn_login_usuario{
+.btn{
     width: 100%;
     height: 60px;
 
@@ -111,11 +111,11 @@ input::placeholder{
     transition: .2s;
 }
 
-.btn_login_usuario:hover{
+.btn:hover{
     background: #67a45b;
 }
 
-.btn_login_usuario:active{
+.btn:active{
     transform: scale(.98);
 }
 
@@ -127,4 +127,8 @@ input::placeholder{
     resize: none;
     width: 850px;
     height: 1000px;
+}
+
+.error{
+    display: none;
 }

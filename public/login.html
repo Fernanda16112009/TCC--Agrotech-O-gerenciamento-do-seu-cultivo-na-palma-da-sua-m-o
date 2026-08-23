@@ -8,27 +8,34 @@
 </head>
 <body>
     <header>
-        <h1 class="titulo">AgroTech</h1>
-        <h3 class="subtitulo">É muito bom ter você com a gente!</h3>
+        <nav>
+            <h1 class="titulo">AgroTech</h1>
+            <h3 class="texto">É muito bom ter você com a gente!</h3>
+        </nav>
     </header>
     <main>
-        <div class="pg_inicial_form">
+        <div class="form">
             <form action="/usuarios/login" method="post">
-                <div class="login_form">
+                <div class="elemento_form">
                     <label for="email" class="form_pergunta">Qual é o seu email?</label><br>
                     <input type="email" name="email" class="form_pergunta" placeholder= "joao@email.com"><br><br>
-                </div
-                <div class="login_form">
+                </div>
+                <div class="elemento_form">
                     <label for="senha" class="form_pergunta">Qual é a sua senha?</label><br>
                     <input type="password" name="senha" class="form_pergunta"><br><br>
+                </div><br>
+                <div class="elemento_form">
+                    <button type="submit" class="btn">Logar</button>
                 </div>
-                <div class="login_form">
-                <button type="submit" class="btn_login_usuario">Logar</button>
-                </div>
+            </form>
+
+            <br>
+
+            <form action="/usuarios/cadastroUsuario" method="get" required>
+                <button type="submit" class="btn">Não tem uma conta? Cadastre-se </button>
             </form>
         </div>    
     </main>
-
     
 </body>
 </html>

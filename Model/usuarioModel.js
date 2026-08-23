@@ -35,6 +35,17 @@ function buscarUsuarioPorNome(nome, callback) {
     conexao.query(sql, [`%${nome}%`], callback)
 }
 
+function buscarNomeUsuario(callback){
+    const sql = `SELECT nome_usuario FROM usuarios ORDER BY nome`
+    conexao.query(sql, callback)
+}
+
+
+function buscarEmail(callback){
+    const sql = `SELECT email FROM usuarios ORDER BY nome`
+    conexao.query(sql, callback)
+}
+
 function atualizarUsuario(idUsuario, usuario, callback) {
 
     if(!usuario.senha){
@@ -79,6 +90,8 @@ module.exports = {
     listarUsuarios,
     buscarUsuarioPorId,
     buscarUsuarioPorNome,
+    buscarNomeUsuario,
+    buscarEmail,
     atualizarUsuario,
     deletarUsuario
 }
