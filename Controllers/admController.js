@@ -26,8 +26,8 @@ function painelAdm(req, res) {
             <td>${u.senha}</td>
             <td>${u.nome_usuario}</td>
             <td>
-                <a class="btn edit" href="/usuarios/${u.idUsuario}/editar">Editar</a>
-                <form action="/usuarios/${u.idUsuario}/deletar" method="POST" class="inline-form">
+                <a class="btn edit" href="/priUsuarios/${u.idUsuario}/editar">Editar</a>
+                <form action="/priUsuarios/${u.idUsuario}/deletar" method="POST" class="inline-form">
                     <button class="btn delete" type="submit" onclick="return confirm('Excluir ${u.nome}?')">Excluir</button>
                 </form>
             </td>
@@ -73,7 +73,7 @@ function painelAdm(req, res) {
             <title>Painel ADM — MeuCRUD</title>
             <link rel="stylesheet" href="/style.css">
         </head>
-        <body>
+        <body class= "bodyAdm">
 
             <aside class="sidebar">
                 <div class="sidebar-logo">MeuCRUD</div>

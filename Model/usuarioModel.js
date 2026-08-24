@@ -25,6 +25,11 @@ function listarUsuarios(callback) {
     conexao.query(sql, callback)
 }
 
+function listarUsuariosID(callback) {
+    const sql = `SELECT * FROM usuarios ORDER BY idUsuario`
+    conexao.query(sql, callback)
+}
+
 function buscarUsuarioPorId(idUsuario, callback) {
     const sql = `SELECT * FROM usuarios WHERE idUsuario = ?`
     conexao.query(sql, [idUsuario], callback)
@@ -88,6 +93,7 @@ module.exports = {
     criarUsuario,
     pegarLogin,
     listarUsuarios,
+    listarUsuariosID,
     buscarUsuarioPorId,
     buscarUsuarioPorNome,
     buscarNomeUsuario,

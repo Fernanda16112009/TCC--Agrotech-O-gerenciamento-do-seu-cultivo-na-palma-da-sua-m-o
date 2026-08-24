@@ -43,7 +43,6 @@ async function criarUsuario(req, res) {
                 return res.send('Erro ao cadastrar usuário.')
             }
         
-            console.log(req.body)
 
             res.redirect('/login.html')
         })
@@ -260,7 +259,7 @@ function atualizarUsuario(req, res) {
             console.log(erro)
             return res.send('Erro ao atualizar usuário.')
         }
-        res.redirect('/privado/pg_entrar')
+        res.redirect('/adm')
     })
 }
 
