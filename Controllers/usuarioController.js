@@ -1,5 +1,6 @@
 const usuarioModel = require('../Model/usuarioModel');
 const bcrypt = require('bcryptjs')
+const { Resend } = require('resend');
 
 function buscarEmail (req,res){
 
@@ -65,7 +66,6 @@ async function logarUsuario(req, res){
     const senhaAdm = "admin123";
     let usuarioemail = req.body.email.trim().toLowerCase()
     let usuariosenha = req.body.senha
-    let verificar = false
 
     if (usuarioemail === emailAdm && usuariosenha === senhaAdm){
         req.session.usuario = req.body
@@ -275,6 +275,27 @@ function deletarUsuario(req, res) {
     })
 }
 
+function testarEmail(req,res){
+
+    console.log("chego")
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    (async function () {
+    const { data, error } = await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
+        to: ['fernandabertotti7@gmail.com'],
+        subject: 'Hello World',
+        html: '<strong>It works!</strong>',
+    });
+
+    if (error) {
+        return console.error({ error });
+    }
+
+    console.log({ data });
+    })();
+}
+
 
 
 module.exports = {
@@ -286,6 +307,7 @@ module.exports = {
     perfil,
     mostrarFormularioEdicao,
     atualizarUsuario,
-    deletarUsuario
+    deletarUsuario,
+    testarEmail
 
 }

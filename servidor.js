@@ -3,6 +3,8 @@ const path = require('path')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
+const { Resend } = require('resend');
+require('dotenv').config();
 
 const usuarioRoutes = require('./routes/usuarioRoutes')
 const plantasUsuarioRoutes = require('./routes/plantasUsuarioRoutes')
