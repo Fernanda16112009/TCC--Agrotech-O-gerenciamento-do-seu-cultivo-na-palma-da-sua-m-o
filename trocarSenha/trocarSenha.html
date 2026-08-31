@@ -1,11 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+    <title>Login</title>
 </head>
 <body>
-    <h1>Trocar senha</h1>
+    <header>
+        <nav>
+            <h1 class="titulo">AgroTech</h1>
+            <h3 class="texto">Atualize sua senha</h3>
+        </nav>
+    </header>
+    <main>
+        <div class="form">
+            <form action="/usuarios/login" method="get">
+                <div class="elemento_form">
+                    <label for="password" class="form_pergunta" >Defina uma senha nova</label><br>
+                    <input type="password" name="senha" class="form_pergunta" id="senha" onchange="validarSenha()"><br><br>
+                    <div class="error" id="senha-invalido-erro">Sua senha precisa ter no mínimo 6 caracteres</div>                    
+                    <div class="error" id="senha-obrigatoria">Senha é obrigatória</div><br><br>    
+                </div>
+                <div class="elemento_form">
+                    <label for="password" class="form_pergunta" >Valide sua nova senha</label><br>
+                    <input type="password" name="senhaValida" class="form_pergunta" id="senhaValida" onchange="validarSenha()"><br><br>
+                    <div class="error" id="senha-valida-invalido-erro">Sua senha precisa ter no mínimo 6 caracteres</div>                    
+                    <div class="error" id="senha-valida-obrigatoria">Senha é obrigatória</div><br><br>
+                    <div class="error" id="senha-igual">Sua senha deve ser igual a nova</div><br><br>
+                </div><br>
+                <div class="elemento_form">
+                    <button type="submit" class="btn" disabled="true" id="btn-atualizar"">Atualizar senha</button>
+                </div>
+            </form>
+    </main>
+
+    <script src="/trocarSenha/trocarSenha.js"></script>
+    
 </body>
 </html>

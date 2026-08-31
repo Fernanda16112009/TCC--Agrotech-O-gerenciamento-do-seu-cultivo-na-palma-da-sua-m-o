@@ -1,5 +1,3 @@
-
-
 function pegarLocalizacao() {
 
     let longitudeReq = document.querySelector("#longitude");
