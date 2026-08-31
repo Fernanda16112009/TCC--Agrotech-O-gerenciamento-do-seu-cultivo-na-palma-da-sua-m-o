@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const path = require('path');
 
+
 const usuarioController = require('../Controllers/usuarioController')
 
 //Páginas
@@ -22,7 +23,7 @@ router.post('/', usuarioController.criarUsuario)
 router.post('/login', usuarioController.logarUsuario)
 router.get('/buscarNomes', usuarioController.buscarNomeUsuario)
 router.get('/bancoemails', usuarioController.buscarEmail)
-router.get('/email', usuarioController.testarEmail)
+router.post('/email', usuarioController.enviarEmail)
 
 
 module.exports = router

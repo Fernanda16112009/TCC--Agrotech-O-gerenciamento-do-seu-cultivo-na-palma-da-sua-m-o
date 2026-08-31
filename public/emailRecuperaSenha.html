@@ -9,17 +9,16 @@
 <body>
     <main>
         <div>
-            <form action="/usuarios/login">
+            <form action="/usuarios/email" method="post">
                 <label>Digite seu email</label>
                 <input type="email" name="email" class="form_pergunta" id="email" placeholder="joao@email.com" onchange="emailValido()"><br>
                 <div class="error" id="email-invalido-erro">Seu email deve conter @...</div>                    
                 <div class="error" id="email-obrigatorio">Email é obrigatório</div>
                 <div class="error" id="email-existe-erro">Não existe uma conta com esse email</div><br><br>
-                <br>
                 <button type="submit" class="btn" disabled ="true" id="btn_cadastro">Enviar email para a troca de senha</button>
             </form>
         </div>
     </main>
-    <script src="/recuperarsenha.js"></script>   
+    <script src="/recuperarsenha.js"></script>
 </body>
 </html>

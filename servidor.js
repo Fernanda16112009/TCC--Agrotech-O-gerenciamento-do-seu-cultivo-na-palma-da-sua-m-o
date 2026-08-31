@@ -4,13 +4,15 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs')
 const { Resend } = require('resend');
-require('dotenv').config();
+const dotenv = require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
 const usuarioRoutes = require('./routes/usuarioRoutes')
 const plantasUsuarioRoutes = require('./routes/plantasUsuarioRoutes')
 const privadoRoutes = require('./routes/privadoRoutes')
 const admRoutes = require('./routes/admRoutes')
 const usuarioRoutesPrivado = require('./routes/usuarioPrivadoRoutes')
+const trocarSenhaRoutes = require('./routes/trocarSenhaRoutes')
 
 const app = express()
 const port = 8000
@@ -55,6 +57,9 @@ app.use('/planta', verificarLogin, plantasUsuarioRoutes)
 app.use('/adm', verificarLogin, verificarADM, admRoutes)
 
 app.use('/privado', verificarLogin, privadoRoutes);
+
+app.use('/trocarSenha', trocarSenhaRoutes);
+
 
 // Página inicial
 
