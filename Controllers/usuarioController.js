@@ -173,11 +173,6 @@ function perfil(req, res){
 
                         <br><br>
 
-                        <label for="senha">Senha:</label>
-                        <input type="password" name="senha" id="senha" value="${u.senha}">
-
-                        <br><br>
-
                         <label for="nome_usuario">Nome de usuário:</label>
                         <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
 
@@ -271,6 +266,8 @@ function mostrarFormularioEdicao(req, res){
 function atualizarUsuario(req, res) {
     const { idUsuario } = req.params || req.session.usuario.idUsuario;
 
+    console.log(idUsuario)
+
     usuarioModel.atualizarUsuario(idUsuario, req.body, (erro) => {
         if (erro) {
             console.log(erro)
@@ -346,8 +343,8 @@ async function enviarEmail (req,res) {
 
 module.exports = {
     montarSecret,
-    buscarNomeUsuario,
     buscarEmail,
+    buscarNomeUsuario,
     criarUsuario,
     logarUsuario,
     logout,

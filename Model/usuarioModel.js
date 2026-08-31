@@ -45,6 +45,11 @@ function buscarNomeUsuario(callback){
     conexao.query(sql, callback)
 }
 
+function buscarSenhaPorId(idUsuario, callback) {
+    const sql = `SELECT senha FROM usuarios WHERE idUsuario = ?`
+    conexao.query(sql, [idUsuario], callback)
+}
+
 function buscarEmail(callback){
     const sql = `SELECT email FROM usuarios ORDER BY nome`
     conexao.query(sql, callback)
@@ -57,7 +62,6 @@ function buscarIDSenha(email, callback){
 
 function atualizarUsuario(idUsuario, usuario, callback) {
 
-    if(!usuario.senha){
         const sql = `
         UPDATE usuarios
         SET nome = ?, email = ?, telefone = ?, nome_usuario = ?
@@ -70,21 +74,6 @@ function atualizarUsuario(idUsuario, usuario, callback) {
         usuario.nome_usuario,
         idUsuario
     ], callback)
-    }else{
-        const sql = `
-            UPDATE usuarios
-            SET nome = ?, email = ?, telefone = ?, senha = ?, nome_usuario = ?
-            WHERE idUsuario = ?
-        `
-        conexao.query(sql, [
-            usuario.nome,
-            usuario.email,
-            usuario.telefone,
-            usuario.senha,
-            usuario.nome_usuario,
-            idUsuario
-        ], callback)
-    }
 }
 
 function deletarUsuario(idUsuario, callback) {
@@ -92,10 +81,7 @@ function deletarUsuario(idUsuario, callback) {
     conexao.query(sql, [idUsuario], callback)
 }
 
-function buscarSenhaPorId(idUsuario, callback) {
-    const sql = `SELECT senha FROM usuarios WHERE idUsuario = ?`
-    conexao.query(sql, [idUsuario], callback)
-}
+
 
 
 module.exports = {
@@ -106,9 +92,9 @@ module.exports = {
     buscarUsuarioPorId,
     buscarUsuarioPorNome,
     buscarNomeUsuario,
+    buscarSenhaPorId,    
     buscarEmail,
     buscarIDSenha,
     atualizarUsuario,
-    deletarUsuario,
-    buscarSenhaPorId
+    deletarUsuario
 }
