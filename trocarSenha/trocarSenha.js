@@ -1,4 +1,9 @@
 console.log("JS conectado");
+const parametros = new URLSearchParams(window.location.search);
+
+const id = parametros.get('id');
+document.getElementById('idUsuario').value = id;
+
 
 function validarSenha(){
     

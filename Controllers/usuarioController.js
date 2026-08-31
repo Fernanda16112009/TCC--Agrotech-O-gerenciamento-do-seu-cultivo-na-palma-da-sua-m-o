@@ -65,7 +65,7 @@ async function criarUsuario(req, res) {
             }
         
 
-            res.redirect('/login.html')
+            res.redirect('/usuarios/login')
         })
     }catch(erro){
         console.log(erro);
@@ -266,8 +266,6 @@ function mostrarFormularioEdicao(req, res){
 function atualizarUsuario(req, res) {
     const { idUsuario } = req.params || req.session.usuario.idUsuario;
 
-    console.log(idUsuario)
-
     usuarioModel.atualizarUsuario(idUsuario, req.body, (erro) => {
         if (erro) {
             console.log(erro)
@@ -275,6 +273,24 @@ function atualizarUsuario(req, res) {
         }
         res.redirect('/adm')
     })
+}
+
+async function atualizarSenha(req,res){
+
+     if (req.body.senha.length < 6) {
+        return res.status(400).send(
+            "A senha precisa ter pelo menos 6 caracteres."
+        );
+    }
+    req.body.senha = await bcrypt.hash(req.body.senha, 10);
+
+    usuarioModel.atualizarSenha(req.body, (erro) =>{
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao atualizar senha.')
+        }
+    })
+    res.redirect('/usuarios/login')
 }
 
 function deletarUsuario(req, res) {
@@ -333,13 +349,10 @@ async function enviarEmail (req,res) {
         return console.error({ error });
     }
 
-    /*console.log({ data });*/
     })();
 
-    res.send('Email enviado!');
+    res.redirect('/usuarios/login')
 }
-
-        
 
 module.exports = {
     montarSecret,
@@ -351,6 +364,7 @@ module.exports = {
     perfil,
     mostrarFormularioEdicao,
     atualizarUsuario,
+    atualizarSenha,
     deletarUsuario,
     enviarEmail
 }

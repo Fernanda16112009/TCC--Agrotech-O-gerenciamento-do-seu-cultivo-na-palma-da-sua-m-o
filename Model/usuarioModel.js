@@ -62,7 +62,7 @@ function buscarIDSenha(email, callback){
 
 function atualizarUsuario(idUsuario, usuario, callback) {
 
-        const sql = `
+    const sql = `
         UPDATE usuarios
         SET nome = ?, email = ?, telefone = ?, nome_usuario = ?
         WHERE idUsuario = ?
@@ -76,12 +76,22 @@ function atualizarUsuario(idUsuario, usuario, callback) {
     ], callback)
 }
 
+function atualizarSenha(usuario, callback) {
+    const sql = `
+        UPDATE usuarios
+        SET senha = ?
+        WHERE idUsuario = ?
+    `
+    conexao.query(sql, [
+        usuario.senha,
+        usuario.idUsuario
+    ], callback)
+}
+
 function deletarUsuario(idUsuario, callback) {
     const sql = `DELETE FROM usuarios WHERE idUsuario = ?`
     conexao.query(sql, [idUsuario], callback)
 }
-
-
 
 
 module.exports = {
@@ -96,5 +106,6 @@ module.exports = {
     buscarEmail,
     buscarIDSenha,
     atualizarUsuario,
+    atualizarSenha,
     deletarUsuario
 }

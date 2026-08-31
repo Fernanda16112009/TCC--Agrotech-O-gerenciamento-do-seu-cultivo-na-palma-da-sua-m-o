@@ -15,7 +15,7 @@
     </header>
     <main>
         <div class="form">
-            <form action="/usuarios/login" method="get">
+            <form action="/usuarios/atualizaSenha" method="post">
                 <div class="elemento_form">
                     <label for="password" class="form_pergunta" >Defina uma senha nova</label><br>
                     <input type="password" name="senha" class="form_pergunta" id="senha" onchange="validarSenha()"><br><br>
@@ -29,6 +29,9 @@
                     <div class="error" id="senha-valida-obrigatoria">Senha é obrigatória</div><br><br>
                     <div class="error" id="senha-igual">Sua senha deve ser igual a nova</div><br><br>
                 </div><br>
+                <div>
+                    <input type="hidden" id="idUsuario" name="idUsuario" required>
+                </div>
                 <div class="elemento_form">
                     <button type="submit" class="btn" disabled="true" id="btn-atualizar"">Atualizar senha</button>
                 </div>

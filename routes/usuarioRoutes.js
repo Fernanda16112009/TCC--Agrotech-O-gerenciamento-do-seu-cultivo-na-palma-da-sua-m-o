@@ -24,6 +24,7 @@ router.post('/login', usuarioController.logarUsuario)
 router.get('/buscarNomes', usuarioController.buscarNomeUsuario)
 router.get('/bancoemails', usuarioController.buscarEmail)
 router.post('/email', usuarioController.enviarEmail)
+router.post('/atualizaSenha', usuarioController.atualizarSenha)
 
 
 module.exports = router
