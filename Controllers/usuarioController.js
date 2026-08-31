@@ -181,7 +181,9 @@ function perfil(req, res){
                         <button type="submit">Salvar alterações</button>
                     </fieldset>
                 </form>
-
+                <form action="/usuarios/emailRecuperarSenha" method="get" required>
+                    <button type="submit" class="btn"> Trocar senha</button>
+                </form>
                 <br>
                 <a href="/privado/configuracoes">Voltar</a>
 
@@ -290,7 +292,7 @@ async function atualizarSenha(req,res){
             return res.send('Erro ao atualizar senha.')
         }
     })
-    res.redirect('/usuarios/login')
+    res.redirect('/')
 }
 
 function deletarUsuario(req, res) {
@@ -351,7 +353,7 @@ async function enviarEmail (req,res) {
 
     })();
 
-    res.redirect('/usuarios/login')
+    res.redirect('/')
 }
 
 module.exports = {
