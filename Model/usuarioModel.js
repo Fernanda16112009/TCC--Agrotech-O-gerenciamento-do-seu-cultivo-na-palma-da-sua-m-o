@@ -3,8 +3,8 @@ const conexao = require('../Config/config')
 function criarUsuario(usuario, callback) {
     const sql = `
         INSERT INTO usuarios
-        (nome, email, telefone, senha, nome_usuario)
-        VALUES (?, ?, ?, ?, ?)
+        (nome, email, telefone, senha, nome_usuario, role)
+        VALUES (?, ?, ?, ?, ?, ?)
     `
     conexao.query(sql, [
         usuario.nome,
@@ -12,11 +12,12 @@ function criarUsuario(usuario, callback) {
         usuario.telefone,
         usuario.senha,
         usuario.nome_usuario,
+        usuario.role
     ], callback)
 }
 
 function pegarLogin(callback) {
-    const sql = `SELECT idUsuario, email, senha FROM usuarios`
+    const sql = `SELECT idUsuario, email, senha, role FROM usuarios`
     conexao.query(sql, callback)
 }
 

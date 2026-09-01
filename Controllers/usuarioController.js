@@ -47,6 +47,7 @@ function buscarNomeUsuario(req,res){
 
 async function criarUsuario(req, res) {
 
+    req.body.role = "user"
     req.body.email = req.body.email.trim().toLowerCase();
 
     if (req.body.senha.length < 6) {
@@ -84,15 +85,7 @@ async function logarUsuario(req, res){
 
     const usuarioemail = req.body.email.trim().toLowerCase()
     const usuariosenha = req.body.senha
-    const emailAdm = "admin@gmail";
-    const senhaAdm = "admin123";
 
-
-    if (usuarioemail === emailAdm && usuariosenha === senhaAdm){
-        req.session.usuario = req.body
-        return res.redirect('/adm')
-
-    }
 
     for (let i = 0; i < loginValor.length; i++){
 
@@ -105,9 +98,12 @@ async function logarUsuario(req, res){
 
             if(senhaCorreta){
             req.session.usuario = loginValor[i]
-            return res.redirect('/privado/pg_entrar')
             }
-            
+
+            if (req.session.usuario.role === "adm"){
+                return res.redirect('/adm')
+            }
+            return res.redirect('/')
         }
         
     }
