@@ -79,10 +79,9 @@ function painelAdm(req, res) {
                 <div class="sidebar-logo">MeuCRUD</div>
                 <nav>
                     <span class="nav-label">Geral</span>
-                    <a href="/adm">Dashboard</a>
 
                     <span class="nav-label">Usuários</span>
-                    <a href="/adm#usuarios">Listar usuários</a>
+                    <a href="/adm/usuarios">Listar usuários</a>
                     <a href="/cadastroUsuario.html">Novo usuário</a>
                     <a href= "/priUsuarios/sair">Sair</a>
                     
@@ -120,6 +119,99 @@ function painelAdm(req, res) {
     })
 }
 
+function listarPorID(req, res) {
+
+    usuarioModel.listarUsuariosID((erroU, usuarios) => {
+        if (erroU) {
+            console.log(erroU)
+            return res.send('Erro ao buscar usuários.')
+        }
+
+    const linhasUsuarios = usuarios.map(u => `
+        <tr>
+            <td>${u.idUsuario}</td>
+            <td>${u.nome}</td>
+            <td>${u.email}</td>
+            <td>${u.telefone}</td>
+            <td>${u.senha}</td>
+            <td>${u.nome_usuario}</td>
+            <td>
+                <a class="btn edit" href="/priUsuarios/${u.idUsuario}/editar">Editar</a>
+                <form action="/priUsuarios/${u.idUsuario}/deletar" method="POST" class="inline-form">
+                    <button class="btn delete" type="submit" onclick="return confirm('Excluir ${u.nome}?')">Excluir</button>
+                </form>
+            </td>
+        </tr>
+    `).join('')
+
+    const tabelaUsuarios = usuarios.length === 0
+        ? '<p class="empty-state">Nenhum usuário encontrado.</p>'
+        : `<table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Senha</th>
+                        <th>Nome de Usuário</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+            <tbody>${linhasUsuarios}</tbody>
+        </table>`
+
+
+
+    const html = `
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Painel ADM — MeuCRUD</title>
+            <link rel="stylesheet" href="/style.css">
+        </head>
+        <body class= "bodyAdm">
+
+            <aside class="sidebar">
+                <div class="sidebar-logo">MeuCRUD</div>
+                <nav>
+                    <span class="nav-label">Geral</span>                  
+                    <span class="nav-label">Usuários</span>
+                    <a href="/adm">Painel geral</a>
+                    <a href="/adm#usuarios">Listar usuários</a>
+                    <a href="/cadastroUsuario.html">Novo usuário</a>
+                    <a href= "/priUsuarios/sair">Sair</a>
+                    
+                </nav>
+            </aside>
+
+            <main class="content">
+                <h1>Painel Administrativo</h1>
+
+                <section id="usuarios" class="card">
+                    <div class="section-header">
+                        <h2>Usuários</h2>
+                        <a class="btn primary" href="/cadastroUsuario.html">+ Novo usuário</a>
+                    </div>
+
+                    ${tabelaUsuarios}
+                </section>
+
+            </main>
+
+        </body>
+        </html>
+    `
+    res.send(html)
+    
+    })
+}
+    
+
+
 module.exports = {
-    painelAdm
+    painelAdm,
+    listarPorID
 }
