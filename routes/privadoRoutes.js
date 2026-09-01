@@ -12,6 +12,10 @@ router.get('/cadastroPlantaUsuario.js', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'cadastroPlantaUsuario.js'));
 });
 
+router.get('/usuarios/Calendario', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'Calendario.html'));
+});
+
 router.get('/cadastroPlanta', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'cadastroPlantaUsuario.html'));
 });
