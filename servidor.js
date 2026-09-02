@@ -46,6 +46,8 @@ function verificarADM(req,res, next){
 // Arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/trocarSenha', express.static(path.join(__dirname, 'trocarSenha')))
+app.use('/privado', express.static(path.join(__dirname, 'privado')))
+
 
 // Rotas
 app.use('/usuarios', usuarioRoutes)
