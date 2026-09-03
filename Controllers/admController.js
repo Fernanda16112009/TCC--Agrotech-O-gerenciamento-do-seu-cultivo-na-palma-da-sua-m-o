@@ -110,6 +110,9 @@ function painelAdm(req, res) {
                 </section>
 
             </main>
+            <footer>
+                <p>rodapé</p>
+            </footer>
 
         </body>
         </html>
@@ -200,7 +203,9 @@ function listarPorID(req, res) {
                 </section>
 
             </main>
-
+            <footer>
+                <p>rodapé</p>
+            </footer>
         </body>
         </html>
     `

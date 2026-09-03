@@ -1,5 +1,25 @@
 const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 
+function pegarPlantasCalendario(req,res) {
+    
+    const idUsuario = req.session.usuario.idUsuario;
+
+    console.log(req.body)
+    console.log(idUsuario)
+
+    plantaUsuarioModel.buscarPlantaPorUsuario(idUsuario, (erro, resultados) => {
+        
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao buscar planta.')
+        }
+
+        console.log(resultados)
+
+        /*return res.json(resultados)*/
+    })
+}
+
 function criarPlantaUsuario(req, res) {
     
     req.body.idUsuario = req.session.usuario.idUsuario;
@@ -79,7 +99,9 @@ function mostrarPlantas(req, res) {
                         <button class="btn_pg_inicial">Voltar</button><br><br>
                     </form>
                 </main>
-
+                <footer>
+                    <p>rodapé</p>
+                </footer>
             </body>
             </html>
         `
@@ -114,45 +136,49 @@ function mostrarPlantaUsuario(req,res){
                 <link rel="stylesheet" href="/style.css">
             </head>
             <body>
-                <fieldset>
-                    <legend><b>${p.nomePlanta}</b></legend>
+                <main>
+                    <fieldset>
+                        <legend><b>${p.nomePlanta}</b></legend>
+                        <br>
+
+                        <label>Seu tipo de planta:</label>
+                        <p>${p.tipoPlanta.charAt(0).toUpperCase() + p.tipoPlanta.slice(1)}</p>
+
+                        <br>
+
+                        <label>Quantidade de sementes plantadas:</label>
+                        <p>${p.quantidade}</p>
+
+                        <br>
+
+                        <label>Dia que sua semente foi plantada:</label>
+                        <p>${p.data_plantacao.toLocaleDateString()}</p>
+                        
+                        <br>
+
+                        <label>Você está utilizando agrotóxicos?</label>
+                        <p>${agrotoxico}</p>
+                        
+                        <br>
+
+                        <form action="/planta/${p.idPlanta}/anotacoes" method="get" required>
+                            <button class="btn_pg_inicial">Suas anotações</button><br><br>
+                        </form>
+
+                        <form action="/planta/${p.idPlanta}/deletar" method="post" required>
+                            <button class="btn_pg_inicial">Deletar planta</button><br><br>
+                        </form>
+
+                        </fieldset>
+
                     <br>
-
-                    <label>Seu tipo de planta:</label>
-                    <p>${p.tipoPlanta.charAt(0).toUpperCase() + p.tipoPlanta.slice(1)}</p>
-
-                    <br>
-
-                    <label>Quantidade de sementes plantadas:</label>
-                    <p>${p.quantidade}</p>
-
-                    <br>
-
-                    <label>Dia que sua semente foi plantada:</label>
-                    <p>${p.data_plantacao.toLocaleDateString()}</p>
-                    
-                    <br>
-
-                    <label>Você está utilizando agrotóxicos?</label>
-                    <p>${agrotoxico}</p>
-                    
-                    <br>
-
-                    <form action="/planta/${p.idPlanta}/anotacoes" method="get" required>
-                        <button class="btn_pg_inicial">Suas anotações</button><br><br>
+                    <form action="/planta/minhasPlantas" method="get" required>
+                        <button class="btn_pg_inicial">Voltar</button><br><br>
                     </form>
-
-                    <form action="/planta/${p.idPlanta}/deletar" method="post" required>
-                        <button class="btn_pg_inicial">Deletar planta</button><br><br>
-                    </form>
-
-                    </fieldset>
-
-                <br>
-                <form action="/planta/minhasPlantas" method="get" required>
-                    <button class="btn_pg_inicial">Voltar</button><br><br>
-                </form>
-
+                </main>
+                <footer>
+                    <p>rodapé</p>
+                </footer>
             </body>
             </html>
         `
@@ -215,6 +241,9 @@ function anotacoesPlanta(req,res){
                     <button class="btn_pg_inicial">Voltar</button><br><br>
                 </form>
             </main>
+            <footer>
+                <p>rodapé</p>
+            </footer>
             </body>
             </html>
         `
@@ -240,7 +269,8 @@ module.exports = {
     criarPlantaUsuario,
     mostrarPlantas,
     mostrarPlantaUsuario,
-    deletarPlanta,
+    cadastrarAnotacao,
     anotacoesPlanta,
-    cadastrarAnotacao
+    pegarPlantasCalendario,
+    deletarPlanta
 } 

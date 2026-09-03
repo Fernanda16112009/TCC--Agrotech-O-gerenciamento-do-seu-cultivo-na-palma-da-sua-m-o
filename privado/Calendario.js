@@ -79,10 +79,19 @@ const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
 
 let dataAtual = new Date(2026, 4, 1);
 
-function renderizar() {
+
+async function renderizar() {
 
     const ano = dataAtual.getFullYear();
     const mes = dataAtual.getMonth();
+
+ /*   let resultado = await fetch('/planta/calendario')
+    let plantas = []
+    plantas= await resultado.json
+
+
+    console.log(plantas)*/
+
 
     document.getElementById('texto-mes').textContent = `${nomesMeses[mes]}/${ano}`;
 

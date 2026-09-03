@@ -17,6 +17,10 @@ router.get('/emailRecuperarSenha', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public','emailRecuperaSenha.html'));
 });
 
+router.get('/teste', (req, res) => {
+    res.sendFile(path.join (__dirname, '..','teste.html'));
+});
+
 
 //Funções
 router.post('/', usuarioController.criarUsuario)

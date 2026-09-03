@@ -24,6 +24,26 @@ router.get('/instrucoesPlantas/morango', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','morango.html'));
 });
 
+router.get('/escolherPlanta', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'escolherCadastro.html'));
+});
+
+router.get('/tipos/morango', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'tipos', 'tiposMorango.html'));
+});
+
+router.get('/tipos/cenoura', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'tipos', 'tiposCenoura.html'));
+});
+
+router.get('/tipos/pepino', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'tipos', 'tiposPepino.html'));
+});
+
+router.get('/tipos/tomate', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'tipos', 'tiposTomate.html'));
+});
+
 router.get('/instrucoesPlantas/cenoura', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','cenoura.html'));
 });

@@ -13,6 +13,7 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    flex-direction: column;
 }
 
 .calendario-container {
@@ -127,6 +128,23 @@ td {
 
 td.inativo {
     color: #cfcfcf;
+}
+
+footer{
+    width: 100%;
+    align-self: stretch;
+    margin-top: auto;
+
+    background: #1b4d2e; /* verde escuro */
+    color: #fff;
+
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1.3rem;
+}
+
+footer p{
+    margin: 0;
 }
 
 @media (max-width: 360px) {

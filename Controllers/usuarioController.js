@@ -147,42 +147,45 @@ function perfil(req, res){
                 <link rel="stylesheet" href="/style.css">
             </head>
             <body>
+                <main>
+                    <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
+                        <fieldset>
+                            <legend><b>Meu Perfil</b></legend>
 
-                <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
-                    <fieldset>
-                        <legend><b>Meu Perfil</b></legend>
+                            <br>
 
-                        <br>
+                            <label for="nome">Nome Completo:</label>
+                            <input type="text" name="nome" id="nome" value="${u.nome}" required>
 
-                        <label for="nome">Nome Completo:</label>
-                        <input type="text" name="nome" id="nome" value="${u.nome}" required>
+                            <br><br>
 
-                        <br><br>
+                            <label for="email">E-mail:</label>
+                            <input type="email" name="email" id="email" value="${u.email}" required>
 
-                        <label for="email">E-mail:</label>
-                        <input type="email" name="email" id="email" value="${u.email}" required>
+                            <br><br>
 
-                        <br><br>
+                            <label for="telefone">Telefone:</label>
+                            <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
 
-                        <label for="telefone">Telefone:</label>
-                        <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
+                            <br><br>
 
-                        <br><br>
+                            <label for="nome_usuario">Nome de usuário:</label>
+                            <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
 
-                        <label for="nome_usuario">Nome de usuário:</label>
-                        <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
+                            <br><br>
 
-                        <br><br>
-
-                        <button type="submit">Salvar alterações</button>
-                    </fieldset>
-                </form>
-                <form action="/usuarios/emailRecuperarSenha" method="get" required>
-                    <button type="submit" class="btn"> Trocar senha</button>
-                </form>
-                <br>
-                <a href="/privado/configuracoes">Voltar</a>
-
+                            <button type="submit">Salvar alterações</button>
+                        </fieldset>
+                    </form>
+                    <form action="/usuarios/emailRecuperarSenha" method="get" required>
+                        <button type="submit" class="btn"> Trocar senha</button>
+                    </form>
+                    <br>
+                    <a href="/privado/configuracoes">Voltar</a>
+                </main>
+                <footer>
+                    <p>rodapé</p>
+                </footer>
             </body>
             </html>
         `
@@ -219,40 +222,43 @@ function mostrarFormularioEdicao(req, res){
                 <link rel="stylesheet" href="/style.css">
             </head>
             <body>
+                <main>
+                    <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
+                        <fieldset>
+                            <legend><b>Editar Usuário</b></legend>
 
-                <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
-                    <fieldset>
-                        <legend><b>Editar Usuário</b></legend>
+                            <br>
 
-                        <br>
+                            <label for="nome">Nome Completo:</label>
+                            <input type="text" name="nome" id="nome" value="${u.nome}" required>
 
-                        <label for="nome">Nome Completo:</label>
-                        <input type="text" name="nome" id="nome" value="${u.nome}" required>
+                            <br><br>
 
-                        <br><br>
+                            <label for="email">E-mail:</label>
+                            <input type="email" name="email" id="email" value="${u.email}" required>
 
-                        <label for="email">E-mail:</label>
-                        <input type="email" name="email" id="email" value="${u.email}" required>
+                            <br><br>
 
-                        <br><br>
+                            <label for="telefone">Telefone:</label>
+                            <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
 
-                        <label for="telefone">Telefone:</label>
-                        <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
+                            <br><br>
 
-                        <br><br>
+                            <label for="nome_usuario">Nome de usuário:</label>
+                            <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
 
-                        <label for="nome_usuario">Nome de usuário:</label>
-                        <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
+                            <br><br>
 
-                        <br><br>
+                            <button type="submit">Salvar alterações</button>
+                        </fieldset>
+                    </form>
 
-                        <button type="submit">Salvar alterações</button>
-                    </fieldset>
-                </form>
-
-                <br>
-                <a href="/adm">Voltar ao painel</a>
-
+                    <br>
+                    <a href="/adm">Voltar ao painel</a>
+                </main>
+                <footer>
+                    <p>rodapé</p>
+                </footer>
             </body>
             </html>
         `
