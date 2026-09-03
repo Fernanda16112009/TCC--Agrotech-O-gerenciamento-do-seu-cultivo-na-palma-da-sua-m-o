@@ -47,18 +47,19 @@ function buscarAnotacoes( idUsuario, idPlanta, callback){
 }
 
 function buscarPlantaPorUsuario(idUsuario, callback) {
-    const sql = `SELECT * FROM plantausuario WHERE idUsuario = ?`
+    const sql = `SELECT planta FROM plantausuario WHERE idUsuario = ?`
+    conexao.query(sql, [idUsuario], callback)
+}
+
+function checarCategoriaPlanta(idUsuario, callback) {
+    const sql = `SELECT DISTINCT planta FROM plantausuario WHERE idUsuario = ?
+    `
     conexao.query(sql, [idUsuario], callback)
 }
 
 function buscarPlantaPorIdPlanta(idUsuario, idPlanta, callback){
     const sql = `SELECT * FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql, [idUsuario,idPlanta], callback)
-}
-
-function buscarPlantaPorNome(idUsuario,nomePlanta, callback) {
-    const sql = `SELECT * FROM plantausuario WHERE idUsuario = ? AND nomePlanta LIKE ? ORDER BY nomePlanta`
-    conexao.query(sql, [idUsuario,`%${nomePlanta}%`], callback)
 }
 
 function deletarPlanta(idUsuario, idPlanta, callback) {
@@ -70,8 +71,8 @@ module.exports = {
     buscarNumeroSafra,
     cadastrarAnotacao,
     buscarAnotacoes,
+    checarCategoriaPlanta,
     buscarPlantaPorUsuario,
     buscarPlantaPorIdPlanta,
-    buscarPlantaPorNome,
     deletarPlanta 
 }

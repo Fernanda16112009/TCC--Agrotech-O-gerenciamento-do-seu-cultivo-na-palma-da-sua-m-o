@@ -16,7 +16,7 @@ function pegarPlantasCalendario(req,res) {
 
         console.log(resultados)
 
-        /*return res.json(resultados)*/
+        return res.json(resultados)
     })
 }
 
@@ -77,6 +77,66 @@ function criarPlantaUsuario(req, res) {
 
 
 }
+
+function mostrarCategoriasPlanta(req,res){
+
+    const idUsuario = req.session.usuario.idUsuario;
+
+    plantaUsuarioModel.checarCategoriaPlanta(idUsuario, (erro,resultado) =>{
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao buscar categoria das plantas.')
+        }
+        
+        console.log(resultado)
+
+        const cardPlanta = resultado.map(p =>{
+            const nomePlanta = p.planta.charAt(0).toUpperCase() + p.planta.slice(1);
+            return`
+            <h3>${nomePlanta}</h3><br>
+
+            <form action="/planta/${p.idPlanta}" method="get" required>
+                    <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
+            </form>
+            
+        `}).join("<Br>")
+
+        const html = `
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Minhas Plantas</title>
+                <link rel="stylesheet" href="/style.css">
+            </head>
+            <body>
+
+                <main>
+                    <div class="form">
+                        <h1>Minhas plantas</h1><br><br>
+                        <div>
+                            ${cardPlanta}<br>
+                        </div>
+                        <form action="/privado/escolherPlanta" method="get" required>
+                            <button class="btn_pg_inicial">Cadastrar nova planta</button><br><br>
+                        </form>
+                        <form action="/" method="get" required>
+                            <button class="btn_pg_inicial">Voltar</button><br><br>
+                        </form>
+                    </div>
+                </main>
+                <footer>
+                    <p>rodapé</p>
+                </footer>
+            </body>
+            </html>
+        `
+
+        res.send(html)
+    })
+}
+
 
 function mostrarPlantas(req, res) {
 
@@ -290,6 +350,7 @@ function deletarPlanta(req, res) {
 module.exports = {
     criarPlantaUsuario,
     mostrarPlantas,
+    mostrarCategoriasPlanta,
     mostrarPlantaUsuario,
     cadastrarAnotacao,
     anotacoesPlanta,
