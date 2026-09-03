@@ -9,6 +9,7 @@ const usuarioController = require('../Controllers/usuarioController')
 router.get('/cadastroUsuario', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public','cadastroUsuario.html'));
 });
+
 router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public','login.html'));
 });

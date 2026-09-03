@@ -11,30 +11,15 @@
         <h1 class="titulo">AgroTech</h1>
     </header>
     <main>
-        <h3 class="subtitulo">Cadastre sua planta</h3>
         <div class="cadastro">
+            <h3 class="subtitulo">Cadastre sua planta</h3><br><br>
             <form action="/planta" method="post">
-
-                <div class="cadastro_form">
-                    <label for="tipoPlanta" class="form_pergunta">Qual é a sua planta?</label><br>
-                    <select name="tipoPlanta">
-                        <option value="">Selecione uma planta</option>
-                        <option value="morango">Morango</option>
-                        <option value="tomate">Tomate</option>
-                        <option value="pepino">Pepino</option>
-                        <option value="cenoura">Cenoura</option>
-                    </select>
-                </div><br>
-                <div class="cadastro_form">
-                    <label for="tipoPlanta" class="form_pergunta">Qual é a sua planta?</label><br>
-                    <select name="tipoPlanta">
-                        <option value="">Selecione uma planta</option>
-                        <option value="morango">Morango</option>
-                        <option value="tomate">Tomate</option>
-                        <option value="pepino">Pepino</option>
-                    </select>
-                </div><br>
-
+                <div>
+                    <input type="hidden" id="planta" name="planta" required>
+                </div>
+                <div>
+                    <input type="hidden" id="tipoPlanta" name="tipoPlanta" required>
+                </div>
                 <div class="cadastro_form">
                     <label for="quantidade" class="form_pergunta">Quantas sementes serão plantadas?</label><br>
                     <input type="text" name="quantidade" required>
@@ -67,8 +52,8 @@
                 <button type="submit" class="btn_cadastro_usuario">Cadastrar planta</button>
                 </div>
             </form>
-            <form action="/planta/minhasPlantas" method="get">
-                <button type="submit" class="btn_cadastro_usuario">Voltar</button>
+            <form action="/privado/escolherPlanta" method="get">
+                <button class="btn_pg_inicial">Voltar</button><br><br>
             </form>
         </div>
     </main>

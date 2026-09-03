@@ -30,30 +30,52 @@ function criarPlantaUsuario(req, res) {
         )
     }
 
-    plantaUsuarioModel.criarPlantaUsuario(req.body, (erro) => {
+    const idUsuario = req.body.idUsuario
+    
+    const tipoPlanta = req.body.tipoPlanta
+
+    plantaUsuarioModel.buscarNumeroSafra(idUsuario, tipoPlanta, (erro, resultado) =>{
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao cadastrar planta.')
+            return res.send('Erro ao buscar numero da safra.')
         }
 
-        switch (req.body.tipoPlanta){
+        let safra
 
-            case "morango":
-                res.redirect('/privado/instrucoesPlantas/morango');
-                break;
-            case "cenoura":
-                res.redirect('/privado/instrucoesPlantas/cenoura');
-                break;
-            case "pepino":
-                res.redirect('/privado/instrucoesPlantas/pepino');
-                break;
-            case "tomate":
-                res.redirect('/privado/instrucoesPlantas/tomate');
-                break;
+        if (resultado.length === 0) {
+            safra = 1
+        } else {
+            safra = resultado[0].safraNumero + 1
         }
-    
-        
+
+        req.body.safraNumero = safra
+
+        plantaUsuarioModel.criarPlantaUsuario(req.body, (erro) => {
+            if (erro) {
+                console.log(erro)
+                return res.send('Erro ao cadastrar planta.')
+            }
+
+            switch (req.body.planta){
+
+                case "morango":
+                    res.redirect('/privado/instrucoesPlantas/morango');
+                    break;
+                case "cenoura":
+                    res.redirect('/privado/instrucoesPlantas/cenoura');
+                    break;
+                case "pepino":
+                    res.redirect('/privado/instrucoesPlantas/pepino');
+                    break;
+                case "tomate":
+                    res.redirect('/privado/instrucoesPlantas/tomate');
+                    break;
+            } 
+        })
+
     })
+
+
 }
 
 function mostrarPlantas(req, res) {

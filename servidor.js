@@ -33,8 +33,6 @@ function verificarLogin(req, res, next){
 
 }
 
-
-
 function verificarADM(req,res, next){
     if(req.session.usuario.role === "adm"){
         next()

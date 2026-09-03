@@ -4,19 +4,26 @@ function criarPlantaUsuario(plantausuario,  callback) {
     const sql = `
         
         INSERT INTO plantausuario
-        (idUsuario, tipoPlanta, nomePlanta, quantidade, longitude, latitude, data_plantacao, agrotoxico)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (idUsuario, planta, tipoPlanta, safraNumero, quantidade, longitude, latitude, data_plantacao, agrotoxico)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
     conexao.query(sql, [
         plantausuario.idUsuario,
+        plantausuario.planta,
         plantausuario.tipoPlanta,
-        plantausuario.nomePlanta,
+        plantausuario.safraNumero,
         plantausuario.quantidade,
         plantausuario.longitude,
         plantausuario.latitude,
         plantausuario.data_plantacao,
         plantausuario.agrotoxico,
     ], callback)
+}
+
+function buscarNumeroSafra(idUsuario, tipoPlanta, callback){
+    const sql = `SELECT safraNumero FROM plantausuario WHERE idUsuario = ? AND tipoPlanta = ? ORDER BY safraNumero DESC
+LIMIT 1`
+    conexao.query(sql, [idUsuario,tipoPlanta], callback)
 }
 
 function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
@@ -37,11 +44,6 @@ function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
 function buscarAnotacoes( idUsuario, idPlanta, callback){
     const sql = `SELECT anotacao FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql, [idUsuario,idPlanta], callback)
-}
-
-function listarPlantas(callback) { // Só será usado no ADM
-    const sql = `SELECT * FROM plantausuario ORDER BY nomePlanta`
-    conexao.query(sql, callback)
 }
 
 function buscarPlantaPorUsuario(idUsuario, callback) {
@@ -65,9 +67,9 @@ function deletarPlanta(idUsuario, idPlanta, callback) {
 }
 module.exports = {
     criarPlantaUsuario,
+    buscarNumeroSafra,
     cadastrarAnotacao,
     buscarAnotacoes,
-    listarPlantas,
     buscarPlantaPorUsuario,
     buscarPlantaPorIdPlanta,
     buscarPlantaPorNome,
