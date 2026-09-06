@@ -1,17 +1,5 @@
 console.log("chego")
 
-if(document.getElementById('planta')){
-    const parametros = new URLSearchParams(window.location.search);
-
-    const planta = parametros.get('planta');
-    document.getElementById('planta').value = planta;
-
-    const tipoPlanta = parametros.get('tipo');
-    document.getElementById('tipoPlanta').value = tipoPlanta;
-}
-
-
-
 function pegarLocalizacao() {
 
     let longitudeReq = document.querySelector("#longitude");
@@ -43,4 +31,3 @@ function pegarLocalizacao() {
 }
 
 document.querySelector("#btn_mapa").addEventListener("click", pegarLocalizacao);
-

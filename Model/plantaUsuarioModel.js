@@ -29,7 +29,7 @@ LIMIT 1`
 function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
     const sql = `
         UPDATE plantausuario
-        SET anotacao = ?
+        SET comentarios = ?
         WHERE idUsuario = ?
         AND idPlanta = ?
         `
@@ -42,19 +42,56 @@ function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
 }
 
 function buscarAnotacoes( idUsuario, idPlanta, callback){
-    const sql = `SELECT anotacao FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
+    const sql = `SELECT comentarios FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql, [idUsuario,idPlanta], callback)
 }
 
-function buscarPlantaPorUsuario(idUsuario, callback) {
-    const sql = `SELECT planta FROM plantausuario WHERE idUsuario = ?`
-    conexao.query(sql, [idUsuario], callback)
+function buscarSafra(idUsuario, planta, tipoPlanta, callback) {
+    const sql = `SELECT * FROM plantausuario WHERE idUsuario = ? AND planta = ? AND tipoPlanta = ?`
+    conexao.query(sql, [idUsuario, planta, tipoPlanta], callback)
+}
+
+function atualizarSafraNome(safraNome, idUsuario, idPlanta, callback){
+        const sql = `
+        UPDATE plantausuario
+        SET safraNome = ?
+        WHERE idUsuario = ?
+        AND idPlanta = ?
+        `
+    console.log(safraNome)
+    conexao.query(sql, [
+        safraNome,
+        idUsuario,
+        idPlanta,
+    ], callback)
+}
+
+function atualizarLocalizacao(localizacao, idUsuario, idPlanta, callback){
+        const sql = `
+        UPDATE plantausuario
+        SET longitude = ?, latitude = ?
+        WHERE idUsuario = ?
+        AND idPlanta = ?
+        `
+        console.log(localizacao)
+    conexao.query(sql, [
+        localizacao.longitude,
+        localizacao.latitude,
+        idUsuario,
+        idPlanta,
+    ], callback)
 }
 
 function checarCategoriaPlanta(idUsuario, callback) {
     const sql = `SELECT DISTINCT planta FROM plantausuario WHERE idUsuario = ?
     `
     conexao.query(sql, [idUsuario], callback)
+}
+
+function checarCategoriaTipoPlanta(idUsuario, planta, callback) {
+    const sql = `SELECT DISTINCT tipoPlanta FROM plantausuario WHERE idUsuario = ? AND planta = ?
+    `
+    conexao.query(sql, [idUsuario, planta], callback)
 }
 
 function buscarPlantaPorIdPlanta(idUsuario, idPlanta, callback){
@@ -72,7 +109,10 @@ module.exports = {
     cadastrarAnotacao,
     buscarAnotacoes,
     checarCategoriaPlanta,
-    buscarPlantaPorUsuario,
+    checarCategoriaTipoPlanta,
+    buscarSafra,
+    atualizarSafraNome,
+    atualizarLocalizacao,
     buscarPlantaPorIdPlanta,
     deletarPlanta 
 }

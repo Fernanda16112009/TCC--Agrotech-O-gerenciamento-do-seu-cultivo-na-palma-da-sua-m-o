@@ -136,8 +136,15 @@ input::placeholder{
     height: 1000px;
 }
 
+.safraNome{
+    resize: none;
+
+}
+
 .error{
     display: none;
+    height: 20px;
+    width: 70px;
 }
 
 .tiposPlanta {

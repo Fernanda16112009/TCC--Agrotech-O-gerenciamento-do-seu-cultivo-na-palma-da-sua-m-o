@@ -7,7 +7,7 @@ function pegarPlantasCalendario(req,res) {
     console.log(req.body)
     console.log(idUsuario)
 
-    plantaUsuarioModel.buscarPlantaPorUsuario(idUsuario, (erro, resultados) => {
+    plantaUsuarioModel.buscarNumeroSafra(idUsuario, (erro, resultados) => {
         
         if (erro) {
             console.log(erro)
@@ -88,14 +88,13 @@ function mostrarCategoriasPlanta(req,res){
             return res.send('Erro ao buscar categoria das plantas.')
         }
         
-        console.log(resultado)
 
         const cardPlanta = resultado.map(p =>{
             const nomePlanta = p.planta.charAt(0).toUpperCase() + p.planta.slice(1);
             return`
             <h3>${nomePlanta}</h3><br>
 
-            <form action="/planta/${p.idPlanta}" method="get" required>
+            <form action="/planta/${p.planta}" method="get" required>
                     <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
             </form>
             
@@ -137,49 +136,51 @@ function mostrarCategoriasPlanta(req,res){
     })
 }
 
-
-function mostrarPlantas(req, res) {
+function mostrarCategoriasTipoPlanta(req,res){
 
     const idUsuario = req.session.usuario.idUsuario;
+    const planta = req.params.planta
 
-    plantaUsuarioModel.buscarPlantaPorUsuario(idUsuario, (erro, resultados) => {
-        
+    plantaUsuarioModel.checarCategoriaTipoPlanta(idUsuario, planta, (erro, resultados) =>{
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar planta.')
+            return res.send('Erro ao buscar categoria dos tipos das plantas.')
         }
 
-        const cardPlanta = resultados.map(p =>`
 
-            <h3>${p.nomePlanta}</h3><br>
+        const cardPlanta = resultados.map(p =>{
+            const nomeTipoPlanta = p.tipoPlanta.charAt(0).toUpperCase() + p.tipoPlanta.slice(1);
+            return`
+            <h3>${nomeTipoPlanta}</h3><br>
 
-            <form action="/planta/${p.idPlanta}" method="get" required>
+            <form action="/planta/${planta}/${p.tipoPlanta}" method="get" required>
                     <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
             </form>
             
-        `).join("<Br>")
+        `}).join("<Br>")
 
+        
         const html = `
             <!DOCTYPE html>
             <html lang="pt-BR">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Minhas Plantas</title>
+                <title>Meus tipo de ${planta}</title>
                 <link rel="stylesheet" href="/style.css">
             </head>
             <body>
 
                 <main>
-                    <form action="/privado/cadastroPlanta" method="get" required>
-                        <button class="btn_pg_inicial">Cadastrar nova planta</button><br><br>
-                    </form>
-                    <div>
-                        ${cardPlanta}<br>
+                    <div class="form">
+                        <h1>Meus tipo de ${planta}</h1><br><br>
+                        <div>
+                            ${cardPlanta}<br>
+                        </div>
+                        <form action="/planta/minhasPlantas" method="get" required>
+                            <button class="btn_pg_inicial">Voltar</button><br><br>
+                        </form>
                     </div>
-                    <form action="/" method="get" required>
-                        <button class="btn_pg_inicial">Voltar</button><br><br>
-                    </form>
                 </main>
                 <footer>
                     <p>rodapé</p>
@@ -187,8 +188,117 @@ function mostrarPlantas(req, res) {
             </body>
             </html>
         `
-
         res.send(html)
+    })
+
+}
+
+function mostrarSafraPlanta(req,res){
+
+    const idUsuario = req.session.usuario.idUsuario;
+    const planta = req.params.planta
+    const tipoPlanta = req.params.tipoPlanta
+
+    plantaUsuarioModel.buscarSafra(idUsuario, planta, tipoPlanta, (erro, resultado) => {
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao buscar safra das plantas.')
+        }
+
+        const nomeTipoPlanta = resultado[0].tipoPlanta.charAt(0).toUpperCase() + resultado[0].tipoPlanta.slice(1);
+        let safraNome = ""
+        
+        if (resultado[0].safraNome === null) {
+            safraNome = `${nomeTipoPlanta} safra ${resultado[0].safraNumero}`
+        } 
+        else{
+            safraNome = resultado[0].safraNome
+        }
+
+
+        
+        plantaUsuarioModel.atualizarSafraNome(safraNome, idUsuario, resultado[0].idPlanta, (erro) =>{
+            if (erro) {
+            console.log(erro)
+            return res.send('Erro ao atualizar o nome da safra.')
+            }
+        
+
+        
+            const cardPlanta = resultado.map(p =>{
+                return`
+                <h3>${safraNome}</h3><br>
+
+                <form action="/planta/${planta}/${p.tipoPlanta}/${p.idPlanta}" method="get" required>
+                        <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
+                </form>
+                
+            `}).join("<Br>")
+
+            
+            const html = `
+                <!DOCTYPE html>
+                <html lang="pt-BR">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Meus tipo de ${nomeTipoPlanta}</title>
+                    <link rel="stylesheet" href="/style.css">
+                </head>
+                <body>
+
+                    <main>
+                        <div class="form">
+                            <h1>Meus tipo de ${nomeTipoPlanta}</h1><br><br>
+                            <div>
+                                ${cardPlanta}<br>
+                            </div>
+                            <form action="/planta/minhasPlantas" method="get" required>
+                                <button class="btn_pg_inicial">Voltar</button><br><br>
+                            </form>
+                        </div>
+                    </main>
+                    <footer>
+                        <p>rodapé</p>
+                    </footer>
+                </body>
+                </html>
+            `
+            res.send(html)
+        })
+    })
+}
+
+function atualizarSafraNome(req,res){
+    const idUsuario = req.params.idUsuario
+    const idPlanta = req.params.idPlanta
+    const safraNome = req.body.safraNome
+    const planta = req.params.planta
+    const tipoPlanta = req.params.tipoPlanta
+
+    plantaUsuarioModel.atualizarSafraNome(safraNome, idUsuario, idPlanta, (erro) =>{
+            if (erro) {
+            console.log(erro)
+            return res.send('Erro ao atualizar o nome da safra.')
+        }
+        return res.redirect(`/planta/${planta}/${tipoPlanta}/${idPlanta}`)
+    })
+}
+
+function atualizarLocalizacao(req,res){
+    const idUsuario = req.params.idUsuario
+    const idPlanta = req.params.idPlanta
+    const localizacao = req.body
+    const planta = req.params.planta
+    const tipoPlanta = req.params.tipoPlanta
+    console.log(localizacao)
+
+    plantaUsuarioModel.atualizarLocalizacao(localizacao, idUsuario, idPlanta, (erro) =>{
+            if (erro) {
+            console.log(erro)
+            return res.send('Erro ao atualizar localizacao.')
+        }
+        return res.redirect(`/planta/${planta}/${tipoPlanta}/${idPlanta}`)
     })
 }
 
@@ -196,6 +306,8 @@ function mostrarPlantaUsuario(req,res){
 
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
+    const planta = req.params.planta
+    const tipoPlanta = req.params.tipoPlanta
 
     plantaUsuarioModel.buscarPlantaPorIdPlanta(idUsuario, idPlanta, (erro, resultados) => {
         if (erro) {
@@ -203,10 +315,10 @@ function mostrarPlantaUsuario(req,res){
             return res.send('Erro ao buscar planta.')
         }
 
+
         const p = resultados[0];
 
         const agrotoxico = p.agrotoxico === "nao" ? "Não" : "Sim";
-
 
         const html = `
             <!DOCTYPE html>
@@ -220,16 +332,22 @@ function mostrarPlantaUsuario(req,res){
             <body>
                 <main>
                     <fieldset>
-                        <legend><b>${p.nomePlanta}</b></legend>
-                        <br>
 
-                        <label>Seu tipo de planta:</label>
+                        <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}" method="post">
+                            <label>Nome da safra</label>
+                            <textarea type="text" name="safraNome" class="safraNome">${p.safraNome}</textarea><br>
+                            <button type="submit">Trocar nome da safra</button>
+                        </form>
+
+                        <br>
+                        
+                        <label>Sua planta é</label>
                         <p>${p.tipoPlanta.charAt(0).toUpperCase() + p.tipoPlanta.slice(1)}</p>
 
                         <br>
 
                         <label>Quantidade de sementes plantadas:</label>
-                        <p>${p.quantidade}</p>
+                        <p>${p.quantidade} sementes plantadas</p>
 
                         <br>
 
@@ -238,17 +356,29 @@ function mostrarPlantaUsuario(req,res){
                         
                         <br>
 
+                        <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/localizacao" method="post">
+                            <label for="localizacao" class="form_pergunta">Gostaria de mudar a localização da sua planta? Certifique-se de estar no local exato em que você gostaria de plantar</label><br>
+                            <input type="hidden"  id="longitude" name="longitude" required>
+                            <input type="hidden" id="latitude" name="latitude" required>
+                            <button type="button" id="btn_mapa" >Selecionar localização</button><br>
+                            <button type="submit" >Atualizar localização</button>
+                        </form>
+
+                        <p id="mensagemLocalizacao"></p>
+
+                        <br>                        
+
                         <label>Você está utilizando agrotóxicos?</label>
                         <p>${agrotoxico}</p>
                         
                         <br>
 
-                        <form action="/planta/${p.idPlanta}/anotacoes" method="get" required>
-                            <button class="btn_pg_inicial">Suas anotações</button><br><br>
+                        <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="get">
+                            <button class="btn_pg_inicial" type ="submit">Suas anotações</button><br><br>
                         </form>
 
-                        <form action="/planta/${p.idPlanta}/deletar" method="post" required>
-                            <button class="btn_pg_inicial">Deletar planta</button><br><br>
+                        <form action="/planta/${idPlanta}/deletar" method="post" required>
+                            <button class="btn_pg_inicial" onclick="return confirm('Excluir ${p.safraNome}?')">Deletar planta</button><br><br>
                         </form>
 
                         </fieldset>
@@ -261,6 +391,7 @@ function mostrarPlantaUsuario(req,res){
                 <footer>
                     <p>rodapé</p>
                 </footer>
+                <script src="/privado/cadastroPlantaUsuario.js"></script>
             </body>
             </html>
         `
@@ -276,6 +407,8 @@ function cadastrarAnotacao(req,res){
 
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
+    const planta = req.params.planta
+    const tipoPlanta = req.params.tipoPlanta
 
     plantaUsuarioModel.cadastrarAnotacao(req.body, idUsuario, idPlanta,  (erro,) => {
         if (erro) {
@@ -283,23 +416,28 @@ function cadastrarAnotacao(req,res){
             return res.send('Erro ao cadastrar planta.')
         }
 
-        res.redirect(`/planta/${idPlanta}/anotacoes`)
+        res.redirect(`/planta/${idPlanta}/${planta}/${tipoPlanta}/anotacoes`);
     })
 }
 
 function anotacoesPlanta(req,res){
 
+    console.log("chego")
+
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
+    const planta = req.params.planta
+    const tipoPlanta = req.params.tipoPlanta
 
     plantaUsuarioModel.buscarAnotacoes(idUsuario, idPlanta, (erro, resultado) => {
+        console.log("chego1")
         if (erro) {
             console.log(erro);
             return res.send('Erro ao buscar anotação');
         }
 
-    const a = resultado[0]
-
+        const a = resultado[0]
+        console.log("chego2")
 
         const html = `
             <!DOCTYPE html>
@@ -314,12 +452,12 @@ function anotacoesPlanta(req,res){
                 <h1>Anotações</h1>
             </header>
             <main>
-                <form action="/planta/${idUsuario}/${idPlanta}/anotacoes" method="post">
-                <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
-                <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.anotacao}</textarea>
-                <button type="submit">Salvar anotações</button>
+                <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post">
+                    <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
+                    <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.anotacao}</textarea>
+                    <button type="submit">Salvar anotações</button>
                 </form><br>
-                <form action="/planta/${idPlanta}" method="get" required>
+                <form action="/planta/${planta}/${tipoPlanta}/${idPlanta}" method="get" required>
                     <button class="btn_pg_inicial">Voltar</button><br><br>
                 </form>
             </main>
@@ -349,9 +487,12 @@ function deletarPlanta(req, res) {
 
 module.exports = {
     criarPlantaUsuario,
-    mostrarPlantas,
     mostrarCategoriasPlanta,
+    mostrarCategoriasTipoPlanta,
+    mostrarSafraPlanta,
     mostrarPlantaUsuario,
+    atualizarSafraNome,
+    atualizarLocalizacao,
     cadastrarAnotacao,
     anotacoesPlanta,
     pegarPlantasCalendario,
