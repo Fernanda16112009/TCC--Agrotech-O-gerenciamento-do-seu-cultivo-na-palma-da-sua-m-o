@@ -1,10 +1,8 @@
 const usuarioModel = require('../Model/usuarioModel')
 
-
 function painelAdm(req, res) {
 
     const buscaUsuario = req.query.busca_usuario || ''
-
 
     const obterUsuarios = buscaUsuario
     
@@ -23,7 +21,6 @@ function painelAdm(req, res) {
             <td>${u.nome}</td>
             <td>${u.email}</td>
             <td>${u.telefone}</td>
-            <td>${u.senha}</td>
             <td>${u.nome_usuario}</td>
             <td>
                 <a class="btn edit" href="/priUsuarios/${u.idUsuario}/editar">Editar</a>
@@ -43,7 +40,6 @@ function painelAdm(req, res) {
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Telefone</th>
-                        <th>Senha</th>
                         <th>Nome de Usuário</th>
                         <th>Ações</th>
                     </tr>
@@ -82,7 +78,6 @@ function painelAdm(req, res) {
 
                     <span class="nav-label">Usuários</span>
                     <a href="/adm/usuarios">Listar usuários</a>
-                    <a href="/cadastroUsuario.html">Novo usuário</a>
                     <a href= "/priUsuarios/sair">Sair</a>
                     
                 </nav>
@@ -136,7 +131,6 @@ function listarPorID(req, res) {
             <td>${u.nome}</td>
             <td>${u.email}</td>
             <td>${u.telefone}</td>
-            <td>${u.senha}</td>
             <td>${u.nome_usuario}</td>
             <td>
                 <a class="btn edit" href="/priUsuarios/${u.idUsuario}/editar">Editar</a>
@@ -156,7 +150,6 @@ function listarPorID(req, res) {
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Telefone</th>
-                        <th>Senha</th>
                         <th>Nome de Usuário</th>
                         <th>Ações</th>
                     </tr>
@@ -184,8 +177,7 @@ function listarPorID(req, res) {
                     <span class="nav-label">Usuários</span>
                     <a href="/adm">Painel geral</a>
                     <a href="/adm#usuarios">Listar usuários</a>
-                    <a href="/cadastroUsuario.html">Novo usuário</a>
-                    <a href= "/priUsuarios/sair">Sair</a>
+                     <a href= "/priUsuarios/sair">Sair</a>
                     
                 </nav>
             </aside>
@@ -214,8 +206,6 @@ function listarPorID(req, res) {
     })
 }
     
-
-
 module.exports = {
     painelAdm,
     listarPorID

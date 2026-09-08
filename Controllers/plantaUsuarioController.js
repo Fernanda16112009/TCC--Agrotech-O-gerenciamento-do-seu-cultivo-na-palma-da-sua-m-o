@@ -4,17 +4,12 @@ function pegarPlantasCalendario(req,res) {
     
     const idUsuario = req.session.usuario.idUsuario;
 
-    console.log(req.body)
-    console.log(idUsuario)
-
     plantaUsuarioModel.buscarNumeroSafra(idUsuario, (erro, resultados) => {
         
         if (erro) {
             console.log(erro)
             return res.send('Erro ao buscar planta.')
         }
-
-        console.log(resultados)
 
         return res.json(resultados)
     })
@@ -30,6 +25,7 @@ function criarPlantaUsuario(req, res) {
         )
     }
 
+
     const idUsuario = req.body.idUsuario
     
     const tipoPlanta = req.body.tipoPlanta
@@ -40,15 +36,19 @@ function criarPlantaUsuario(req, res) {
             return res.send('Erro ao buscar numero da safra.')
         }
 
-        let safra
+        let safraNumero
 
         if (resultado.length === 0) {
-            safra = 1
+            safraNumero = 1
         } else {
-            safra = resultado[0].safraNumero + 1
+            safraNumero = resultado[0].safraNumero + 1
         }
 
-        req.body.safraNumero = safra
+        req.body.safraNumero = safraNumero
+
+        let safraNome = `${req.body.tipoPlanta} safra ${req.body.safraNumero}`
+
+        req.body.safraNome = safraNome
 
         plantaUsuarioModel.criarPlantaUsuario(req.body, (erro) => {
             if (erro) {
@@ -206,28 +206,17 @@ function mostrarSafraPlanta(req,res){
         }
 
         const nomeTipoPlanta = resultado[0].tipoPlanta.charAt(0).toUpperCase() + resultado[0].tipoPlanta.slice(1);
-        let safraNome = ""
         
-        if (resultado[0].safraNome === null) {
-            safraNome = `${nomeTipoPlanta} safra ${resultado[0].safraNumero}`
-        } 
-        else{
-            safraNome = resultado[0].safraNome
-        }
-
-
-        
-        plantaUsuarioModel.atualizarSafraNome(safraNome, idUsuario, resultado[0].idPlanta, (erro) =>{
+        plantaUsuarioModel.atualizarSafraNome(resultado[0].safraNome, idUsuario, resultado[0].idPlanta, (erro) =>{
+            
             if (erro) {
             console.log(erro)
             return res.send('Erro ao atualizar o nome da safra.')
             }
         
-
-        
             const cardPlanta = resultado.map(p =>{
                 return`
-                <h3>${safraNome}</h3><br>
+                <h3>${p.safraNome.charAt(0).toUpperCase() + p.safraNome.slice(1)}</h3><br>
 
                 <form action="/planta/${planta}/${p.tipoPlanta}/${p.idPlanta}" method="get" required>
                         <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
@@ -291,7 +280,6 @@ function atualizarLocalizacao(req,res){
     const localizacao = req.body
     const planta = req.params.planta
     const tipoPlanta = req.params.tipoPlanta
-    console.log(localizacao)
 
     plantaUsuarioModel.atualizarLocalizacao(localizacao, idUsuario, idPlanta, (erro) =>{
             if (erro) {
@@ -335,7 +323,7 @@ function mostrarPlantaUsuario(req,res){
 
                         <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}" method="post">
                             <label>Nome da safra</label>
-                            <textarea type="text" name="safraNome" class="safraNome">${p.safraNome}</textarea><br>
+                            <textarea type="text" name="safraNome" class="safraNome">${p.safraNome.charAt(0).toUpperCase() + p.safraNome.slice(1)}</textarea><br>
                             <button type="submit">Trocar nome da safra</button>
                         </form>
 
@@ -381,13 +369,14 @@ function mostrarPlantaUsuario(req,res){
                             <button class="btn_pg_inicial" onclick="return confirm('Excluir ${p.safraNome}?')">Deletar planta</button><br><br>
                         </form>
 
-                        </fieldset>
+                        <br>
+                        <form action="/planta/minhasPlantas" method="get">
+                            <button class="btn_pg_inicial">Voltar</button><br><br>
+                        </form>
+                    </fieldset>
 
-                    <br>
-                    <form action="/planta/minhasPlantas" method="get" required>
-                        <button class="btn_pg_inicial">Voltar</button><br><br>
-                    </form>
                 </main>
+
                 <footer>
                     <p>rodapé</p>
                 </footer>
@@ -422,22 +411,19 @@ function cadastrarAnotacao(req,res){
 
 function anotacoesPlanta(req,res){
 
-    console.log("chego")
-
     const idUsuario = req.session.usuario.idUsuario;
     const idPlanta = req.params.idPlanta;
     const planta = req.params.planta
     const tipoPlanta = req.params.tipoPlanta
 
     plantaUsuarioModel.buscarAnotacoes(idUsuario, idPlanta, (erro, resultado) => {
-        console.log("chego1")
         if (erro) {
             console.log(erro);
             return res.send('Erro ao buscar anotação');
         }
 
+
         const a = resultado[0]
-        console.log("chego2")
 
         const html = `
             <!DOCTYPE html>
@@ -454,7 +440,7 @@ function anotacoesPlanta(req,res){
             <main>
                 <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post">
                     <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
-                    <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.anotacao}</textarea>
+                    <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.comentarios ||  "" }</textarea>
                     <button type="submit">Salvar anotações</button>
                 </form><br>
                 <form action="/planta/${planta}/${tipoPlanta}/${idPlanta}" method="get" required>
@@ -486,15 +472,15 @@ function deletarPlanta(req, res) {
 }
 
 module.exports = {
+    pegarPlantasCalendario,    
     criarPlantaUsuario,
     mostrarCategoriasPlanta,
     mostrarCategoriasTipoPlanta,
     mostrarSafraPlanta,
-    mostrarPlantaUsuario,
     atualizarSafraNome,
     atualizarLocalizacao,
+    mostrarPlantaUsuario,
     cadastrarAnotacao,
     anotacoesPlanta,
-    pegarPlantasCalendario,
     deletarPlanta
 } 

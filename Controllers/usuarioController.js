@@ -3,25 +3,6 @@ const bcrypt = require('bcryptjs')
 const { Resend } = require('resend');
 const jwt = require('jsonwebtoken');
 
-async function montarSecret(id) {
-    
-    return new Promise((resolve, reject) => {
-        usuarioModel.buscarSenhaPorId(id, (erro, resultados) =>{
-            
-            if (erro) {
-                reject(erro)
-                return;
-            }
-
-            const senha = resultados[0].senha
-
-            const  secret = process.env.JWT + senha; 
-
-            resolve(secret)
-        })
-    })
-}
-
 function buscarEmail (req,res){
 
     usuarioModel.buscarEmail((erro, emails) => {
@@ -43,6 +24,49 @@ function buscarNomeUsuario(req,res){
         return res.json(nomes);
 
     })
+}
+
+async function montarSecret(id) {
+    
+    return new Promise((resolve, reject) => {
+        usuarioModel.buscarSenhaPorId(id, (erro, resultados) =>{
+            
+            if (erro) {
+                reject(erro)
+                return;
+            }
+
+            const senha = resultados[0].senha
+
+            const  secret = process.env.JWT + senha; 
+
+            resolve(secret)
+        })
+    })
+}
+
+async function montarToken(email) {
+
+    return new Promise((resolve, reject) => {
+        usuarioModel.buscarIDSenha(email, (erro, resultados) =>{
+            
+            if (erro) {
+                reject(erro)
+                return;
+            }
+
+
+            const id = resultados[0].idUsuario;
+            const senha = resultados[0].senha
+
+            const  secret = process.env.JWT + senha; 
+            const  token = jwt.sign( { id : id, email : email }, secret, { expiresIn : '1h' }); 
+            const resetURL = `http://localhost:8000/trocarSenha/trocarSenha?id=${id}&token=${token}`;
+
+            resolve(resetURL)
+        })
+    })
+        
 }
 
 async function criarUsuario(req, res) {
@@ -279,6 +303,31 @@ function atualizarUsuario(req, res) {
     })
 }
 
+async function enviarEmail (req,res) {
+
+    const emailEnviar = req.body.email
+
+    const resetURL = await montarToken(emailEnviar)
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    (async function () {
+    const { data, error } = await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
+        to: [`${emailEnviar}`],
+        subject: 'Hello World',
+        html: `${resetURL}`,
+    });
+
+    if (error) {
+        return console.error({ error });
+    }
+
+    })();
+
+    res.redirect('/')
+}
+
 async function atualizarSenha(req,res){
 
      if (req.body.senha.length < 6) {
@@ -309,66 +358,17 @@ function deletarUsuario(req, res) {
     })
 }
 
-async function montarToken(email) {
-
-    return new Promise((resolve, reject) => {
-        usuarioModel.buscarIDSenha(email, (erro, resultados) =>{
-            
-            if (erro) {
-                reject(erro)
-                return;
-            }
-
-
-            const id = resultados[0].idUsuario;
-            const senha = resultados[0].senha
-
-            const  secret = process.env.JWT + senha; 
-            const  token = jwt.sign( { id : id, email : email }, secret, { expiresIn : '1h' }); 
-            const resetURL = `http://localhost:8000/trocarSenha/trocarSenha?id=${id}&token=${token}`;
-
-            resolve(resetURL)
-        })
-    })
-        
-}
-
-async function enviarEmail (req,res) {
-
-    const emailEnviar = req.body.email
-
-    const resetURL = await montarToken(emailEnviar)
-
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    (async function () {
-    const { data, error } = await resend.emails.send({
-        from: 'Acme <onboarding@resend.dev>',
-        to: [`${emailEnviar}`],
-        subject: 'Hello World',
-        html: `${resetURL}`,
-    });
-
-    if (error) {
-        return console.error({ error });
-    }
-
-    })();
-
-    res.redirect('/')
-}
-
 module.exports = {
-    montarSecret,
     buscarEmail,
     buscarNomeUsuario,
+    montarSecret,
     criarUsuario,
     logarUsuario,
     logout,
     perfil,
     mostrarFormularioEdicao,
     atualizarUsuario,
+    enviarEmail,
     atualizarSenha,
-    deletarUsuario,
-    enviarEmail
+    deletarUsuario
 }

@@ -38,7 +38,7 @@ CREATE TABLE `plantausuario` (
   PRIMARY KEY (`idPlanta`),
   KEY `idUsuario` (`idUsuario`),
   CONSTRAINT `plantausuario_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `plantausuario` (
 
 LOCK TABLES `plantausuario` WRITE;
 /*!40000 ALTER TABLE `plantausuario` DISABLE KEYS */;
-INSERT INTO `plantausuario` VALUES (1,36,'morango','tipomora3',1,NULL,55,'-54.083290997328376','-25.29902778772482','2026-09-29','sim',NULL),(2,36,'morango','tipomora3',2,NULL,888,'-54.083286','-25.299034000000002','2026-09-15','nao',NULL),(3,36,'pepino','tipopepi2',1,NULL,888,'-54.083290997328376','-25.29902778772482','2026-09-20','nao',NULL),(4,36,'cenoura','tipoceno3',1,NULL,888,'-54.083290997328376','-25.29902778772482','2026-09-21','nao',NULL),(5,36,'cenoura','tipoceno2',1,NULL,888,'-54.083290997328376','-25.29902778772482','2026-09-25','nao',NULL),(6,36,'tomate','tipotom3',1,NULL,55,'-54.083286','-25.299034000000002','2026-09-22','sim',NULL),(7,36,'tomate','tipotom3',2,NULL,888,'-54.083286','-25.299034000000002','2026-09-14','nao',NULL),(8,36,'pepino','tipopepi3',1,NULL,55,'-54.083286','-25.299034000000002','2026-09-21','sim',NULL);
+INSERT INTO `plantausuario` VALUES (14,36,'morango','tipomora1',1,'Tipomora1 safra 1',99,'-54.083290997328376','-25.29902778772482','2026-09-24','sim',NULL),(16,36,'cenoura','tipoceno3',1,'tipoceno3 safra 1',8986,'-54.083286','-25.299034000000002','2026-09-30','nao',NULL),(17,36,'tomate','tipotom2',1,'tipotom2 safra 1',8986,'-54.083286','-25.299034000000002','2026-09-29','nao','Anotacao'),(18,36,'morango','tipomora1',2,'tipomora1 safra 2',8986,'-54.083286','-25.299034000000002','2026-10-03','nao',NULL),(19,36,'morango','tipomora2',1,'tipomora2 safra 1',8986,'-54.083286','-25.299032','2026-09-08','sim',NULL);
 /*!40000 ALTER TABLE `plantausuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-03 16:08:21
+-- Dump completed on 2026-09-08 13:30:57
