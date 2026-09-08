@@ -1,18 +1,16 @@
 const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 
 function pegarPlantasCalendario(req,res) {
-    
     const idUsuario = req.session.usuario.idUsuario;
-
-    plantaUsuarioModel.buscarNumeroSafra(idUsuario, (erro, resultados) => {
-        
+    
+    plantaUsuarioModel.buscarPlantasCalendario(idUsuario, (erro, resultados) => {
         if (erro) {
-            console.log(erro)
-            return res.send('Erro ao buscar planta.')
+            console.log(erro);
+            return res.send('Erro ao buscar plantas do calendário.');
         }
-
-        return res.json(resultados)
-    })
+        return res.json(resultados);
+        
+    });
 }
 
 function criarPlantaUsuario(req, res) {

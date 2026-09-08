@@ -13,6 +13,7 @@ const privadoRoutes = require('./routes/privadoRoutes')
 const admRoutes = require('./routes/admRoutes')
 const usuarioRoutesPrivado = require('./routes/usuarioPrivadoRoutes')
 const trocarSenhaRoutes = require('./routes/trocarSenhaRoutes')
+const calendarioRoutes = require('./routes/calendarioRoutes')
 
 const app = express()
 const port = 8000
@@ -57,6 +58,8 @@ app.use('/planta', verificarLogin, plantasUsuarioRoutes)
 app.use('/adm', verificarLogin, verificarADM, admRoutes)
 
 app.use('/privado', verificarLogin, privadoRoutes);
+
+app.use('/calendario', verificarLogin, calendarioRoutes);
 
 app.use('/trocarSenha', trocarSenhaRoutes);
 

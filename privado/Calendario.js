@@ -77,21 +77,29 @@ iniciarClima();*/
 
 const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-let dataAtual = new Date(2026, 4, 1);
+let dataAtual = new Date(2026, 8, 1);
+
+let plantas = []
+
+async function pegarcalendario() {
+    
+    
+    let resultado =  await fetch('/calendario/pegarcalendario') 
+
+    plantas =  await resultado.json()
+}
+
+async function iniciar() {
+    await pegarcalendario();
+    renderizar();
+}
+
 
 
 async function renderizar() {
 
     const ano = dataAtual.getFullYear();
     const mes = dataAtual.getMonth();
-
- /*   let resultado = await fetch('/planta/calendario')
-    let plantas = []
-    plantas= await resultado.json
-
-
-    console.log(plantas)*/
-
 
     document.getElementById('texto-mes').textContent = `${nomesMeses[mes]}/${ano}`;
 
@@ -116,6 +124,21 @@ async function renderizar() {
     for (let dia = 1; dia <= diasNoMes; dia++) {
         let td = document.createElement('td');
         td.textContent = dia;
+
+        plantas.forEach(p => {
+            const dataPlanta = new Date(p.data_plantacao);
+
+            if (
+                dataPlanta.getUTCDate() === dia &&
+                dataPlanta.getUTCMonth() === mes &&
+                dataPlanta.getUTCFullYear() === ano
+            ) {
+                let pa = document.createElement('p')
+                pa.textContent = p.safraNome
+                td.appendChild(pa)
+            }
+        })
+
         tr.appendChild(td);
         celulas++;
         if (celulas % 7 === 0) {
@@ -147,4 +170,4 @@ document.getElementById('btn-next').addEventListener('click', () => {
     renderizar();
 });
 
-renderizar();
+iniciar();

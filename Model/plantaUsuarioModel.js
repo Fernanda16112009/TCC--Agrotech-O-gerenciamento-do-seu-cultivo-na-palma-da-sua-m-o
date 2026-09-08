@@ -100,6 +100,17 @@ function buscarAnotacoes( idUsuario, idPlanta, callback){
     conexao.query(sql, [idUsuario,idPlanta], callback)
 }
 
+function buscarPlantasCalendario(idUsuario, callback) {
+    const sql = `
+        SELECT planta, tipoPlanta, data_plantacao, safraNome
+        FROM plantausuario
+        WHERE idUsuario = ?
+        ORDER BY data_plantacao
+    `;
+
+    conexao.query(sql, [idUsuario], callback);
+}
+
 function deletarPlanta(idUsuario, idPlanta, callback) {
     const sql = `DELETE FROM plantausuario WHERE idUsuario = ? AND idPlanta = ?`
     conexao.query(sql,[idUsuario,idPlanta], callback)
@@ -116,5 +127,6 @@ module.exports = {
     atualizarLocalizacao,    
     cadastrarAnotacao,
     buscarAnotacoes,
+    buscarPlantasCalendario,
     deletarPlanta 
 }

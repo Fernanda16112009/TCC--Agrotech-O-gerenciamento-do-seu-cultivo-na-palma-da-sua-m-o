@@ -25,6 +25,4 @@ router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta', plantaUsuarioController
 
 router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta/localizacao', plantaUsuarioController.atualizarLocalizacao);
 
-router.get('/calendario', plantaUsuarioController.pegarPlantasCalendario);
-
 module.exports = router
