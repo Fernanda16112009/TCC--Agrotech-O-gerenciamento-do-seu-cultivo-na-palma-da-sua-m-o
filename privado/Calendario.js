@@ -80,17 +80,26 @@ const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
 let dataAtual = new Date(2026, 8, 1);
 
 let plantas = []
+let plantasAdm = []
 
-async function pegarcalendario() {
+async function pegarPlantasCalendario() {
     
-    
-    let resultado =  await fetch('/calendario/pegarcalendario') 
+    let resultado =  await fetch('/calendario/pegarPlantasCalendario') 
 
     plantas =  await resultado.json()
 }
 
+async function pegarPlantasAdmCalendario() {
+    
+    let resultadoADM =  await fetch('/calendario/pegarPlantasAdmCalendario') 
+
+    plantasAdm =  await resultadoADM.json()
+    console.log(plantasAdm)
+}
+
 async function iniciar() {
-    await pegarcalendario();
+    await pegarPlantasCalendario();
+    await pegarPlantasAdmCalendario();
     renderizar();
 }
 
@@ -125,8 +134,14 @@ async function renderizar() {
         let td = document.createElement('td');
         td.textContent = dia;
 
+        const dataCalendario = new Date(ano, mes, dia);
+
         plantas.forEach(p => {
             const dataPlanta = new Date(p.data_plantacao);
+            const plantaAdm = plantasAdm.find(adm => adm.tipoPlanta === p.tipoPlanta);
+            const diasPassados = (dataCalendario - dataPlanta) / (1000 * 60 * 60 * 24);
+            const dataColheita = new Date(dataPlanta)
+            dataColheita.setDate(dataColheita.getDate()+ plantaAdm.tempoDeColheita)
 
             if (
                 dataPlanta.getUTCDate() === dia &&
@@ -137,6 +152,18 @@ async function renderizar() {
                 pa.textContent = p.safraNome
                 td.appendChild(pa)
             }
+
+            if(
+                dataCalendario.getUTCDate() === dataColheita.getUTCDate() &&
+                dataCalendario.getUTCMonth() === dataColheita.getUTCMonth() &&
+                dataCalendario.getUTCFullYear() === dataColheita.getUTCFullYear()
+            ){
+                let pc = document.createElement('p')
+                pc.textContent = `${p.safraNome} dia da colheita`
+                td.appendChild(pc)
+            }
+
+            
         })
 
         tr.appendChild(td);

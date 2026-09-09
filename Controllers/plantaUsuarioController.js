@@ -1,4 +1,5 @@
 const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
+const plantaADMModel = require('../Model/plantaAdmModel');
 
 function pegarPlantasCalendario(req,res) {
     const idUsuario = req.session.usuario.idUsuario;
@@ -8,6 +9,19 @@ function pegarPlantasCalendario(req,res) {
             console.log(erro);
             return res.send('Erro ao buscar plantas do calendário.');
         }
+        return res.json(resultados);
+        
+    });
+}
+
+function pegarPlantasADMCalendario(req,res) {
+    
+    plantaADMModel.buscarPlantasAdmCalendario( (erro, resultados) => {
+        if (erro) {
+            console.log(erro);
+            return res.send('Erro ao buscar plantas do calendário.');
+        }
+
         return res.json(resultados);
         
     });
@@ -470,7 +484,8 @@ function deletarPlanta(req, res) {
 }
 
 module.exports = {
-    pegarPlantasCalendario,    
+    pegarPlantasCalendario, 
+    pegarPlantasADMCalendario,   
     criarPlantaUsuario,
     mostrarCategoriasPlanta,
     mostrarCategoriasTipoPlanta,

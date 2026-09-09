@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const path = require('path');
-
 
 const plantaUsuarioController = require('../Controllers/plantaUsuarioController')
 
-router.get('/pegarcalendario', plantaUsuarioController.pegarPlantasCalendario);
+router.get('/pegarPlantasCalendario', plantaUsuarioController.pegarPlantasCalendario);
+
+router.get('/pegarPlantasAdmCalendario', plantaUsuarioController.pegarPlantasADMCalendario);
 
 module.exports = router
