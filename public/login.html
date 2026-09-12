@@ -1,54 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css">
     <title>Login</title>
 </head>
+
 <body>
+
     <header>
-        <nav>
+        <nav class="navbar">
             <h1 class="titulo">AgroTech</h1>
             <h3 class="texto">É muito bom ter você com a gente!</h3>
         </nav>
     </header>
+
+
     <main>
-        <div class="form">
+
+        <div class="form login">
+
+            <h2 class="subtitulo">Entrar</h2>
+
             <form action="/usuarios/login" method="post">
+
                 <div class="elemento_form">
-                    <label for="email" class="form_pergunta">Qual é o seu email?</label><br>
-                    <input type="email" name="email" class="form_pergunta" placeholder= "joao@email.com"><br><br>
+
+                    <label for="email">Qual é o seu email?</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="joao@email.com"
+                    >
+
                 </div>
-                <div class="elemento_form">
-                    <label for="senha" class="form_pergunta">Qual é a sua senha?</label><br>
-                    <input type="password" name="senha" class="form_pergunta"><br><br>
-                </div><br><br>
 
-                <p id="mensagemErro"></p><br>
-                
+
                 <div class="elemento_form">
-                    <button type="submit" class="btn">Logar</button>
+
+                    <label for="senha">Qual é a sua senha?</label>
+
+                    <input
+                        type="password"
+                        name="senha"
+                        id="senha"
+                        placeholder="Digite sua senha"
+                    >
+
                 </div>
+
+
+                <p id="mensagemErro" class="mensagem-erro">
+                    ⚠ Email ou senha incorretos
+                </p>
+
+
+                <button type="submit" class="btn">
+                    Logar
+                </button>
+
             </form>
 
-            <br>
 
-            <form action="/usuarios/cadastroUsuario" method="get" required>
-                <button type="submit" class="btn">Não tem uma conta? Cadastre-se </button>
-            </form>
-            
-            <br>
+            <form action="/usuarios/cadastroUsuario" method="get" class="form-login">
 
-            <form action="/usuarios/emailRecuperarSenha" method="get" required>
-                <button type="submit" class="btn">Esqueceu sua senha?</button>
+                <button type="submit" class="btn">
+                    Não tem uma conta? Cadastre-se
+                </button>
+
             </form>
-        </div>    
-        <script src="/login.js"></script>    
+
+
+            <form action="/usuarios/emailRecuperarSenha" method="get" class="form-login">
+
+                <button type="submit" class="btn btn-recuperar">
+                    Esqueceu sua senha?
+                </button>
+
+            </form>
+
+        </div>
+
     </main>
+
+
     <footer>
-        <p>rodapé</p>
+
+        <div class="footer-conteudo">
+
+            <h3>AgroTech</h3>
+
+            <p>
+                O gerenciamento do plantio na palma da sua mão.
+            </p>
+
+            <p>
+                Sugestões, críticas ou dúvidas?
+                <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+            </p>
+
+            <p class="copyright">
+                © 2026 AgroTech. Todos os direitos reservados.
+            </p>
+
+        </div>
+
     </footer>
-    
+
+
+    <script src="/login.js"></script>
+
 </body>
+
 </html>
+

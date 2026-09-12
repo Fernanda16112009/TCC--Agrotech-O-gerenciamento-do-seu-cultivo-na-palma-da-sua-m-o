@@ -3,29 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Recuperar Senha</title>
+
     <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+
+<body class="recuperar-senha">
+
+    <header>
+        <h1 class="titulo">AgroTech</h1>
+        <h2 class="subtitulo">Recuperação de senha</h2>
+        <p class="texto">Digite seu email para receber o link de recuperação.</p>
+    </header>
+
     <main>
-        <div>
+        <div class="recuperar-container">
+
             <form action="/usuarios/email" method="post">
-                <label>Digite seu email</label>
-                <input type="email" name="email" class="form_pergunta" id="email" placeholder="joao@email.com" onchange="emailValido()"><br>
-                <div class="error" id="email-invalido-erro">Seu email deve conter @...</div>                    
-                <div class="error" id="email-obrigatorio">Email é obrigatório</div>
-                <div class="error" id="email-existe-erro">Não existe uma conta com esse email</div><br><br>
-                <button type="submit" class="btn" disabled ="true" id="btn_cadastro">Enviar email para a troca de senha</button>
+
+                <div class="elemento_form">
+                    <label for="email">Digite seu email</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        class="form_pergunta"
+                        id="email"
+                        placeholder="joao@email.com"
+                        onchange="emailValido()"
+                    >
+
+                    <div class="error" id="email-invalido-erro">
+                        Seu email deve conter @...
+                    </div>
+
+                    <div class="error" id="email-obrigatorio">
+                        Email é obrigatório
+                    </div>
+
+                    <div class="error" id="email-existe-erro">
+                        Não existe uma conta com esse email
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn"
+                    disabled="true"
+                    id="btn_cadastro">
+                    Enviar email para a troca de senha
+                </button>
+
             </form>
-            <br><br>
-            <form action="/" method="get" required>
-                <button type="submit" class="btn">Voltar</button>
+
+            <form action="/" method="get" class="form-voltar">
+                <button type="submit" class="btn btn-secundario">
+                    Voltar
+                </button>
             </form>
+
         </div>
     </main>
+
     <footer>
-        <p>rodapé</p>
+        <div class="footer-conteudo">
+            <h3>AgroTech</h3>
+
+            <p>
+                O gerenciamento do plantio na palma da sua mão.
+            </p>
+
+            <p>
+                Sugestões, críticas ou dúvidas?
+                <a href="mailto:agrotech@email.com">
+                    Entre em contato conosco
+                </a>
+            </p>
+
+            <p class="copyright">
+                © 2026 AgroTech. Todos os direitos reservados.
+            </p>
+        </div>
     </footer>
+
     <script src="/recuperarsenha.js"></script>
+
 </body>
 </html>

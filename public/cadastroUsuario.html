@@ -1,73 +1,177 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
     <link rel="stylesheet" href="/style.css">
-
 </head>
+
 <body>
+
     <header>
         <nav class="navbar">
             <h1 class="titulo">AgroTech</h1>
         </nav>
     </header>
+
     <main>
-        <div class="form">
+        <div class="form cadastro">
+
+            <h2 class="subtitulo">Cadastro</h2>
+
             <form action="/usuarios" method="post">
 
-                    <h3 class="subtitulo">Cadastro</h3><br>
+                <div class="elemento_form">
+                    <label for="nome">Qual é o seu nome?</label>
 
-                    <div class="elemento_form">
-                        <label for="nome" class="form_pergunta">Qual é o seu nome?</label><br>
-                        <input type="text" name="nome" class="form_pergunta" placeholder="Ex:João da Silva" id="nome" onchange="formularioValido()"><br>
-                        <div class="error" id="nome-obrigatorio">Nome é obrigatório</div><br><br>
+                    <input
+                        type="text"
+                        name="nome"
+                        id="nome"
+                        placeholder="Ex: João da Silva"
+                        onchange="formularioValido()"
+                    >
+
+                    <div class="error" id="nome-obrigatorio">
+                        ⚠ Nome é obrigatório
+                    </div>
+                </div>
+
+
+                <div class="elemento_form">
+                    <label for="email">Qual é o seu email?</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="joao@email.com"
+                        onchange="formularioValido()"
+                    >
+
+                    <div class="error" id="email-invalido-erro">
+                        ⚠ Seu email deve conter @...
                     </div>
 
-                    <div class="elemento_form">
-                        <label for="email" class="form_pergunta">Qual é o seu email?</label><br>
-                        <input type="email" name="email" class="form_pergunta" id="email" placeholder="joao@email.com" onchange="formularioValido()"><br>
-                        <div class="error" id="email-invalido-erro">Seu email deve conter @...</div>                    
-                        <div class="error" id="email-obrigatorio">Email é obrigatório</div>
-                        <div class="error" id="email-existe-erro">Já existe uma conta com esse email</div><br><br>
+                    <div class="error" id="email-obrigatorio">
+                        ⚠ Email é obrigatório
                     </div>
 
-                    <div class="elemento_form">
-                        <label for="telefone" class="form_pergunta">Qual é o seu telefone?</label><br>
-                        <input type="tel" name="telefone" class="form_pergunta" placeholder="Ex:(45) 99999-9999" id="telefone" onchange="formularioValido()"><br>
-                        <div class="error" id="telefone-obrigatorio">Telefone é obrigatório</div><br><br>
+                    <div class="error" id="email-existe-erro">
+                        ⚠ Já existe uma conta com esse email
+                    </div>
+                </div>
+
+
+                <div class="elemento_form">
+                    <label for="telefone">Qual é o seu telefone?</label>
+
+                    <input
+                        type="tel"
+                        name="telefone"
+                        id="telefone"
+                        placeholder="Ex: (45) 99999-9999"
+                        onchange="formularioValido()"
+                    >
+
+                    <div class="error" id="telefone-obrigatorio">
+                        ⚠ Telefone é obrigatório
+                    </div>
+                </div>
+
+
+                <div class="elemento_form">
+                    <label for="senha">Crie uma senha forte</label>
+
+                    <input
+                        type="password"
+                        name="senha"
+                        id="senha"
+                        placeholder="Mínimo 6 caracteres"
+                        onchange="formularioValido()"
+                    >
+
+                    <div class="error" id="senha-invalido-erro">
+                        ⚠ Sua senha precisa ter no mínimo 6 caracteres
                     </div>
 
-                    <div class="elemento_form">
-                        <label for="senha" class="form_pergunta">Crie uma senha forte</label><br>
-                        <input type="password" name="senha" class="form_pergunta" placeholder="Mínimo 6 caracteres" id="senha" onchange="formularioValido()"><br><br>
-                        <div class="error" id="senha-invalido-erro">Sua senha precisa ter no mínimo 6 caracteres</div>                    
-                        <div class="error" id="senha-obrigatoria">Senha é obrigatória</div><br><br>                        
+                    <div class="error" id="senha-obrigatoria">
+                        ⚠ Senha é obrigatória
+                    </div>
+                </div>
+
+
+                <div class="elemento_form">
+                    <label for="nome_usuario">Crie um nome de usuário</label>
+
+                    <input
+                        type="text"
+                        name="nome_usuario"
+                        id="nome_usuario"
+                        placeholder="Ex: joao1342"
+                        onchange="formularioValido()"
+                    >
+
+                    <div class="error" id="nome_usuario-invalido-erro">
+                        ⚠ Esse nome de usuário já existe. Tente outro
                     </div>
 
-                    <div class="elemento_form">
-                        <label for="nome_usuario" class="form_pergunta">Crie um nome de usuário</label><br>
-                        <input type="text" name="nome_usuario" class="form_pergunta" placeholder="Ex:joao1342" id="nome_usuario" onchange="formularioValido()"><br><br><br>
-                        <div class="error" id="nome_usuario-invalido-erro">Esse nome de usuario já existe. Tente outro</div>                    
-                        <div class="error" id="nome_usuario-obrigatorio">O nome de usuario é obrigatório</div><br><br>     
+                    <div class="error" id="nome_usuario-obrigatorio">
+                        ⚠ O nome de usuário é obrigatório
                     </div>
+                </div>
 
-                    <br>
-                    
-                    <button type="submit" class="btn" disabled ="true" id="btn_cadastro" onchange="formularioValido()">Criar conta</button>
+
+                <button
+                    type="submit"
+                    class="btn"
+                    disabled
+                    id="btn_cadastro"
+                >
+                    Criar conta
+                </button>
+
             </form>
 
-            <br>
-            
-            <form action="/usuarios/login" method="get" required>
-                <button type="submit" class="btn">Já tem uma conta?</button>
+
+            <form action="/usuarios/login" method="get" class="form-login">
+                <button type="submit" class="btn btn-secundario">
+                    Já tem uma conta?
+                </button>
             </form>
+
         </div>
     </main>
+
+
     <footer>
-        <p>rodapé</p>
+
+        <div class="footer-conteudo">
+
+            <h3>AgroTech</h3>
+
+            <p>
+                O gerenciamento do plantio na palma da sua mão.
+            </p>
+
+            <p>
+                Sugestões, críticas ou dúvidas?
+                <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+            </p>
+
+            <p class="copyright">
+                © 2026 AgroTech. Todos os direitos reservados.
+            </p>
+
+        </div>
+
     </footer>
-    <script src="/cadastroUsuario.js"></script>    
+
+
+    <script src="/cadastroUsuario.js"></script>
+
 </body>
 </html>
+
