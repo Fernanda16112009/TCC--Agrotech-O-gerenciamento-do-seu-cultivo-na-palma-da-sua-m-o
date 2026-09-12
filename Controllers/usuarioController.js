@@ -102,40 +102,39 @@ async function criarUsuario(req, res) {
 async function logarUsuario(req, res){
 
     usuarioModel.pegarLogin( async (erro, loginValor) => {
-    if (erro) {
-        console.log(erro);
-        return send("Erro");
-    }
-
-    const usuarioemail = req.body.email.trim().toLowerCase()
-    const usuariosenha = req.body.senha
-
-
-    for (let i = 0; i < loginValor.length; i++){
-
-        if(usuarioemail === loginValor[i].email){
-
-            const senhaCorreta = await bcrypt.compare(
-                usuariosenha,
-                loginValor[i].senha
-            )
-
-            if(senhaCorreta){
-            req.session.usuario = loginValor[i]
-            }
-
-            if (req.session.usuario.role === "adm"){
-                return res.redirect('/adm')
-            }
-            return res.redirect('/')
+        if (erro) {
+            console.log(erro);
+            return send("Erro");
         }
-        
-    }
-    res.send("Email ou senha incorretos")
+
+        const usuarioemail = req.body.email.trim().toLowerCase()
+        const usuariosenha = req.body.senha
 
 
-       
-});
+        for (let i = 0; i < loginValor.length; i++){
+
+            if(usuarioemail === loginValor[i].email){
+
+                const senhaCorreta = await bcrypt.compare(
+                    usuariosenha,
+                    loginValor[i].senha
+                )
+
+                if(senhaCorreta){
+                    req.session.usuario = loginValor[i]
+
+                    if (req.session.usuario.role === "adm"){
+                        return res.redirect('/adm')
+                    }
+
+                    return res.redirect('/')
+                }
+
+                return res.redirect('/usuarios/login?erro=login')
+            }
+        }
+        return res.redirect('/usuarios/login?erro=login')
+    })
 }
 
 function logout(req,res){
