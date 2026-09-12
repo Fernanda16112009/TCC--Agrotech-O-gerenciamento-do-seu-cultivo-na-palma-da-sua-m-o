@@ -24,6 +24,29 @@ router.get('/escolherPlanta', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'escolherCadastro.html'));
 });
 
+router.get('/areaDePragas', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'areaDePragas.html'));
+});
+
+router.get('/pragas/:praga', (req, res) => {
+    let praga = req.params.praga
+
+    switch (praga) {
+        case "praga1":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga1.html'))
+            break;
+        case "praga2":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga2.html'))
+            break;
+        case "praga3":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga3.html'))
+            break;
+        case "praga4":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga4.html'))
+            break;
+    }
+});
+
 router.get('/tipos/:planta', (req, res) => {
     let planta = req.params.planta
 
@@ -42,6 +65,8 @@ router.get('/tipos/:planta', (req, res) => {
             break;
     }
 });
+
+
 
 router.get('/tipos/:planta/:tipo', (req, res) => {
 
