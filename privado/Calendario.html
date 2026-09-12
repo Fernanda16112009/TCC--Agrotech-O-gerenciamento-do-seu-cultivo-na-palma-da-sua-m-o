@@ -39,11 +39,29 @@
             <form action="/" method="get" required>
                 <button class="btn_pg_inicial">Voltar</button><br><br>
             </form> 
-        </div>
+            <form action="/" method="get" required>
+                <button class="btn_pg_inicial">Área de pragas</button><br><br>
+            </form> 
+        </div>     
     </main>
-    <footer>
-        <p>rodapé</p>
-    </footer>
-<script src="/privado/calendario.js"></script>
+
+    <div id="popup-regas" class="popup-fundo">
+        <div class="popup">
+            <button id="fechar-popup" class="fechar-popup">&times;</button>
+
+            <h2>🌱 Atenção com suas plantas!</h2>
+
+            <p id="mensagem-popup"></p>
+
+            <div id="lista-plantas-popup"></div>
+        </div>
+    </div>
+
+    <footer> 
+        <p>rodapé</p> 
+    </footer> 
+
+    <script src="/privado/calendario.js"></script>
 </body>
 </html>
+

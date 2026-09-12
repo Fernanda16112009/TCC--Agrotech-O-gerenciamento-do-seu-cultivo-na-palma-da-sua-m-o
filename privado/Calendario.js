@@ -1,107 +1,127 @@
-/*async function buscarDados(lat, lon) {
-
-    const climaInfo = document.getElementById('clima-info');
-
-    climaInfo.innerHTML = `<span class="clima-temp">📡 Conectando...</span>`;
-
-    try {
-        const respostaLocal = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=pt-BR`);
-        const dadosLocal = await respostaLocal.json();
-        const cidade = dadosLocal.city || dadosLocal.locality || "Localidade Desconhecida";
-        const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-        const dadosClima = await respostaClima.json();
-        const temperatura = dadosClima.current_weather.temperature;
-        const horaAtual = new Date().toLocaleTimeString('pt-BR');
-
-        climaInfo.innerHTML = `
-            <div class="clima-cidade">📍 ${cidade}</div>
-            <div class="clima-temp">🌡️ ${temperatura}°C</div>
-            <div class="clima-hora">⏱️ Atualizado às ${horaAtual}</div>
-            <button id="btn-salvar-local" class="btn-salvar">📌 Fixar esta localização</button>
-        `;
-
-        configurarBotaoSalvar();
-
-    } catch (erro) {
-        climaInfo.innerHTML = `<span class="clima-temp" style="color: #d32f2f;">❌ Erro de conexão com a API.</span>`;
-    }
-}
-
-function configurarBotaoSalvar() {
-
-    document.getElementById('btn-salvar-local').addEventListener('click', () => {
-
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (posicao) => {
-                    const lat = posicao.coords.latitude;
-                    const lon = posicao.coords.longitude;
-                    
-                    localStorage.setItem('tcc_latitude', lat);
-                    localStorage.setItem('tcc_longitude', lon);
-                    
-                    alert("✅ Localização salva com sucesso! O clima sempre será puxado daqui agora.");
-                    buscarDados(lat, lon); // Atualiza os dados
-                },
-                (erro) => {
-                    alert("❌ GPS bloqueado. Permita a localização no navegador para poder salvar.");
-                }
-            );
-        }
-    });
-}
-
-function iniciarClima() {
-
-    const latSalva = localStorage.getItem('tcc_latitude');
-    const lonSalva = localStorage.getItem('tcc_longitude');
-
-    if (latSalva && lonSalva) {
-        console.log("💾 [INFO] Puxando localização da memória.");
-        buscarDados(latSalva, lonSalva);
-    } 
-
-    else if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            (posicao) => {
-                buscarDados(posicao.coords.latitude, posicao.coords.longitude);
-            },
-            (erro) => {
-                buscarDados(-23.5505, -46.6333); // Fallback SP
-            }
-        );
-    }
-}
-
-iniciarClima();*/
-
 const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
 let dataAtual = new Date(2026, 8, 1);
 
 let plantas = []
 let plantasAdm = []
+let clima = []
 
-async function pegarPlantasCalendario() {
-    
+async function pegarPlantasCalendario() {   
     let resultado =  await fetch('/calendario/pegarPlantasCalendario') 
 
     plantas =  await resultado.json()
 }
 
-async function pegarPlantasAdmCalendario() {
-    
+async function pegarPlantasAdmCalendario() { 
     let resultadoADM =  await fetch('/calendario/pegarPlantasAdmCalendario') 
 
     plantasAdm =  await resultadoADM.json()
-    console.log(plantasAdm)
+}
+
+async function pegarClima(plantas) {
+    for( const p of plantas){
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${p.latitude}&longitude=${p.longitude}&daily=rain_sum&timezone=auto`;
+
+        let resultado = await fetch(url)
+        clima.push( { nomeSafra:p.safraNome , resultado: await resultado.json()})
+
+    }
 }
 
 async function iniciar() {
     await pegarPlantasCalendario();
     await pegarPlantasAdmCalendario();
+    await pegarClima(plantas)
+    Choveu()
     renderizar();
 }
+
+
+function Choveu() {
+
+    const popup = document.getElementById('popup-regas');
+    const mensagem = document.getElementById('mensagem-popup');
+    const lista = document.getElementById('lista-plantas-popup');
+
+    lista.innerHTML = '';
+
+    let plantasComChuva = [];
+    let plantasSemChuva = [];
+
+    clima.forEach(c => {
+
+        const chuva = c.resultado.daily.rain_sum[0];
+
+        console.log(c.nomeSafra, chuva);
+
+        if (chuva === 0) {
+            plantasSemChuva.push(c.nomeSafra);
+        } else {
+            plantasComChuva.push(c.nomeSafra);
+        }
+
+    });
+
+    console.log("plantas com chuva:", plantasComChuva);
+    console.log("plantas sem chuva:", plantasSemChuva);
+
+    // Mensagem para plantas que tiveram chuva
+    if (plantasComChuva.length > 0) {
+
+        const tituloChuva = document.createElement('p');
+
+        tituloChuva.textContent = '🌧️ Nessas plantas choveu, não precisa regar:';
+
+        lista.appendChild(tituloChuva);
+
+        plantasComChuva.forEach(nome => {
+
+            const planta = document.createElement('div');
+
+            planta.className = 'planta-popup';
+
+            planta.textContent = `🌱 ${nome}`;
+
+            lista.appendChild(planta);
+
+        });
+    }
+
+    // Mensagem para plantas que não tiveram chuva
+    if (plantasSemChuva.length > 0) {
+
+        const tituloRega = document.createElement('p');
+
+        tituloRega.textContent = '💧 Nessas plantas não choveu, lembre de regar:';
+
+        tituloRega.style.marginTop = '20px';
+
+        lista.appendChild(tituloRega);
+
+        plantasSemChuva.forEach(nome => {
+
+            const planta = document.createElement('div');
+
+            planta.className = 'planta-popup';
+
+            planta.textContent = `🌱 ${nome}`;
+
+            lista.appendChild(planta);
+
+        });
+    }
+
+    // O popup aparece sempre que houver plantas
+    if (clima.length > 0) {
+        popup.style.display = 'flex';
+    }
+}
+
+document.getElementById('fechar-popup').addEventListener('click', () => {
+
+    document.getElementById('popup-regas').style.display = 'none';
+
+});
 
 
 
@@ -136,7 +156,7 @@ async function renderizar() {
 
         const dataCalendario = new Date(ano, mes, dia);
 
-        plantas.forEach(p => {
+        plantas.forEach(async p  => {
             const dataPlanta = new Date(p.data_plantacao);
             const plantaAdm = plantasAdm.find(adm => adm.tipoPlanta === p.tipoPlanta);
             const diasPassados = (dataCalendario - dataPlanta) / (1000 * 60 * 60 * 24);

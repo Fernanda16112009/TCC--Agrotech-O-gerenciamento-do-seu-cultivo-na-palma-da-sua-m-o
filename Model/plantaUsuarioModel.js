@@ -102,7 +102,7 @@ function buscarAnotacoes( idUsuario, idPlanta, callback){
 
 function buscarPlantasCalendario(idUsuario, callback) {
     const sql = `
-        SELECT planta, tipoPlanta, data_plantacao, safraNome
+        SELECT planta, tipoPlanta, data_plantacao, safraNome, longitude, latitude
         FROM plantausuario
         WHERE idUsuario = ?
         ORDER BY data_plantacao
