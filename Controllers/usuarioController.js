@@ -207,7 +207,26 @@ function perfil(req, res){
                     <a href="/privado/configuracoes">Voltar</a>
                 </main>
                 <footer>
-                    <p>rodapé</p>
+
+                    <div class="footer-conteudo">
+
+                        <h3>AgroTech</h3>
+
+                        <p>
+                            O gerenciamento do plantio na palma da sua mão.
+                        </p>
+
+                        <p>
+                            Sugestões, críticas ou dúvidas?
+                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                        </p>
+
+                        <p class="copyright">
+                            © 2026 AgroTech. Todos os direitos reservados.
+                        </p>
+
+                    </div>
+
                 </footer>
             </body>
             </html>
@@ -280,7 +299,26 @@ function mostrarFormularioEdicao(req, res){
                     <a href="/adm">Voltar ao painel</a>
                 </main>
                 <footer>
-                    <p>rodapé</p>
+
+                    <div class="footer-conteudo">
+
+                        <h3>AgroTech</h3>
+
+                        <p>
+                            O gerenciamento do plantio na palma da sua mão.
+                        </p>
+
+                        <p>
+                            Sugestões, críticas ou dúvidas?
+                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                        </p>
+
+                        <p class="copyright">
+                            © 2026 AgroTech. Todos os direitos reservados.
+                        </p>
+
+                    </div>
+
                 </footer>
             </body>
             </html>

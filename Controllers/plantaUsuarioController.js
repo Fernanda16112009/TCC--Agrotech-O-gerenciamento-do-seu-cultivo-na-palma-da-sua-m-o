@@ -138,7 +138,26 @@ function mostrarCategoriasPlanta(req,res){
                     </div>
                 </main>
                 <footer>
-                    <p>rodapé</p>
+
+                    <div class="footer-conteudo">
+
+                        <h3>AgroTech</h3>
+
+                        <p>
+                            O gerenciamento do plantio na palma da sua mão.
+                        </p>
+
+                        <p>
+                            Sugestões, críticas ou dúvidas?
+                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                        </p>
+
+                        <p class="copyright">
+                            © 2026 AgroTech. Todos os direitos reservados.
+                        </p>
+
+                    </div>
+
                 </footer>
             </body>
             </html>
@@ -195,7 +214,26 @@ function mostrarCategoriasTipoPlanta(req,res){
                     </div>
                 </main>
                 <footer>
-                    <p>rodapé</p>
+
+                    <div class="footer-conteudo">
+
+                        <h3>AgroTech</h3>
+
+                        <p>
+                            O gerenciamento do plantio na palma da sua mão.
+                        </p>
+
+                        <p>
+                            Sugestões, críticas ou dúvidas?
+                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                        </p>
+
+                        <p class="copyright">
+                            © 2026 AgroTech. Todos os direitos reservados.
+                        </p>
+
+                    </div>
+
                 </footer>
             </body>
             </html>
@@ -260,7 +298,26 @@ function mostrarSafraPlanta(req,res){
                         </div>
                     </main>
                     <footer>
-                        <p>rodapé</p>
+
+                        <div class="footer-conteudo">
+
+                            <h3>AgroTech</h3>
+
+                            <p>
+                                O gerenciamento do plantio na palma da sua mão.
+                            </p>
+
+                            <p>
+                                Sugestões, críticas ou dúvidas?
+                                <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                            </p>
+
+                            <p class="copyright">
+                                © 2026 AgroTech. Todos os direitos reservados.
+                            </p>
+
+                        </div>
+
                     </footer>
                 </body>
                 </html>
@@ -390,7 +447,26 @@ function mostrarPlantaUsuario(req,res){
                 </main>
 
                 <footer>
-                    <p>rodapé</p>
+
+                    <div class="footer-conteudo">
+
+                        <h3>AgroTech</h3>
+
+                        <p>
+                            O gerenciamento do plantio na palma da sua mão.
+                        </p>
+
+                        <p>
+                            Sugestões, críticas ou dúvidas?
+                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                        </p>
+
+                        <p class="copyright">
+                            © 2026 AgroTech. Todos os direitos reservados.
+                        </p>
+
+                    </div>
+
                 </footer>
                 <script src="/privado/cadastroPlantaUsuario.js"></script>
             </body>
@@ -446,22 +522,41 @@ function anotacoesPlanta(req,res){
                 <link rel="stylesheet" href="/style.css">
             </head>
             <body>
-            <header>
-                <h1>Anotações</h1>
-            </header>
-            <main>
-                <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post">
-                    <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
-                    <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.comentarios ||  "" }</textarea>
-                    <button type="submit">Salvar anotações</button>
-                </form><br>
-                <form action="/planta/${planta}/${tipoPlanta}/${idPlanta}" method="get" required>
-                    <button class="btn_pg_inicial">Voltar</button><br><br>
-                </form>
-            </main>
-            <footer>
-                <p>rodapé</p>
-            </footer>
+                <header>
+                    <h1>Anotações</h1>
+                </header>
+                <main>
+                    <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post">
+                        <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
+                        <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.comentarios ||  "" }</textarea>
+                        <button type="submit">Salvar anotações</button>
+                    </form><br>
+                    <form action="/planta/${planta}/${tipoPlanta}/${idPlanta}" method="get" required>
+                        <button class="btn_pg_inicial">Voltar</button><br><br>
+                    </form>
+                </main>
+                <footer>
+
+                    <div class="footer-conteudo">
+
+                        <h3>AgroTech</h3>
+
+                        <p>
+                            O gerenciamento do plantio na palma da sua mão.
+                        </p>
+
+                        <p>
+                            Sugestões, críticas ou dúvidas?
+                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                        </p>
+
+                        <p class="copyright">
+                            © 2026 AgroTech. Todos os direitos reservados.
+                        </p>
+
+                    </div>
+
+                </footer>
             </body>
             </html>
         `
