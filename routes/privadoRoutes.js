@@ -16,10 +16,6 @@ router.get('/calendario', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'calendario.html'));
 });
 
-router.get('/redeSocial', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'privado', 'redeSocial.html'));
-});
-
 router.get('/cadastroPlanta', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'cadastroPlantaUsuario.html'));
 });

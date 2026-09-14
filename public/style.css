@@ -344,6 +344,12 @@ input::placeholder {
     height: 1000px;
 }
 
+.post{
+    resize: none;
+    width: 500px;
+    height: 50px;
+}
+
 .safraNome {
     resize: none;
 }
