@@ -125,10 +125,6 @@ function painelAdm(req, res) {
 
                     <nav class="sidebar-nav">
 
-                        <span class="nav-label">
-                            Usuários
-                        </span>
-
                         <a href="/adm/usuarios">
                             Listar usuários
                         </a>
@@ -297,20 +293,28 @@ function listarPorID(req, res) {
             <link rel="stylesheet" href="/style.css">
         </head>
         <body class= "bodyAdm">
-
             <aside class="sidebar">
-                <div class="sidebar-logo">AgroTech</div>
-                <nav>              
-                    <span class="nav-label">Usuários</span>
-                    <a href="/adm">Painel geral</a>
-                    <a href="/adm#usuarios">Listar usuários</a>
-                     <a href= "/priUsuarios/sair">Sair</a>
-                    
-                </nav>
-            </aside>
+
+                    <div class="sidebar-logo">
+                        AgroTech
+                    </div>
+
+                    <nav class="sidebar-nav">
+
+                        <a href="/adm">Painel geral</a>
+
+                        <a href="/priUsuarios/sair">
+                            Sair
+                        </a>
+
+                    </nav>
+
+                </aside>
 
             <main class="content">
-                <h1>Painel Administrativo</h1>
+                    <h1 class="titulo-adm">
+                        Painel Administrativo
+                    </h1>
 
                 <section id="usuarios" class="card">
                     <div class="section-header">
