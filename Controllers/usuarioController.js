@@ -2,6 +2,7 @@ const usuarioModel = require('../Model/usuarioModel');
 const bcrypt = require('bcryptjs')
 const { Resend } = require('resend');
 const jwt = require('jsonwebtoken');
+const fs = require('fs/promises');
 
 function buscarEmail (req,res){
 

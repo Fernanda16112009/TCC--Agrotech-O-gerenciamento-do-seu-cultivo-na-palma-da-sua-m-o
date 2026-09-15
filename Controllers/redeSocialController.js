@@ -1,6 +1,8 @@
 const redeSocialModel = require('../Model/redeSocialModel');
 require("dotenv").config();
 const cloudinary = require("cloudinary").v2;
+const fs = require('fs/promises');
+
 
 async function criarPost(req,res){
     
@@ -12,6 +14,8 @@ async function criarPost(req,res){
         const imagem = resultado.secure_url;
 
         req.body.imagem = imagem
+
+        await fs.unlink(req.file.path);
 
         redeSocialModel.criarPost(req.body, (erro) =>{
             if (erro) {
