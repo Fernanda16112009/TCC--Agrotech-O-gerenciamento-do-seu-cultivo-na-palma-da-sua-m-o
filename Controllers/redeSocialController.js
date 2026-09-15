@@ -1,16 +1,37 @@
 const redeSocialModel = require('../Model/redeSocialModel');
+require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
 
-function criarPost(req,res){
-
+async function criarPost(req,res){
+    
     req.body.idUsuario = req.session.usuario.idUsuario;
 
-    redeSocialModel.criarPost(req.body, (erro) =>{
-        if (erro) {
-            console.log(erro)
-            return res.send('Erro ao criar post.')
-        }
-        res.redirect('/redeSocial/redeSocial')
-    })
+    if(req.file){
+        const resultado = await cloudinary.uploader.upload(req.file.path);
+
+        const imagem = resultado.secure_url;
+
+        req.body.imagem = imagem
+
+        redeSocialModel.criarPost(req.body, (erro) =>{
+            if (erro) {
+                console.log(erro)
+                return res.send('Erro ao criar post.')
+            }
+            res.redirect('/redeSocial/redeSocial')
+        })
+    }else{
+        redeSocialModel.criarPost(req.body, (erro) =>{
+
+            if (erro) {
+                console.log(erro)
+                return res.send('Erro ao criar post.')
+            }
+            res.redirect('/redeSocial/redeSocial')
+        })
+    }
+
+
 }
 
 async function mostrarPosts(req,res){
@@ -24,21 +45,45 @@ async function mostrarPosts(req,res){
 
         const postagem  = await Promise.all (posts.map( async p =>{ 
             
-            const idUsuario = p.idUsuario;
+            if(p.imagem === null){
+                const idUsuario = p.idUsuario;
 
-            const data = new Date(p.dataPostagem);
+                const data = new Date(p.dataPostagem);
 
-            const dataFormatada = data.toLocaleDateString('pt-BR');
+                const dataFormatada = data.toLocaleDateString('pt-BR');
 
-            const nome = await redeSocialModel.pegarNomeUsuarioPorID(idUsuario);
-            
-            return`
-                <p><b>${nome[0].nome_usuario}</b></p>
-                <p>${dataFormatada}</p><br>
-
-                <p>${p.post}</p>
+                const nome = await redeSocialModel.pegarNomeUsuarioPorID(idUsuario);
                 
-        `}))
+                return`
+                    <div class="postagem">
+                        <p><b>${nome[0].nome_usuario}</b></p>
+                        <p>${dataFormatada}</p><br>
+
+                        <p>${p.post}</p>
+                    </div>
+                `
+            }else{
+                const idUsuario = p.idUsuario;
+
+                const data = new Date(p.dataPostagem);
+
+                const dataFormatada = data.toLocaleDateString('pt-BR');
+
+                const nome = await redeSocialModel.pegarNomeUsuarioPorID(idUsuario);
+                
+                return`
+                    <div class="postagem">
+                        <p><b>${nome[0].nome_usuario}</b></p>
+                        <p>${dataFormatada}</p><br>
+
+                        <img src="${p.imagem}" class="imagemPost" alt="Não foi possível carregar essa imagem">
+
+                        <p>${p.post}</p>
+                    </div>
+                    
+                `
+            }
+        }))
 
         const postagens = postagem.join("<br>");
 

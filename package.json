@@ -12,10 +12,12 @@
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.3.0",
+    "cloudinary": "^2.11.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
     "mysql2": "^3.22.6",
     "resend": "^6.22.1"
   },

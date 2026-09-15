@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs')
 const { Resend } = require('resend');
 const dotenv = require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const cloudinary = require("cloudinary").v2;
+
 
 const usuarioRoutes = require('./routes/usuarioRoutes')
 const plantasUsuarioRoutes = require('./routes/plantasUsuarioRoutes')

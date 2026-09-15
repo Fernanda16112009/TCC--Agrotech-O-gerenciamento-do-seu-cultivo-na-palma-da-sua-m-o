@@ -350,6 +350,17 @@ input::placeholder {
     height: 50px;
 }
 
+.imagemPost {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.postagem {
+    border: 1px solid black;
+    padding: 20px;
+    margin-bottom: 20px;
+}
 .safraNome {
     resize: none;
 }

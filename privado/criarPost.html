@@ -12,8 +12,9 @@
     </header>
     <main>
         <div>
-            <form action="/redeSocial/criarPostagem" method="post">
+            <form action="/redeSocial/criarPostagem" method="post" enctype="multipart/form-data">
                 <textarea name="post" id="post" class="post" rows="15"  placeholder="Compartilhe conselhos e dúvidas sobre suas plantas"></textarea><br><br>
+                <input type="file" name="imagem" class="imagem"><br><br>
                 <label for="text">Sobre qual Planta você está falando?</label><br><br>
                 <select name="tipoPlanta">
                     <option value="tipoceno1">Tipo cenoura 1</option>

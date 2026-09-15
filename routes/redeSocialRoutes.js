@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const path = require('path');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const redeSocialController = require('../Controllers/redeSocialController')
 
@@ -11,7 +13,7 @@ router.get('/postagem', (req, res) => {
 
 
 // funções
-router.post('/criarPostagem', redeSocialController.criarPost);
+router.post('/criarPostagem', upload.single('imagem'), redeSocialController.criarPost);
 router.get('/redeSocial', redeSocialController.mostrarPosts);
 
 
