@@ -83,12 +83,71 @@ function comentar( comentario, callback){
     }
 }
 
+function pegarCurtidasPostagem(idPostagem){
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT COUNT(*) AS contadorPostagem FROM curtidapostagem WHERE idPostagem = ?`
+
+        conexao.query(sql, [idPostagem], (erro, resultado) =>{
+            if (erro) {
+                reject(erro);
+            } else{
+                resolve(resultado)
+            }
+        })
+    })
+}
+
+function checarCurtida(curtida){
+        return new Promise((resolve, reject) =>{
+        const sql = `Select contadorPostagem from curtidapostagem where idPostagem = ? And idUsuario = ?`
+
+        conexao.query(sql, [curtida.idPostagem, curtida.idUsuario], (erro, resultado) =>{
+            if (erro) {
+                reject(erro);
+            } else{
+                resolve(resultado)
+            }
+        })
+    })
+}
+
+async function curtir(curtida, callback){
+
+    const checar =  await checarCurtida(curtida)
+    if(checar.length === 0){
+        const sql  = `
+        INSERT INTO curtidapostagem
+        (idPostagem, idUsuario, contadorPostagem)
+        VALUES (?,?,?)
+    `
+    conexao.query(sql, [
+            curtida.idPostagem,
+            curtida.idUsuario,
+            curtida.curtida,
+        ], callback)
+
+    }else{
+        const sql = `
+        DELETE From curtidapostagem
+        where idPostagem = ? 
+        And idUsuario = ?
+    `
+    conexao.query(sql, [
+        curtida.idPostagem,
+        curtida.idUsuario,
+    ], callback)
+    }
+
+}
+
+
 
 module.exports = {
     criarPost,
     pegarPosts,
     pegarNomeUsuarioPorID,
     pegarComentarios,
-    comentar
+    comentar,
+    pegarCurtidasPostagem,
+    curtir
 }
-

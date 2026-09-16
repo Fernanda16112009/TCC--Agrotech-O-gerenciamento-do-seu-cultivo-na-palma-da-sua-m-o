@@ -17,6 +17,8 @@ router.post('/criarPostagem', upload.single('imagem'), redeSocialController.cria
 router.get('/redeSocial', redeSocialController.mostrarPosts);
 router.get('/comentarios/:idPostagem', redeSocialController.mostrarComentarios);
 router.post('/criarComentario/:idPostagem', upload.single('imagem'), redeSocialController.comentar);
+router.post('/curtir/:idPostagem/:curtida', redeSocialController.curtir);
+
 
 
 

@@ -48,15 +48,22 @@ async function mostrarPosts(req,res){
 
         const postagem  = await Promise.all (posts.map( async p =>{ 
             
+            const idUsuario = p.idUsuario;
+
+            const data = new Date(p.dataPostagem);
+
+            const dataFormatada = data.toLocaleDateString('pt-BR');
+
+            const nome = await redeSocialModel.pegarNomeUsuarioPorID(idUsuario);
+
+            const curtida = await redeSocialModel.pegarCurtidasPostagem(p.idPostagem)
+
+            if(curtida.length === 0){
+                curtida.contadorPostagem = 0
+            }else{
+                curtida.contadorPostagem = curtida[0].contadorPostagem
+            }
             if(p.imagem === null){
-                const idUsuario = p.idUsuario;
-
-                const data = new Date(p.dataPostagem);
-
-                const dataFormatada = data.toLocaleDateString('pt-BR');
-
-                const nome = await redeSocialModel.pegarNomeUsuarioPorID(idUsuario);
-                
                 return`
                     <div class="postagem">
                         <p><b>${nome[0].nome_usuario}</b></p>
@@ -66,18 +73,13 @@ async function mostrarPosts(req,res){
                             <button type="submit">Comentarios</button>
                         </form>
 
+                        <form action="/redeSocial/curtir/${p.idPostagem}/${curtida.contadorPostagem}" method="post">
+                            <button type="submit">${curtida.contadorPostagem}</button>
+                        </form>
 
                     </div>
                 `
             }else{
-                const idUsuario = p.idUsuario;
-
-                const data = new Date(p.dataPostagem);
-
-                const dataFormatada = data.toLocaleDateString('pt-BR');
-
-                const nome = await redeSocialModel.pegarNomeUsuarioPorID(idUsuario);
-                
                 return`
                     <div class="postagem">
                         <p><b>${nome[0].nome_usuario}</b></p>
@@ -87,6 +89,9 @@ async function mostrarPosts(req,res){
 
                         <form action="/redeSocial/comentarios/${p.idPostagem}" method="get">
                             <button type="submit">Comentarios</button>
+                        </form>
+                        <form action="/redeSocial/curtir/${p.idPostagem}" method="get">
+                            <button type="submit">${curtida.contadorPostagem}</button>
                         </form>
                         
                     </div>
@@ -307,9 +312,28 @@ async function mostrarComentarios(req,res){
     }
 }
 
+function curtir (req,res){
+    req.body.idUsuario =  req.session.usuario.idUsuario
+    req.body.idPostagem = req.params.idPostagem
+    let curtida = req.params.curtida
+    curtida = Number(curtida)
+    curtida +=  1
+    req.body.curtida = curtida
+
+    redeSocialModel.curtir(req.body, (erro) =>{
+        if (erro) {
+            console.log(erro)
+            return res.send('Erro ao curtir.')
+        }
+        res.redirect('/redeSocial/redeSocial')
+    })    
+
+}
+
 module.exports = {
     criarPost,
     mostrarPosts,
     mostrarComentarios,
-    comentar
+    comentar,
+    curtir
 }
