@@ -15,6 +15,10 @@ router.get('/postagem', (req, res) => {
 // funções
 router.post('/criarPostagem', upload.single('imagem'), redeSocialController.criarPost);
 router.get('/redeSocial', redeSocialController.mostrarPosts);
+router.get('/comentarios/:idPostagem', redeSocialController.mostrarComentarios);
+router.post('/criarComentario/:idPostagem', upload.single('imagem'), redeSocialController.comentar);
+
+
 
 
 module.exports = router

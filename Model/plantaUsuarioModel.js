@@ -87,7 +87,6 @@ function cadastrarAnotacao( anotacao, idUsuario, idPlanta,  callback){
         WHERE idUsuario = ?
         AND idPlanta = ?
         `
-    console.log(anotacao)
     conexao.query(sql, [
         anotacao.anotacao,
         idUsuario,

@@ -350,6 +350,12 @@ input::placeholder {
     height: 50px;
 }
 
+.comentario{
+    resize: none;
+    width: 500px;
+    height: 20px;
+}
+
 .imagemPost {
     width: 400px;
     height: 300px;

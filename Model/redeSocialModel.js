@@ -50,8 +50,45 @@ function pegarNomeUsuarioPorID(idUsuario) {
     });
 }
 
+function pegarComentarios(idPostagem, callback){
+    const sql = `SELECT idUsuario, imagem, comentario, dataComentario FROM comentarios WHERE idPostagem = ?`
+    conexao.query(sql, [idPostagem], callback)
+}
+
+function comentar( comentario, callback){
+
+    if(comentario.imagem){
+        const sql = `
+        INSERT INTO comentarios
+        (idPostagem, idUsuario, imagem, comentario)
+        VALUES (?, ?, ?, ?)
+    `
+    conexao.query(sql, [
+        comentario.idPostagem,
+        comentario.idUsuario,
+        comentario.imagem,
+        comentario.comentario,
+    ], callback)
+    }else{
+        const sql = `
+        INSERT INTO comentarios
+        (idPostagem, idUsuario, comentario)
+        VALUES (?, ?, ?)
+    `
+    conexao.query(sql, [
+        comentario.idPostagem,
+        comentario.idUsuario,
+        comentario.comentario,
+    ], callback)
+    }
+}
+
+
 module.exports = {
     criarPost,
     pegarPosts,
-    pegarNomeUsuarioPorID
+    pegarNomeUsuarioPorID,
+    pegarComentarios,
+    comentar
 }
+
