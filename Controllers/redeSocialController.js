@@ -116,6 +116,9 @@ async function mostrarPosts(req,res){
                         <form action="/redeSocial/postagem" method="get">
                             <button type="submit">Criar Postagem</button>
                         </form>
+                        <form action="/" method="get">
+                            <button class="btn_pg_inicial">Voltar</button><br><br>
+                        </form>  
                     </div>
                     
                     <br><br><br>
@@ -229,6 +232,9 @@ async function mostrarComentarios(req,res){
                         <input type="file" name="imagem" class="imagem"><br><br>
                         <button type="submit">Enviar</button>
                     </form><br>
+                    <form action="/redeSocial/redeSocial" method="get">
+                        <button class="btn_pg_inicial">Voltar</button><br><br>
+                    </form>   
                     </div>
                     <br><br><br>
 
