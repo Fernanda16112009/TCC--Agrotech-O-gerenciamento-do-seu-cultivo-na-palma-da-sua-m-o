@@ -972,3 +972,292 @@ footer {
 
     text-align: center;
 }
+
+/* =========================================================
+   REDE SOCIAL - ESTILO EXCLUSIVO
+   Estas regras só funcionam quando o <body> possui
+   class="rede-social". Assim, não alteram as outras páginas.
+   ========================================================= */
+
+body:has(.postagem) {
+    background: #f4faef;
+    color: #222;
+    text-align: left;
+}
+
+body:has(.postagem) header {
+    width: 100%;
+    max-width: 720px;
+    margin: 25px auto 15px;
+    padding: 0 18px;
+    text-align: center;
+}
+
+body:has(.postagem) .titulo {
+    font-size: 2.1rem;
+    color: #111;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+body:has(.postagem) .subtitulo {
+    margin: 4px 0 0;
+    font-size: 1.15rem;
+    color: #79B86C;
+    font-weight: bold;
+}
+
+body:has(.postagem) main {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 15px 35px;
+    display: block;
+}
+
+body:has(.postagem) main > div:first-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+body:has(.postagem) main > div:first-child form {
+    margin: 0;
+}
+
+body:has(.postagem) main > div:first-child button {
+    min-height: 40px;
+    padding: 8px 17px;
+    border: none;
+    border-radius: 20px;
+    background: #79B86C;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+body:has(.postagem) main > div:first-child button:hover {
+    background: #67a45b;
+}
+
+body:has(.postagem) main > div:nth-child(2) {
+    width: 100%;
+}
+
+body:has(.postagem) .postagem {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 16px;
+    padding: 14px 14px 12px;
+    background: #fff;
+    border: 1px solid #dce9d8;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Nome do usuário */
+body:has(.postagem) .postagem > p:nth-of-type(1) {
+    order: 1;
+    margin: 0 0 2px;
+    font-size: 1rem;
+    color: #222;
+}
+
+/* Data */
+body:has(.postagem) .postagem > p:nth-of-type(2) {
+    order: 2;
+    margin: 0 0 10px;
+    font-size: 0.78rem;
+    color: #777;
+}
+
+/* Esconde os <br> usados na versão anterior do HTML */
+body:has(.postagem) .postagem > br {
+    display: none;
+}
+
+/* Imagem */
+body:has(.postagem) .postagem .imagemPost {
+    order: 3;
+    display: block;
+    width: 100%;
+    max-width: 570px;
+    height: 300px;
+    margin: 0 auto 10px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Texto da postagem */
+body:has(.postagem) .postagem > p:nth-of-type(3) {
+    order: 4;
+    margin: 0 0 10px;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #222;
+    text-align: left;
+}
+
+/* Formulários de comentários e curtidas */
+body:has(.postagem) .postagem form {
+    margin: 0;
+}
+
+/* Área dos botões no final do post */
+body:has(.postagem) .postagem form:nth-of-type(1) {
+    order: 5;
+    display: inline-block;
+}
+
+body:has(.postagem) .postagem form:nth-of-type(2) {
+    order: 6;
+    display: inline-block;
+}
+
+/* Botões dos posts */
+body:has(.postagem) .postagem form button {
+    min-height: 34px;
+    margin-top: 3px;
+    padding: 5px 13px;
+    border: 1px solid #cfdcc9;
+    border-radius: 18px;
+    background: #f4f8f2;
+    color: #1b4d2e;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+body:has(.postagem) .postagem form button:hover {
+    background: #e4eee1;
+}
+
+/* Formulários de criação de postagem/comentário */
+body:has(.postagem) textarea.post,
+body:has(.postagem) textarea.comentario {
+    width: 100%;
+    max-width: 600px;
+    min-height: 100px;
+    height: auto;
+    padding: 12px 15px;
+    border: 1px solid #d3dfcf;
+    border-radius: 12px;
+    background: white;
+    resize: vertical;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+}
+
+body:has(.postagem) textarea.post:focus,
+body:has(.postagem) textarea.comentario:focus {
+    border-color: #79B86C;
+}
+
+/* Rodapé: mantém a mesma padronização do CSS original */
+body:has(.postagem) footer {
+    width: 100%;
+    margin-top: auto;
+    background: #1b4d2e;
+    color: #fff;
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 1rem;
+}
+
+body:has(.postagem) .footer-conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+body:has(.postagem) .footer-conteudo h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+body:has(.postagem) .footer-conteudo p {
+    margin: 0;
+}
+
+body:has(.postagem) .footer-conteudo a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+body:has(.postagem) .footer-conteudo a:hover {
+    opacity: 0.8;
+}
+
+body:has(.postagem) .footer-conteudo .copyright {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+/* Página de comentários */
+body:has(.postagem) .comentario {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* No celular, o feed fica mais próximo do modelo da imagem */
+@media (max-width: 600px) {
+    body:has(.postagem) header {
+        margin-top: 18px;
+        margin-bottom: 10px;
+        padding: 0 12px;
+    }
+
+    body:has(.postagem) .titulo {
+        font-size: 1.8rem;
+    }
+
+    body:has(.postagem) .subtitulo {
+        font-size: 1rem;
+    }
+
+    body:has(.postagem) main {
+        padding: 0 8px 25px;
+    }
+
+    body:has(.postagem) main > div:first-child {
+        margin-bottom: 12px;
+    }
+
+    body:has(.postagem) main > div:first-child button {
+        min-height: 36px;
+        padding: 7px 13px;
+        font-size: 0.88rem;
+    }
+
+    body:has(.postagem) .postagem {
+        max-width: 100%;
+        padding: 11px;
+        border-radius: 11px;
+        margin-bottom: 12px;
+    }
+
+    body:has(.postagem) .postagem .imagemPost {
+        height: 235px;
+        border-radius: 6px;
+    }
+
+    body:has(.postagem) .postagem > p:nth-of-type(1) {
+        font-size: 0.95rem;
+    }
+
+    body:has(.postagem) .postagem > p:nth-of-type(3) {
+        font-size: 0.95rem;
+    }
+}

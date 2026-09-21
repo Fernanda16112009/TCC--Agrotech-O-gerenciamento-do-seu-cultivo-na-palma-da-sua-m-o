@@ -51,7 +51,7 @@ function pegarNomeUsuarioPorID(idUsuario) {
 }
 
 function pegarComentarios(idPostagem, callback){
-    const sql = `SELECT idUsuario, imagem, comentario, dataComentario FROM comentarios WHERE idPostagem = ?`
+    const sql = `SELECT * FROM comentarios WHERE idPostagem = ?`
     conexao.query(sql, [idPostagem], callback)
 }
 
@@ -111,6 +111,20 @@ function checarCurtida(curtida){
     })
 }
 
+function checarCurtidaComentario(curtida){
+        return new Promise((resolve, reject) =>{
+        const sql = `Select contadorComentarios from curtidacomentario where idComentario = ? And idUsuario = ?`
+
+        conexao.query(sql, [curtida.idComentario, curtida.idUsuario], (erro, resultado) =>{
+            if (erro) {
+                reject(erro);
+            } else{
+                resolve(resultado)
+            }
+        })
+    })
+}
+
 async function curtir(curtida, callback){
 
     const checar =  await checarCurtida(curtida)
@@ -140,7 +154,48 @@ async function curtir(curtida, callback){
 
 }
 
+function pegarCurtidasComentarios(idComentario){
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT COUNT(*) AS contadorComentarios FROM curtidacomentario WHERE idComentario = ?`
 
+        conexao.query(sql, [idComentario], (erro, resultado) =>{
+            if (erro) {
+                reject(erro);
+            } else{
+                resolve(resultado)
+            }
+        })
+    })
+}
+
+async function curtirComentario(curtida, callback){
+
+    const checar =  await checarCurtidaComentario(curtida)
+    if(checar.length === 0){
+        const sql  = `
+        INSERT INTO curtidacomentario
+        (idComentario, idUsuario, contadorComentarios)
+        VALUES (?,?,?)
+    `
+    conexao.query(sql, [
+            curtida.idComentario,
+            curtida.idUsuario,
+            curtida.curtida,
+        ], callback)
+
+    }else{
+        const sql = `
+        DELETE From curtidacomentario
+        where idComentario = ? 
+        And idUsuario = ?
+    `
+    conexao.query(sql, [
+        curtida.idComentario,
+        curtida.idUsuario,
+    ], callback)
+    }
+
+}
 
 module.exports = {
     criarPost,
@@ -149,5 +204,9 @@ module.exports = {
     pegarComentarios,
     comentar,
     pegarCurtidasPostagem,
-    curtir
+    checarCurtida,
+    curtir,
+    pegarCurtidasComentarios,
+    checarCurtidaComentario,
+    curtirComentario
 }

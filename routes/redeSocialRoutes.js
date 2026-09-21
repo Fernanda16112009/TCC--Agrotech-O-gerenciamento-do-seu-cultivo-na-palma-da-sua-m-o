@@ -18,9 +18,7 @@ router.get('/redeSocial', redeSocialController.mostrarPosts);
 router.get('/comentarios/:idPostagem', redeSocialController.mostrarComentarios);
 router.post('/criarComentario/:idPostagem', upload.single('imagem'), redeSocialController.comentar);
 router.post('/curtir/:idPostagem/:curtida', redeSocialController.curtir);
-
-
-
+router.post('/curtirComentario/:idComentario/:idPostagem/:curtida', redeSocialController.curtirComentario);
 
 
 module.exports = router

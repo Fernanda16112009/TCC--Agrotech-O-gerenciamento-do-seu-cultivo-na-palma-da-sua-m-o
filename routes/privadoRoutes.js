@@ -97,4 +97,8 @@ router.get('/cadastroPlantaUsuario.js', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'cadastroPlantaUsuario.js'));
 });
 
+router.get('/teste', (req, res) => {
+    res.sendFile(path.join (__dirname, '..','teste.html'));
+});
+
 module.exports = router
