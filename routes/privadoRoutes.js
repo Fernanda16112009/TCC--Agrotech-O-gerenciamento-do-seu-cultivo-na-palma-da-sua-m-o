@@ -70,21 +70,39 @@ router.get('/tipos/:planta/:tipo', (req, res) => {
     res.redirect(`/privado/cadastroPlanta?planta=${planta}&tipo=${tipo}`);
 });
 
-router.get('/instrucoesPlantas/:planta', (req, res) => {
-    let planta = req.params.planta
+router.get('/instrucoesPlantas/:tipoPlanta', (req, res) => {
+    let tipoPlanta = req.params.tipoPlanta
 
-    switch (planta) {
-        case "morango":
-            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','morango.html'));
+    switch (tipoPlanta) {    
+        case "morangoAlbino":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','morangoAlbion.html'));
             break;
-        case "cenoura":
-            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','cenoura.html'));
+        case "morangoCaminoReal":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','morangoCaminoReal.html'));            
             break;
-        case "pepino":
-            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','pepino.html'));
+        case "morangoSanAndreas":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','morangoSanAndreas.html'));            
             break;
-        case "tomate":
-            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','tomate.html'));
+        case "cenouraTradicional":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','cenoura.html'));            
+            break;
+        case "pepinoCaipira":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','pepinoCaipira.html'));            
+            break;
+        case "pepinoConserva":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','pepinoConserva.html'));            
+            break;
+        case "pepinoJapones":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','pepinoJapones.html'));            
+            break;
+        case "tomateCereja":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','tomateCereja.html'));            
+            break;
+        case "tomateLongaVida":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','tomateLongaVida.html'));            
+            break;
+        case "tomateSaladete":
+            res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','tomateSaladete.html'));            
             break;
     }
 });

@@ -52,8 +52,6 @@ function Choveu() {
 
         const chuva = c.resultado.daily.rain_sum[0];
 
-        console.log(c.nomeSafra, chuva);
-
         if (chuva === 0) {
             plantasSemChuva.push(c.nomeSafra);
         } else {
@@ -62,8 +60,6 @@ function Choveu() {
 
     });
 
-    console.log("plantas com chuva:", plantasComChuva);
-    console.log("plantas sem chuva:", plantasSemChuva);
 
     // Mensagem para plantas que tiveram chuva
     if (plantasComChuva.length > 0) {

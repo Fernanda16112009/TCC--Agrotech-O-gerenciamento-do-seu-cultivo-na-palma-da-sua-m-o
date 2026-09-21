@@ -68,19 +68,37 @@ function criarPlantaUsuario(req, res) {
                 return res.send('Erro ao cadastrar planta.')
             }
 
-            switch (req.body.planta){
+            switch (tipoPlanta){
 
-                case "morango":
-                    res.redirect('/privado/instrucoesPlantas/morango');
+                case "morangoAlbino":
+                    res.redirect('/privado/instrucoesPlantas/morangoAlbino');
                     break;
-                case "cenoura":
-                    res.redirect('/privado/instrucoesPlantas/cenoura');
+                case "morangoCaminoReal":
+                    res.redirect('/privado/instrucoesPlantas/morangoCaminoReal');
                     break;
-                case "pepino":
-                    res.redirect('/privado/instrucoesPlantas/pepino');
+                case "morangoSanAndreas":
+                    res.redirect('/privado/instrucoesPlantas/morangoSanAndreas');
                     break;
-                case "tomate":
-                    res.redirect('/privado/instrucoesPlantas/tomate');
+                case "cenouraTradicional":
+                    res.redirect('/privado/instrucoesPlantas/cenouraTradicional');
+                    break;
+                case "pepinoCaipira":
+                    res.redirect('/privado/instrucoesPlantas/pepinoCaipira');
+                    break;
+                case "pepinoConserva":
+                    res.redirect('/privado/instrucoesPlantas/pepinoConserva');
+                    break;
+                case "pepinoJapones":
+                    res.redirect('/privado/instrucoesPlantas/pepinoJapones');
+                    break;
+                case "tomateCereja":
+                    res.redirect('/privado/instrucoesPlantas/tomateCereja');
+                    break;
+                case "tomateLongaVida":
+                    res.redirect('/privado/instrucoesPlantas/tomateLongaVida');
+                    break;
+                case "tomateSaladete":
+                    res.redirect('/privado/instrucoesPlantas/tomateSaladete');
                     break;
             } 
         })
