@@ -1,0 +1,185 @@
+/* =========================
+   global.css
+   ========================= */
+
+/* =========================
+   RESET E BASE
+   ========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef8ea;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+/* =========================
+   CONTAINER DE INSTRUÇÕES DE CULTIVO
+   ========================= */
+.conteudo-principal {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+.secao-instrucoes {
+    width: 100%;
+    background: white;
+    border: 1px solid #d9e6d5;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+    padding: 40px;
+    text-align: left; 
+}
+
+/* =========================
+   CABEÇALHO DA PLANTA (FOTO + TÍTULO)
+   ========================= */
+.cabecalho-planta {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.icone-planta {
+    width: 70px;
+    height: 70px;
+    background-color: #ece8ec;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+    border: 1px solid #d9e6d5;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    flex-shrink: 0; 
+}
+
+.titulos-planta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.titulos-planta h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #222;
+    margin: 0;
+}
+
+.titulos-planta span {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 2px;
+}
+
+/* IDs das Imagens (Coloque os links aqui) */
+#img-morango-albion        { background-image: url('imagens/morangoAlb.jpeg'); }
+#img-morango-san-andreas   { background-image: url('imagens/morangoSan.jpeg'); }
+#img-morango-camino-real   { background-image: url('imagens/morangoCam.jpeg'); }
+#img-pepino-caipira        { background-image: url('imagens/pepinoCai.webp'); }
+#img-pepino-japones        { background-image: url('imagens/pepinoJap.webp'); }
+#img-pepino-conserva       { background-image: url('imagens/pepinoCon.jpg'); }
+#img-tomate-cereja         { background-image: url('imagens/tomateCer.jpeg'); }
+#img-tomate-longa-vida     { background-image: url('imagens/tomateLon.jpeg'); }
+#img-tomate-saladete       { background-image: url('imagens/tomateSal.jpeg'); }
+#img-cenoura               { background-image: url('imagens/cenoura.jpg'); }
+
+/* =========================
+   ARTIGOS E DICAS
+   ========================= */
+.dica-cultivo {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eef7eb;
+}
+
+.dica-cultivo:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.dica-cultivo h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1b4d2e;
+    margin-bottom: 12px;
+}
+
+.dica-cultivo p, .dica-cultivo li {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.dica-cultivo ul {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.dica-cultivo strong {
+    color: #222;
+}
+
+.metodo-plantio {
+    background: #f8fbf7;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 4px solid #79B86C;
+    margin-bottom: 15px;
+}
+
+.metodo-plantio h4 {
+    font-size: 1.2rem;
+    color: #222;
+    margin-bottom: 6px;
+}
+
+.metodo-plantio p {
+    margin-bottom: 0;
+}
+
+/* =========================
+   RESPONSIVIDADE (MOBILE)
+   ========================= */
+@media (max-width: 768px) {
+    .secao-instrucoes {
+        padding: 20px;
+    }
+    
+    .cabecalho-planta {
+        gap: 12px;
+    }
+    
+    .icone-planta {
+        width: 60px;
+        height: 60px;
+    }
+
+    .titulos-planta h2 {
+        font-size: 1.5rem;
+    }
+    
+    .titulos-planta span {
+        font-size: 1rem;
+    }
+
+    .dica-cultivo h3 {
+        font-size: 1.3rem;
+    }
+}
