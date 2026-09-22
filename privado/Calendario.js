@@ -6,23 +6,84 @@ let plantas = []
 let plantasAdm = []
 let clima = []
 
-async function pegarPlantasCalendario() {   
-    let resultado =  await fetch('/calendario/pegarPlantasCalendario') 
+const imagensPorTipo = {
+    morangoAlbino: 'morangoAlb.png',
+    morangoCaminoReal: 'morangoCam.png',
+    morangoSanAndreas: 'morangoSan.png',
+    cenouraTradicional: 'cenouraTrad.png',
+    pepinoCaipira: 'pepinoCai.png',
+    pepinoConserva: 'pepinoCon.png',
+    pepinoJapones: 'pepinoJap.png',
+    tomateCereja: 'tomateCer.png',
+    tomateLongaVida: 'tomateLon.png',
+    tomateSaladete: 'tomateSal.png'
+};
 
-    plantas =  await resultado.json()
+function formatarNomePlanta(texto) {
+    const comEspacos = texto.replace(/([A-Z])/g, ' $1').trim();
+    return comEspacos.charAt(0).toUpperCase() + comEspacos.slice(1);
+}
+
+function criarIconePlanta(p, colheita) {
+    const item = document.createElement('div');
+    item.className = 'dia-planta';
+    item.title = colheita ? `${formatarNomePlanta(p.safraNome)} - dia da colheita` : formatarNomePlanta(p.safraNome);
+
+    const img = document.createElement('img');
+    img.src = `/privado/img/${imagensPorTipo[p.tipoPlanta] || ''}`;
+    img.alt = p.safraNome;
+    item.appendChild(img);
+
+    if (colheita) {
+        const selo = document.createElement('span');
+        selo.className = 'colheita-badge';
+        selo.textContent = '🧺';
+        item.appendChild(selo);
+    }
+
+    return item;
+}
+
+async function pegarPlantasCalendario() {   
+    const resposta = await fetch('/calendario/pegarPlantasCalendario')
+
+    if (!resposta.ok) {
+        console.error('Erro ao buscar plantas do calendário:', resposta.status, await resposta.text())
+        plantas = []
+        return
+    }
+
+    plantas = await resposta.json()
 }
 
 async function pegarPlantasAdmCalendario() { 
-    let resultadoADM =  await fetch('/calendario/pegarPlantasAdmCalendario') 
+    const respostaADM = await fetch('/calendario/pegarPlantasAdmCalendario')
 
-    plantasAdm =  await resultadoADM.json()
+    if (!respostaADM.ok) {
+        console.error('Erro ao buscar plantas ADM do calendário:', respostaADM.status, await respostaADM.text())
+        plantasAdm = []
+        return
+    }
+
+    plantasAdm = await respostaADM.json()
 }
 
 async function pegarClima(plantas) {
     for( const p of plantas){
+        if (p.latitude == null || p.longitude == null) {
+            console.warn(`Planta "${p.safraNome}" ainda não tem localização definida, pulando busca de clima.`)
+            continue
+        }
+
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${p.latitude}&longitude=${p.longitude}&daily=rain_sum&timezone=auto`;
 
-        let resultado = await fetch(url)
+        const resultado = await fetch(url)
+
+        if (!resultado.ok) {
+            console.error(`Erro ao buscar clima de "${p.safraNome}":`, resultado.status, await resultado.text())
+            continue
+        }
+
         clima.push( { nomeSafra:p.safraNome , resultado: await resultado.json()})
 
     }
@@ -76,7 +137,7 @@ function Choveu() {
 
             planta.className = 'planta-popup';
 
-            planta.textContent = `🌱 ${nome}`;
+            planta.textContent = `🌱 ${formatarNomePlanta(nome)}`;
 
             lista.appendChild(planta);
 
@@ -100,7 +161,7 @@ function Choveu() {
 
             planta.className = 'planta-popup';
 
-            planta.textContent = `🌱 ${nome}`;
+            planta.textContent = `🌱 ${formatarNomePlanta(nome)}`;
 
             lista.appendChild(planta);
 
@@ -116,6 +177,12 @@ function Choveu() {
 document.getElementById('fechar-popup').addEventListener('click', () => {
 
     document.getElementById('popup-regas').style.display = 'none';
+
+});
+
+document.getElementById('btn-abrir-popup-regas').addEventListener('click', () => {
+
+    document.getElementById('popup-regas').style.display = 'flex';
 
 });
 
@@ -150,6 +217,10 @@ async function renderizar() {
         let td = document.createElement('td');
         td.textContent = dia;
 
+        const iconesContainer = document.createElement('div');
+        iconesContainer.className = 'dia-icones';
+        td.appendChild(iconesContainer);
+
         const dataCalendario = new Date(ano, mes, dia);
 
         plantas.forEach(async p  => {
@@ -164,9 +235,7 @@ async function renderizar() {
                 dataPlanta.getUTCMonth() === mes &&
                 dataPlanta.getUTCFullYear() === ano
             ) {
-                let pa = document.createElement('p')
-                pa.textContent = p.safraNome
-                td.appendChild(pa)
+                iconesContainer.appendChild(criarIconePlanta(p, false))
             }
 
             if(
@@ -174,9 +243,7 @@ async function renderizar() {
                 dataCalendario.getUTCMonth() === dataColheita.getUTCMonth() &&
                 dataCalendario.getUTCFullYear() === dataColheita.getUTCFullYear()
             ){
-                let pc = document.createElement('p')
-                pc.textContent = `${p.safraNome} dia da colheita`
-                td.appendChild(pc)
+                iconesContainer.appendChild(criarIconePlanta(p, true))
             }
 
             

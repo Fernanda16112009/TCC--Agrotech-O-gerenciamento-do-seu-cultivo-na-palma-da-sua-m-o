@@ -4,57 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro da planta</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/privado/privadoStyle.css">
 </head>
 <body>
     <header>
         <h1 class="titulo">AgroTech</h1>
     </header>
     <main>
-        <div class="cadastro">
-            <h3 class="subtitulo">Cadastre sua planta</h3><br><br>
-            <form action="/planta" method="post">
-                <div>
-                    <input type="hidden" id="planta" name="planta" required>
-                </div>
-                <div>
-                    <input type="hidden" id="tipoPlanta" name="tipoPlanta" required>
-                </div>
-                <div class="cadastro_form">
-                    <label for="quantidade" class="form_pergunta">Quantas sementes serão plantadas?</label><br>
-                    <input type="text" name="quantidade" required>
-                </div><br>
+        <div class="cadastro-pagina">
+            <h3 class="subtitulo">Cadastre sua planta</h3>
 
-                <div class="cadastro_form">
-                    <label for="localizacao" class="form_pergunta">Onde está localizado a sua planta? Certifique-se de que seu aparelho esteja no local da plantação</label><br>
-                    <input type="hidden"  id="longitude" name="longitude" required>
-                    <input type="hidden" id="latitude" name="latitude" required>
-                    <button type="button" id="btn_mapa">Selecionar localização</button>
+            <div class="cadastro-card">
+                <form action="/planta" method="post" id="formCadastroPlanta" novalidate>
+                    <input type="hidden" id="planta" name="planta">
+                    <input type="hidden" id="tipoPlanta" name="tipoPlanta">
 
-                    <p id="mensagemLocalizacao"></p>
-                </div><br>
+                    <div class="campo" id="campo-quantidade">
+                        <label for="quantidade" class="form_pergunta">Quantas sementes serão plantadas?</label>
+                        <input type="text" id="quantidade" name="quantidade" inputmode="numeric" placeholder="Ex: 12">
+                        <span class="campo-erro" id="erro-quantidade"></span>
+                    </div>
 
-                <div class="cadastro_form">
-                    <label for="data_plantacao" class="form_pergunta">Quando sua planta foi plantado?</label><br>
-                    <input type="date" name="data_plantacao" required>
-                </div><br>
-                
-                <div class="cadastro_form">
-                    <label for="agrotoxico" class="form_pergunta">Será utilizado algum tipo de agrotóxico?</label><br>
-                    <select name="agrotoxico">
-                        <option value=""></option>
-                        <option value="sim">Sim</option>
-                        <option value="nao">Não</option>
-                    </select>
-                </div><br>
+                    <div class="campo" id="campo-localizacao">
+                        <label class="form_pergunta">Onde está localizado a sua planta? Certifique-se de que seu aparelho esteja no local da plantação</label>
+                        <input type="hidden" id="longitude" name="longitude">
+                        <input type="hidden" id="latitude" name="latitude">
+                        <button type="button" id="btn_mapa" class="btn-localizacao">Selecionar localização</button>
+                        <p id="mensagemLocalizacao" class="mensagem-localizacao"></p>
+                        <span class="campo-erro" id="erro-localizacao"></span>
+                    </div>
 
-                <div>
-                <button type="submit" class="btn_cadastro_usuario">Cadastrar planta</button>
-                </div>
-            </form>
-            <form action="/privado/escolherPlanta" method="get">
-                <button class="btn_pg_inicial">Voltar</button><br><br>
-            </form>
+                    <div class="campo" id="campo-data_plantacao">
+                        <label for="data_plantacao" class="form_pergunta">Quando sua planta foi plantada?</label>
+                        <input type="date" id="data_plantacao" name="data_plantacao">
+                        <span class="campo-erro" id="erro-data_plantacao"></span>
+                    </div>
+
+                    <div class="campo" id="campo-agrotoxico">
+                        <label for="agrotoxico" class="form_pergunta">Será utilizado algum tipo de agrotóxico?</label>
+                        <select id="agrotoxico" name="agrotoxico">
+                            <option value="" selected disabled>Selecione uma opção</option>
+                            <option value="sim">Sim</option>
+                            <option value="nao">Não</option>
+                        </select>
+                        <span class="campo-erro" id="erro-agrotoxico"></span>
+                    </div>
+
+                    <button type="submit" class="btn-cadastro">Cadastrar planta</button>
+                </form>
+
+                <form action="/" method="get">
+                    <button class="btn-voltar" type="submit" title="Voltar">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
         </div>
     </main>
     <footer>
@@ -79,7 +85,7 @@
         </div>
 
     </footer>
+
+    <script src="/privado/cadastroPlantaUsuario.js"></script>
 </body>
 </html>
-
-<script src="/privado/cadastroPlantaUsuario.js"></script>

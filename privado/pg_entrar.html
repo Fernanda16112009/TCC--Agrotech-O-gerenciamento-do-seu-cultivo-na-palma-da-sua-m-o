@@ -4,39 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/privado/privadoStyle.css">
 </head>
 <body>
     <header>
         <nav>
-        <h1 class="titulo">AgroTech</h1>
-        <h3 class="subtitulo">Como posso te ajudar hoje</h3>
-        <form action="/privado/configuracoes" method="get" required>
-                <button class="btn_pg_inicial">Configurações</button><br><br>
-            </form>
+            <div class="nav-top">
+
+                <form action="/privado/configuracoes" method="get">
+                    <button class="icon-btn">
+                        <img src="/privado/img/configura.png" alt="Configurações" class="icon-img">
+                    </button>
+                </form>
+            </div>
+
+            <h1 class="titulo">AgroTech</h1>
+            <h3 class="subtitulo">Como posso te ajudar hoje?</h3>
         </nav>
     </header>
+
     <main>
         <div class="cadastro_form">
             <form action="/privado/escolherPlanta" method="get">
-                <button class="btn_pg_inicial">Cadastrar Plantas</button><br><br>
-            </form>                        
+                <button class="btn_pg_inicial">
+                    <img src="/privado/img/adicionar.png" alt="" class="btn-icon">
+                    <span>Cadastrar Plantas</span>
+                </button>
+            </form>
+
             <form action="/planta/minhasPlantas" method="get">
-                <button class="btn_pg_inicial">Minhas Plantas</button><br><br>
+                <button class="btn_pg_inicial">
+                    <img src="/privado/img/cesta.png" alt="" class="btn-icon">
+                    <span>Minhas Plantas</span>
+                </button>
             </form>
 
             <form action="/privado/calendario" method="get">
-                <button class="btn_pg_inicial">Calendário</button><br><br>
-            </form>
-                <form action="/redeSocial/redeSocial" method="get">
-                <button class="btn_pg_inicial">Rede Social</button><br><br>
+                <button class="btn_pg_inicial">
+                    <img src="/privado/img/calendario.png" alt="" class="btn-icon">
+                    <span>Calendário</span>
+                </button>
             </form>
         </div>
     </main>
+
     <footer>
-
         <div class="footer-conteudo">
-
             <h3>AgroTech</h3>
 
             <p>
@@ -51,9 +64,7 @@
             <p class="copyright">
                 © 2026 AgroTech. Todos os direitos reservados.
             </p>
-
         </div>
-
     </footer>
 </body>
 </html>

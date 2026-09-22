@@ -87,16 +87,17 @@ body {
 }
 
 /* IDs das Imagens (Coloque os links aqui) */
-#img-morango-albion        { background-image: url('imagens/morangoAlb.jpeg'); }
-#img-morango-san-andreas   { background-image: url('imagens/morangoSan.jpeg'); }
-#img-morango-camino-real   { background-image: url('imagens/morangoCam.jpeg'); }
-#img-pepino-caipira        { background-image: url('imagens/pepinoCai.webp'); }
-#img-pepino-japones        { background-image: url('imagens/pepinoJap.webp'); }
-#img-pepino-conserva       { background-image: url('imagens/pepinoCon.jpg'); }
-#img-tomate-cereja         { background-image: url('imagens/tomateCer.jpeg'); }
-#img-tomate-longa-vida     { background-image: url('imagens/tomateLon.jpeg'); }
-#img-tomate-saladete       { background-image: url('imagens/tomateSal.jpeg'); }
-#img-cenoura               { background-image: url('imagens/cenoura.jpg'); }
+#img-morango-albion        { background-image: url('/privado/img/morangoAlb.png'); }
+#img-morango-san-andreas   { background-image: url('/privado/img/morangoSan.png'); }
+#img-morango-camino-real   { background-image: url('/privado/img/morangoCam.png'); }
+#img-pepino-caipira        { background-image: url('/privado/img/pepinoCai.png'); }
+#img-pepino-japones        { background-image: url('/privado/img/pepinoJap.png'); }
+#img-pepino-conserva       { background-image: url('/privado/img/pepinoCon.png'); }
+#img-tomate-cereja         { background-image: url('/privado/img/tomateCer.png'); }
+#img-tomate-longa-vida     { background-image: url('/privado/img/tomateLon.png'); }
+#img-tomate-saladete       { background-image: url('/privado/img/tomateSal.png'); }
+#img-cenoura               { background-image: url('/privado/img/cenouraTrad.png'); }
+
 
 /* =========================
    ARTIGOS E DICAS

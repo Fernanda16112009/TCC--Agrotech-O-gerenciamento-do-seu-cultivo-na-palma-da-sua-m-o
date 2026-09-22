@@ -9,7 +9,9 @@
 <body>
     <main>
         <div class="calendario-container">
-            
+
+            <h1 class="titulo-pagina">Calendário de plantio</h1>
+
             <!--
             <div id="clima-info" class="clima">
                 <span class="clima-temp">⏳ Iniciando sistemas...</span>
@@ -36,12 +38,16 @@
                 <tbody id="corpo-calendario">
                 </tbody>
             </table>
-            <form action="/" method="get" required>
-                <button class="btn_pg_inicial">Voltar</button><br><br>
-            </form> 
-            <form action="/privado/areaDePragas" method="get" required>
-                <button class="btn_pg_inicial">Área de pragas</button><br><br>
-            </form> 
+
+            <div class="botoes-calendario">
+                <button type="button" id="btn-abrir-popup-regas" class="btn_pg_inicial">💧 Conferir regas</button>
+                <form action="/" method="get" required>
+                    <button class="btn_pg_inicial">Voltar</button>
+                </form>
+                <form action="/privado/areaDePragas" method="get" required>
+                    <button class="btn_pg_inicial">Área de pragas</button>
+                </form>
+            </div>
         </div>     
     </main>
 
@@ -83,4 +89,3 @@
     <script src="/privado/calendario.js"></script>
 </body>
 </html>
-

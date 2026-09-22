@@ -1,50 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escolher Planta</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/privado/privadoStyle.css">
 </head>
 <body>
     <main>
-        <div class="tiposPlanta">
+        <div class="plantas-container">
 
-            <h1>Qual planta você quer plantar?</h1><br><br>
+            <h1 class="titulo-pagina">Qual planta você quer plantar?</h1>
 
-            <div class="tipoPlanta">
+            <div class="plantas-grid">
+
                 <form action="/privado/tipos/morango" method="get">
-                    <button class="btn_pg_inicial">Cadastrar Morango</button><br><br>
+                    <button class="card-planta card-tipo card-tipo--morango">
+                        <img src="/privado/img/morango.webp" alt="Morango" class="card-icon">
+                        <span>Morango</span>
+                        <small class="card-tipo-tag">Cadastrar</small>
+                    </button>
                 </form>
-            </div>
 
-            <div class="tipoPlanta">
                 <form action="/privado/tipos/cenoura" method="get">
-                    <button class="btn_pg_inicial">Cadastrar Cenoura</button><br><br>
+                    <button class="card-planta card-tipo card-tipo--cenoura">
+                        <img src="/privado/img/cenoura.png" alt="Cenoura" class="card-icon">
+                        <span>Cenoura</span>
+                        <small class="card-tipo-tag">Cadastrar</small>
+                    </button>
                 </form>
-            </div>
 
-            <div class="tipoPlanta">
                 <form action="/privado/tipos/tomate" method="get">
-                    <button class="btn_pg_inicial">Cadastrar Tomate</button><br><br>
+                    <button class="card-planta card-tipo card-tipo--tomate">
+                        <img src="/privado/img/tomate.webp" alt="Tomate" class="card-icon">
+                        <span>Tomate</span>
+                        <small class="card-tipo-tag">Cadastrar</small>
+                    </button>
                 </form>
+
+                <form action="/privado/tipos/pepino" method="get">
+                    <button class="card-planta card-tipo card-tipo--pepino">
+                        <img src="/privado/img/pepino.png" alt="Pepino" class="card-icon">
+                        <span>Pepino</span>
+                        <small class="card-tipo-tag">Cadastrar</small>
+                    </button>
+                </form>
+
             </div>
 
-            <div class="tipoPlanta">
-                <form action="/privado/tipos/pepino" method="get">
-                    <button class="btn_pg_inicial">Cadastrar Pepino</button><br><br>
-                </form>
-            </div><br><br>
             <form action="/" method="get">
-                    <button class="btn_pg_inicial">Voltar</button><br><br>
-            </form>            
+                <button class="btn-voltar" type="submit" title="Voltar">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </form>
+
         </div>
-
     </main>
+
     <footer>
-
         <div class="footer-conteudo">
-
             <h3>AgroTech</h3>
 
             <p>
@@ -59,9 +75,7 @@
             <p class="copyright">
                 © 2026 AgroTech. Todos os direitos reservados.
             </p>
-
         </div>
-
     </footer>
 </body>
 </html>

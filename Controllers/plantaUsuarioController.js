@@ -27,6 +27,11 @@ function pegarPlantasADMCalendario(req,res) {
     });
 }
 
+function formatarNomePlanta(texto) {
+    const comEspacos = texto.replace(/([A-Z])/g, ' $1').trim();
+    return comEspacos.charAt(0).toUpperCase() + comEspacos.slice(1);
+}
+
 function criarPlantaUsuario(req, res) {
     
     req.body.idUsuario = req.session.usuario.idUsuario;
@@ -117,18 +122,26 @@ function mostrarCategoriasPlanta(req,res){
             console.log(erro)
             return res.send('Erro ao buscar categoria das plantas.')
         }
-        
+
+        const imagensPorPlanta = {
+            morango: 'morango.webp',
+            cenoura: 'cenoura.png',
+            pepino: 'pepino.png',
+            tomate: 'tomate.webp'
+        };
 
         const cardPlanta = resultado.map(p =>{
-            const nomePlanta = p.planta.charAt(0).toUpperCase() + p.planta.slice(1);
-            return`
-            <h3>${nomePlanta}</h3><br>
+            const nomePlanta = formatarNomePlanta(p.planta);
+            const imagemPlanta = imagensPorPlanta[p.planta] || '';
 
-            <form action="/planta/${p.planta}" method="get" required>
-                    <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
-            </form>
-            
-        `}).join("<Br>")
+            return `
+                <form action="/planta/${p.planta}" method="get" required>
+                    <button class="card-planta">
+                        <img src="/privado/img/${imagemPlanta}" alt="${nomePlanta}" class="card-icon">
+                        <span>${nomePlanta}</span>
+                    </button>
+                </form>`
+            }).join("")
 
         const html = `
             <!DOCTYPE html>
@@ -137,21 +150,31 @@ function mostrarCategoriasPlanta(req,res){
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Minhas Plantas</title>
-                <link rel="stylesheet" href="/style.css">
+                <link rel="stylesheet" href="/privado/privadoStyle.css">
             </head>
             <body>
 
                 <main>
-                    <div class="form">
-                        <h1>Minhas plantas</h1><br><br>
-                        <div>
-                            ${cardPlanta}<br>
+                    <div class="plantas-container">
+                        <h1 class="titulo-pagina">Qual planta você quer verificar?</h1>
+
+                        <div class="plantas-grid">
+                            <form action="/privado/escolherPlanta" method="get" required>
+                                <button class="card-planta card-add">
+                                    <img src="/privado/img/adicionar.png" alt="Adicionar planta" class="card-icon">
+                                    <span>Adicionar planta</span>
+                                </button>
+                            </form>
+
+                            ${cardPlanta}
                         </div>
-                        <form action="/privado/escolherPlanta" method="get" required>
-                            <button class="btn_pg_inicial">Cadastrar nova planta</button><br><br>
-                        </form>
-                        <form action="/" method="get" required>
-                            <button class="btn_pg_inicial">Voltar</button><br><br>
+
+                        <form action="/" method="get">
+                            <button class="btn-voltar" type="submit" title="Voltar">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
                         </form>
                     </div>
                 </main>
@@ -196,19 +219,34 @@ function mostrarCategoriasTipoPlanta(req,res){
             return res.send('Erro ao buscar categoria dos tipos das plantas.')
         }
 
+        const imagensPorTipo = {
+            morangoAlbino: 'morangoAlb.png',
+            morangoCaminoReal: 'morangoCam.png',
+            morangoSanAndreas: 'morangoSan.png',
+            cenouraTradicional: 'cenouraTrad.png',
+            pepinoCaipira: 'pepinoCai.png',
+            pepinoConserva: 'pepinoCon.png',
+            pepinoJapones: 'pepinoJap.png',
+            tomateCereja: 'tomateCer.png',
+            tomateLongaVida: 'tomateLon.png',
+            tomateSaladete: 'tomateSal.png'
+        };
 
         const cardPlanta = resultados.map(p =>{
-            const nomeTipoPlanta = p.tipoPlanta.charAt(0).toUpperCase() + p.tipoPlanta.slice(1);
-            return`
-            <h3>${nomeTipoPlanta}</h3><br>
+            const nomeTipoPlanta = formatarNomePlanta(p.tipoPlanta);
+            const imagemTipoPlanta = imagensPorTipo[p.tipoPlanta] || '';
 
-            <form action="/planta/${planta}/${p.tipoPlanta}" method="get" required>
-                    <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
-            </form>
-            
-        `}).join("<Br>")
+            return `
+                <form action="/planta/${planta}/${p.tipoPlanta}" method="get" required>
+                    <button class="card-planta">
+                        <img src="/privado/img/${imagemTipoPlanta}" alt="${nomeTipoPlanta}" class="card-icon">
+                        <span class="card-titulo">${nomeTipoPlanta}</span>
+                        <span class="card-subtitulo">Ver safras de ${nomeTipoPlanta}</span>
+                    </button>
+                </form>`
+            }).join("")
 
-        
+
         const html = `
             <!DOCTYPE html>
             <html lang="pt-BR">
@@ -216,18 +254,24 @@ function mostrarCategoriasTipoPlanta(req,res){
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Meus tipo de ${planta}</title>
-                <link rel="stylesheet" href="/style.css">
+                <link rel="stylesheet" href="/privado/privadoStyle.css">
             </head>
             <body>
 
                 <main>
-                    <div class="form">
-                        <h1>Meus tipo de ${planta}</h1><br><br>
-                        <div>
-                            ${cardPlanta}<br>
+                    <div class="plantas-container">
+                        <h1 class="titulo-pagina">Meus tipos de ${planta}</h1>
+
+                        <div class="plantas-grid">
+                            ${cardPlanta}
                         </div>
-                        <form action="/planta/minhasPlantas" method="get" required>
-                            <button class="btn_pg_inicial">Voltar</button><br><br>
+
+                        <form action="/planta/minhasPlantas" method="get">
+                            <button class="btn-voltar" type="submit" title="Voltar">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
                         </form>
                     </div>
                 </main>
@@ -272,25 +316,40 @@ function mostrarSafraPlanta(req,res){
             console.log(erro)
             return res.send('Erro ao buscar safra das plantas.')
         }
-
-        const nomeTipoPlanta = resultado[0].tipoPlanta.charAt(0).toUpperCase() + resultado[0].tipoPlanta.slice(1);
-        
+        const nomeTipoPlanta = formatarNomePlanta(resultado[0].tipoPlanta);
         plantaUsuarioModel.atualizarSafraNome(resultado[0].safraNome, idUsuario, resultado[0].idPlanta, (erro) =>{
             
             if (erro) {
             console.log(erro)
             return res.send('Erro ao atualizar o nome da safra.')
             }
-        
-            const cardPlanta = resultado.map(p =>{
-                return`
-                <h3>${p.safraNome.charAt(0).toUpperCase() + p.safraNome.slice(1)}</h3><br>
 
-                <form action="/planta/${planta}/${p.tipoPlanta}/${p.idPlanta}" method="get" required>
-                        <button class="btn_pg_inicial">Ver Mais informações</button><br><br>
-                </form>
-                
-            `}).join("<Br>")
+            const imagensPorTipo = {
+                morangoAlbino: 'morangoAlb.png',
+                morangoCaminoReal: 'morangoCam.png',
+                morangoSanAndreas: 'morangoSan.png',
+                cenouraTradicional: 'cenouraTrad.png',
+                pepinoCaipira: 'pepinoCai.png',
+                pepinoConserva: 'pepinoCon.png',
+                pepinoJapones: 'pepinoJap.png',
+                tomateCereja: 'tomateCer.png',
+                tomateLongaVida: 'tomateLon.png',
+                tomateSaladete: 'tomateSal.png'
+            };
+
+            const cardPlanta = resultado.map(p =>{
+                const nomeSafra = formatarNomePlanta(p.safraNome)
+                const imagemTipoPlanta = imagensPorTipo[p.tipoPlanta] || '';
+
+                return `
+                    <form action="/planta/${planta}/${p.tipoPlanta}/${p.idPlanta}" method="get" required>
+                        <button class="card-planta">
+                            <img src="/privado/img/${imagemTipoPlanta}" alt="${nomeTipoPlanta}" class="card-icon">
+                            <span class="card-titulo">${nomeSafra}</span>
+                            <span class="card-subtitulo">Ver detalhes</span>
+                        </button>
+                    </form>`
+                }).join("")
 
             
             const html = `
@@ -300,18 +359,24 @@ function mostrarSafraPlanta(req,res){
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Meus tipo de ${nomeTipoPlanta}</title>
-                    <link rel="stylesheet" href="/style.css">
+                    <link rel="stylesheet" href="/privado/privadoStyle.css">
                 </head>
                 <body>
 
                     <main>
-                        <div class="form">
-                            <h1>Meus tipo de ${nomeTipoPlanta}</h1><br><br>
-                            <div>
-                                ${cardPlanta}<br>
+                        <div class="plantas-container">
+                            <h1 class="titulo-pagina">Meus tipos de ${nomeTipoPlanta}</h1>
+
+                            <div class="plantas-grid">
+                                ${cardPlanta}
                             </div>
-                            <form action="/planta/minhasPlantas" method="get" required>
-                                <button class="btn_pg_inicial">Voltar</button><br><br>
+
+                            <form action="/planta/minhasPlantas" method="get">
+                                <button class="btn-voltar" type="submit" title="Voltar">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
                             </form>
                         </div>
                     </main>
@@ -395,72 +460,115 @@ function mostrarPlantaUsuario(req,res){
 
         const agrotoxico = p.agrotoxico === "nao" ? "Não" : "Sim";
 
+        // Apenas para exibição: transforma "tomateCereja" em "Tomate Cereja"
+        // e escolhe a imagem já usada nas outras telas para esse tipo de planta.
+        function formatarNomeExibicao(texto) {
+            return texto
+                .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+                .replace(/^./, (c) => c.toUpperCase());
+        }
+
+        const imagensPorTipo = {
+            morangoAlbino: 'morangoAlb.png',
+            morangoCaminoReal: 'morangoCam.png',
+            morangoSanAndreas: 'morangoSan.png',
+            cenouraTradicional: 'cenouraTrad.png',
+            pepinoCaipira: 'pepinoCai.png',
+            pepinoConserva: 'pepinoCon.png',
+            pepinoJapones: 'pepinoJap.png',
+            tomateCereja: 'tomateCer.png',
+            tomateLongaVida: 'tomateLon.png',
+            tomateSaladete: 'tomateSal.png'
+        };
+
+        const imagemPlanta = `/privado/img/${imagensPorTipo[p.tipoPlanta] || ''}`;
+        const nomeTipoPlantaExibicao = formatarNomeExibicao(p.tipoPlanta);
+        const nomeSafraExibicao = p.safraNome.charAt(0).toUpperCase() + p.safraNome.slice(1);
+
         const html = `
             <!DOCTYPE html>
             <html lang="pt-BR">
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Ver Planta</title>
-                <link rel="stylesheet" href="/style.css">
+                <title>Ver ${nomeTipoPlantaExibicao}</title>
+            <link rel="stylesheet" href="/privado/privadoStyle.css">
             </head>
             <body>
                 <main>
-                    <fieldset>
+                    <div class="planta-pagina">
 
-                        <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}" method="post">
-                            <label>Nome da safra</label>
-                            <textarea type="text" name="safraNome" class="safraNome">${p.safraNome.charAt(0).toUpperCase() + p.safraNome.slice(1)}</textarea><br>
-                            <button type="submit">Trocar nome da safra</button>
-                        </form>
+                        <div class="planta-hero">
+                            <form action="/planta/minhasPlantas" method="get">
+                                <button class="btn-voltar" type="submit" title="Voltar">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </form>
 
-                        <br>
-                        
-                        <label>Sua planta é</label>
-                        <p>${p.tipoPlanta.charAt(0).toUpperCase() + p.tipoPlanta.slice(1)}</p>
+                            <div class="planta-imagem-wrapper">
+                                <img src="${imagemPlanta}" alt="${nomeTipoPlantaExibicao}" class="planta-imagem">
+                            </div>
 
-                        <br>
+                            <p class="planta-nome">${nomeTipoPlantaExibicao}</p>
 
-                        <label>Quantidade de sementes plantadas:</label>
-                        <p>${p.quantidade} sementes plantadas</p>
+                            <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="get">
+                                <button class="btn-anotacoes" type="submit" title="Suas anotações">
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="4" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                                        <path d="M7.5 8h7M7.5 11.5h7M7.5 15h4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
 
-                        <br>
+                        <div class="info-card">
 
-                        <label>Dia que sua semente foi plantada:</label>
-                        <p>${p.data_plantacao.toLocaleDateString()}</p>
-                        
-                        <br>
+                            <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}" method="post" class="campo">
+                                <label for="safraNome" class="form_pergunta">Nome da safra</label>
+                                <textarea id="safraNome" name="safraNome" class="safraNome">${nomeSafraExibicao}</textarea>
+                                <button type="submit" class="btn-secundario">Trocar nome da safra</button>
+                            </form>
 
-                        <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/localizacao" method="post">
-                            <label for="localizacao" class="form_pergunta">Gostaria de mudar a localização da sua planta? Certifique-se de estar no local exato em que você gostaria de plantar</label><br>
-                            <input type="hidden"  id="longitude" name="longitude" required>
-                            <input type="hidden" id="latitude" name="latitude" required>
-                            <button type="button" id="btn_mapa" >Selecionar localização</button><br>
-                            <button type="submit" >Atualizar localização</button>
-                        </form>
+                            <div class="info-item">
+                                <span class="form_pergunta">Sua planta é</span>
+                                <p class="info-valor">${nomeTipoPlantaExibicao}</p>
+                            </div>
 
-                        <p id="mensagemLocalizacao"></p>
+                            <div class="info-item">
+                                <span class="form_pergunta">Quantidade de sementes plantadas</span>
+                                <p class="info-valor">${p.quantidade} sementes plantadas</p>
+                            </div>
 
-                        <br>                        
+                            <div class="info-item">
+                                <span class="form_pergunta">Dia que sua semente foi plantada</span>
+                                <p class="info-valor">${p.data_plantacao.toLocaleDateString()}</p>
+                            </div>
 
-                        <label>Você está utilizando agrotóxicos?</label>
-                        <p>${agrotoxico}</p>
-                        
-                        <br>
+                            <div class="campo">
+                                <label for="btn_mapa" class="form_pergunta">Gostaria de mudar a localização da sua planta? Certifique-se de estar no local exato em que você gostaria de plantar</label>
+                                <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/localizacao" method="post" class="form-localizacao">
+                                    <input type="hidden" id="longitude" name="longitude" required>
+                                    <input type="hidden" id="latitude" name="latitude" required>
+                                    <button type="button" id="btn_mapa" class="btn-localizacao">Selecionar localização</button>
+                                    <p id="mensagemLocalizacao" class="mensagem-localizacao"></p>
+                                    <button type="submit" class="btn-cadastro">Atualizar localização</button>
+                                </form>
+                            </div>
 
-                        <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="get">
-                            <button class="btn_pg_inicial" type ="submit">Suas anotações</button><br><br>
-                        </form>
+                            <div class="info-item">
+                                <span class="form_pergunta">Você está utilizando agrotóxicos?</span>
+                                <p class="info-valor">${agrotoxico}</p>
+                            </div>
 
-                        <form action="/planta/${idPlanta}/deletar" method="post" required>
-                            <button class="btn_pg_inicial" onclick="return confirm('Excluir ${p.safraNome}?')">Deletar planta</button><br><br>
-                        </form>
+                            <form action="/planta/${idPlanta}/deletar" method="post" class="form-deletar">
+                                <button class="btn-perigo" type="submit" onclick="return confirm('Excluir ${p.safraNome}?')">Deletar planta</button>
+                            </form>
 
-                        <br>
-                        <form action="/planta/minhasPlantas" method="get">
-                            <button class="btn_pg_inicial">Voltar</button><br><br>
-                        </form>
-                    </fieldset>
+                        </div>
+
+                    </div>
 
                 </main>
 
@@ -533,25 +641,34 @@ function anotacoesPlanta(req,res){
 
         const html = `
             <!DOCTYPE html>
-            <html lang="en">
+            <html lang="pt-BR">
             <head>
                 <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Anotações</title>
-                <link rel="stylesheet" href="/style.css">
+                <link rel="stylesheet" href="/privado/privadoStyle.css">
             </head>
             <body>
-                <header>
-                    <h1>Anotações</h1>
-                </header>
                 <main>
-                    <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post">
-                        <label for="anotacao" class="form_pergunta">Escreva suas anotações</label><br>
-                        <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" rows="20"  placeholder="Digite suas anotações">${a.comentarios ||  "" }</textarea>
-                        <button type="submit">Salvar anotações</button>
-                    </form><br>
-                    <form action="/planta/${planta}/${tipoPlanta}/${idPlanta}" method="get" required>
-                        <button class="btn_pg_inicial">Voltar</button><br><br>
-                    </form>
+                    <div class="anotacoes-pagina">
+                        <h1 class="titulo-pagina">Anotações</h1>
+
+                        <div class="anotacoes-card">
+                            <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post" class="campo">
+                                <label for="caixa_anotacao" class="form_pergunta">Escreva suas anotações</label>
+                                <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" placeholder="Digite suas anotações">${a.comentarios || ""}</textarea>
+                                <button type="submit" class="btn-cadastro">Salvar anotações</button>
+                            </form>
+                        </div>
+
+                        <form action="/planta/${planta}/${tipoPlanta}/${idPlanta}" method="get" class="form-voltar">
+                            <button class="btn-voltar" type="submit" title="Voltar">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
                 </main>
                 <footer>
 

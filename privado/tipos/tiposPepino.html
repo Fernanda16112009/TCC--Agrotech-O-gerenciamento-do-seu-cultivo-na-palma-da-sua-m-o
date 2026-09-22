@@ -1,37 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escolher o tipo de pepipo</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Escolher o tipo de pepino</title>
+    <link rel="stylesheet" href="/privado/privadoStyle.css">
 </head>
 <body>
     <main>
-        <div class="tiposPlanta">
+        <div class="plantas-container">
 
-            <h1>Qual tipo de pepino você ira plantar?</h1><br><br>
+            <h1 class="titulo-pagina">Qual tipo de pepino você irá plantar?</h1>
 
-            <div class="tipoPlanta">
+            <div class="plantas-grid">
+
                 <form action="/privado/tipos/pepino/pepinoCaipira" method="get">
-                    <button class="btn_pg_inicial">Pepino Caipira</button><br><br>
+                    <button class="card-planta card-tipo card-tipo--pepino">
+                        <img src="/privado/img/pepinoCai.png" alt="Pepino Caipira" class="card-icon">
+                        <span>Pepino Caipira</span>
+                        <small class="card-tipo-tag">Cadastrar</small>
+                    </button>
                 </form>
-            </div>
 
-            <div class="tipoPlanta">
                 <form action="/privado/tipos/pepino/pepinoConserva" method="get">
-                    <button class="btn_pg_inicial">Pepino Conserva</button><br><br>
+                    <button class="card-planta card-tipo card-tipo--pepino">
+                        <img src="/privado/img/pepinoCon.png" alt="Pepino Conserva" class="card-icon">
+                        <span>Pepino Conserva</span>
+                        <small class="card-tipo-tag">Cadastrar</small>
+                    </button>
                 </form>
-            </div>
 
-            <div class="tipoPlanta">
                 <form action="/privado/tipos/pepino/pepinoJapones" method="get">
-                    <button class="btn_pg_inicial">Pepino Japonês</button><br><br>
+                    <button class="card-planta card-tipo card-tipo--pepino">
+                        <img src="/privado/img/pepinoJap.png" alt="Pepino Japonês" class="card-icon">
+                        <span>Pepino Japonês</span>
+                        <small class="card-tipo-tag">Cadastrar</small>
+                    </button>
                 </form>
+
             </div>
-            <form action="/privado/escolherPlanta" method="get">
-                <button class="btn_pg_inicial">Voltar</button><br><br>
+            <form action="/" method="get">
+                <button class="btn-voltar" type="submit" title="Voltar">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </form>
+
         </div>
     </main>
     <footer>
@@ -55,6 +70,6 @@
 
         </div>
 
-    </footer> 
+    </footer>
 </body>
 </html>

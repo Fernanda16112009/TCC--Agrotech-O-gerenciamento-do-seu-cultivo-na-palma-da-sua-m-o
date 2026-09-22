@@ -7,14 +7,19 @@
 
 body {
     background-image: url(FundoTCC.png);
-    background-color: #e8f5e9; 
+    background-color: #e8f5e9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    text-align: center;
+}
+
+main {
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     padding: 20px;
-    flex-direction: column;
-    text-align: center;
 }
 
 .calendario-container {
@@ -22,7 +27,15 @@ body {
     max-width: 450px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
+}
+
+.titulo-pagina {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1b4d2e;
+    text-align: center;
 }
 
 .clima {
@@ -131,16 +144,93 @@ td.inativo {
     color: #cfcfcf;
 }
 
+/* Ícones de plantio/colheita dentro de cada dia */
+.dia-icones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 4px;
+}
+
+.dia-planta {
+    position: relative;
+    width: 22px;
+    height: 22px;
+}
+
+.dia-planta img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.dia-planta .colheita-badge {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+
+    width: 13px;
+    height: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 9px;
+    line-height: 1;
+
+    background-color: #1b4d2e;
+    color: #fff;
+    border-radius: 50%;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Botões padrão (mesmo estilo de card usado nas outras páginas) */
+.botoes-calendario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn_pg_inicial {
+    width: 200px;
+
+    padding: 14px 24px;
+
+    background-color: #ffffff;
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+
+    color: #1b4d2e;
+    font-size: 1.05rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn_pg_inicial:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(27, 77, 46, 0.18);
+}
+
+.btn_pg_inicial:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(27, 77, 46, 0.18);
+}
+
 footer{
     width: 100%;
-    align-self: stretch;
-    margin-top: auto;
 
     background: #1b4d2e; /* verde escuro */
     color: #fff;
 
     text-align: center;
-    padding: 20px 0;
+    padding: 24px 0;
     font-size: 1.3rem;
 }
 
@@ -180,50 +270,100 @@ footer p{
 
     width: 400px;
     max-width: 90%;
+    max-height: 85vh;
 
     padding: 30px;
 
-    background-color: white;
+    background-color: #ffffff;
 
-    border-radius: 15px;
+    border-radius: 20px;
 
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(27, 77, 46, 0.25);
+
+    overflow-y: auto;
+}
+
+.popup::-webkit-scrollbar {
+    width: 8px;
+}
+
+.popup::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.popup::-webkit-scrollbar-thumb {
+    background-color: rgba(27, 77, 46, 0.3);
+    border-radius: 999px;
 }
 
 .popup h2 {
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 6px;
 
+    color: #1b4d2e;
+    font-size: 1.3rem;
     text-align: center;
 }
 
 #mensagem-popup {
     text-align: center;
     margin-bottom: 15px;
+
+    color: #4f7a5e;
+    font-size: 0.9rem;
 }
 
 .fechar-popup {
     position: absolute;
 
-    top: 8px;
-    right: 12px;
+    top: 12px;
+    right: 14px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border: none;
-    background: none;
+    border-radius: 50%;
+    background-color: #eaf6ea;
+    color: #1b4d2e;
 
-    font-size: 28px;
+    font-size: 20px;
+    line-height: 1;
 
     cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.fechar-popup:hover {
+    background-color: #d7ecd9;
+}
+
+#lista-plantas-popup p {
+    font-weight: 700;
+    color: #1b4d2e;
+    margin-top: 14px;
+    text-align: center;
+}
+
+#lista-plantas-popup p:first-child {
+    margin-top: 0;
 }
 
 .planta-popup {
-    padding: 10px;
+    padding: 10px 14px;
     margin-top: 8px;
 
-    border-radius: 8px;
+    border-radius: 10px;
+    border-left: 4px solid #1b4d2e;
 
-    background-color: #e8f5e9;
+    background-color: #eaf6ea;
+    color: #1b4d2e;
 
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
 }
-

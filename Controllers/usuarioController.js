@@ -205,7 +205,9 @@ function perfil(req, res){
                         <button type="submit" class="btn"> Trocar senha</button>
                     </form>
                     <br>
-                    <a href="/privado/configuracoes">Voltar</a>
+                    <form action="/" method="get" required>
+                        <button type="submit" class="btn">Voltar</button>
+                    </form>
                 </main>
                 <footer>
 

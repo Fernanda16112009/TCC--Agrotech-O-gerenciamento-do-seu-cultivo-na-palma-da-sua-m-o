@@ -1,0 +1,818 @@
+/* ===== Reset básico ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #1b4d2e;
+
+    background-color: #eaf6ea;
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(27, 77, 46, 0.05) 0, transparent 40%),
+        radial-gradient(circle at 80% 60%, rgba(27, 77, 46, 0.05) 0, transparent 40%);
+}
+
+/* ===== Header ===== */
+header {
+    padding: 16px 20px 8px;
+}
+
+.nav-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    transition: transform 0.12s ease;
+}
+
+.icon-btn:active {
+    transform: scale(0.88);
+}
+
+.icon-btn .icon-img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.titulo {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.subtitulo {
+    margin-top: 4px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #2f2f2f;
+}
+
+/* ===== Conteúdo principal ===== */
+main {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px 20px;
+}
+
+.cadastro_form {
+    width: 100%;
+    max-width: 360px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+.cadastro_form form {
+    display: flex;
+    justify-content: center;
+}
+
+/* Botões estilo "card": tamanho fixo, todos iguais ao card "Cadastrar Plantas" */
+.btn_pg_inicial {
+    width: 200px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    padding: 10px 24px;
+
+    background-color: #ffffff;
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn_pg_inicial:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(27, 77, 46, 0.18);
+}
+
+.btn_pg_inicial:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(27, 77, 46, 0.18);
+}
+
+.btn_pg_inicial .btn-icon {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+}
+
+.btn_pg_inicial span {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #1b4d2e;
+    text-align: center;
+}
+
+/* ===== Grade de plantas (ex: Minhas Plantas) ===== */
+.plantas-container {
+    width: 100%;
+    max-width: 360px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.titulo-pagina {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.plantas-grid {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.plantas-grid form {
+    width: 100%;
+}
+
+.card-planta {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+
+    padding: 10px 8px 12px;
+
+    background-color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-planta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(27, 77, 46, 0.18);
+}
+
+.card-planta:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(27, 77, 46, 0.18);
+}
+
+.card-icon {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    object-fit: contain;
+}
+
+/* Título do card (nome do tipo de planta) */
+.card-planta .card-titulo {
+    flex: 0 0 auto;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1b4d2e;
+    text-align: center;
+    line-height: 1.25;
+}
+
+/* Subtítulo "Ver safras de ..." — menor, mais leve e em destaque de cor,
+   para diferenciar claramente do título acima */
+.card-planta .card-subtitulo {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    padding-top: 4px;
+
+    border-top: 1px solid rgba(27, 77, 46, 0.12);
+
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    color: #4f7a5e;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Card "Adicionar planta": tamanho fixo (a imagem já vem pronta,
+   igual à usada na home — sem fundo/padding extra aqui) */
+.card-add .card-icon {
+    flex: 0 0 auto;
+    width: 72px;
+    height: 72px;
+    margin: auto 0;
+
+    object-fit: contain;
+}
+
+/* Cards de "tipo de planta" (ex: Escolher Planta): mesma base do card-planta,
+   com uma faixa colorida no topo e um selo para diferenciar da tela de listagem */
+.card-tipo {
+    position: relative;
+    overflow: hidden;
+    padding-top: 22px;
+}
+
+.card-tipo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+
+    background-color: var(--cor-tipo, #1b4d2e);
+}
+
+.card-tipo-tag {
+    margin-top: 2px;
+
+    padding: 3px 10px;
+
+    background-color: var(--cor-tipo, #1b4d2e);
+    color: #fff;
+
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+
+    border-radius: 999px;
+}
+
+.card-tipo--morango { --cor-tipo: #d6336c; }
+.card-tipo--cenoura { --cor-tipo: #e8590c; }
+.card-tipo--tomate  { --cor-tipo: #c92a2a; }
+.card-tipo--pepino  { --cor-tipo: #2f9e44; }
+
+/* Botão circular (ex: voltar) */
+.btn-voltar {
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #1b1b1b;
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.2);
+
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.btn-voltar:hover {
+    transform: translateY(-2px);
+}
+
+.btn-voltar:active {
+    transform: scale(0.9);
+}
+
+.btn-voltar-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* ===== Footer (original) ===== */
+footer {
+    width: 100%;
+
+    margin-top: auto;
+
+    background: #1b4d2e;
+    color: #fff;
+
+    text-align: center;
+
+    padding: 28px 20px;
+
+    font-size: 1rem;
+}
+
+.footer-conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-conteudo h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.footer-conteudo p {
+    margin: 0;
+}
+
+.footer-conteudo a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.footer-conteudo a:hover {
+    opacity: 0.8;
+}
+
+.footer-conteudo .copyright {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+/* ===== Página de cadastro de planta ===== */
+.cadastro-pagina {
+    width: 100%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.cadastro-card {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
+    padding: 24px 20px;
+
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+}
+
+.cadastro-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form_pergunta {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1b4d2e;
+    line-height: 1.35;
+}
+
+.campo input[type="text"],
+.campo input[type="date"],
+.campo select {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: 1px solid rgba(27, 77, 46, 0.25);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #1b1b1b;
+
+    background-color: #fafdf9;
+
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campo select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d2e' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 36px;
+}
+
+.campo input[type="text"]:focus,
+.campo input[type="date"]:focus,
+.campo select:focus {
+    outline: none;
+    border-color: #1b4d2e;
+    box-shadow: 0 0 0 3px rgba(27, 77, 46, 0.12);
+}
+
+.campo.campo-invalido input,
+.campo.campo-invalido select {
+    border-color: #c92a2a;
+}
+
+.campo-erro {
+    display: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #c92a2a;
+}
+
+.campo.campo-invalido .campo-erro {
+    display: block;
+}
+
+.btn-localizacao {
+    align-self: flex-start;
+
+    padding: 9px 16px;
+
+    background-color: #ffffff;
+    border: 1px solid #1b4d2e;
+    border-radius: 10px;
+
+    color: #1b4d2e;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-localizacao:hover {
+    background-color: #eaf6ea;
+}
+
+.mensagem-localizacao {
+    min-height: 1.1em;
+
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #2f6b40;
+}
+
+.btn-cadastro {
+    margin-top: 4px;
+
+    padding: 12px 20px;
+
+    background-color: #1b4d2e;
+    border: none;
+    border-radius: 12px;
+
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-cadastro:hover {
+    background-color: #163f26;
+}
+
+.btn-cadastro:active {
+    transform: scale(0.98);
+}
+
+.form-voltar {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-secundario {
+    padding: 10px 24px;
+
+    background: none;
+    border: 1px solid rgba(27, 77, 46, 0.35);
+    border-radius: 12px;
+
+    color: #1b4d2e;
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-secundario:hover {
+    background-color: rgba(27, 77, 46, 0.06);
+}
+
+/* ===== Página de detalhes da planta ===== */
+.planta-pagina {
+    width: 100%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.planta-hero {
+    position: relative;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    padding: 20px 20px 28px;
+
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+}
+
+.planta-hero .btn-voltar {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: #ffffff;
+}
+
+.btn-voltar svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-anotacoes {
+    position: absolute;
+    right: 16px;
+    bottom: -18px;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    color: #1b4d2e;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.18);
+
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.btn-anotacoes:hover {
+    transform: translateY(-2px);
+}
+
+.btn-anotacoes:active {
+    transform: scale(0.9);
+}
+
+.btn-anotacoes svg {
+    width: 22px;
+    height: 22px;
+}
+
+.planta-imagem-wrapper {
+    width: 140px;
+    height: 140px;
+    margin-top: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #eaf6ea;
+    border-radius: 50%;
+}
+
+.planta-imagem {
+    width: 92px;
+    height: 92px;
+    object-fit: contain;
+}
+
+.planta-nome {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1b4d2e;
+    text-align: center;
+}
+
+.info-card {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 24px 20px;
+
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    text-align: center;
+}
+
+.info-item .form_pergunta {
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: #4f7a5e;
+}
+
+.info-valor {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1b4d2e;
+}
+
+.info-card .campo {
+    align-items: center;
+    text-align: center;
+}
+
+.info-card .campo .form_pergunta {
+    max-width: 320px;
+    font-size: 1.05rem;
+}
+
+.safraNome {
+    width: 100%;
+    min-height: 44px;
+    resize: none;
+
+    padding: 10px 12px;
+
+    border: 1px solid rgba(27, 77, 46, 0.25);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #1b1b1b;
+    text-align: center;
+
+    background-color: #fafdf9;
+}
+
+.safraNome:focus {
+    outline: none;
+    border-color: #1b4d2e;
+    box-shadow: 0 0 0 3px rgba(27, 77, 46, 0.12);
+}
+
+.form-localizacao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-card .btn-localizacao {
+    align-self: center;
+}
+
+.form-deletar {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-perigo {
+    padding: 12px 20px;
+
+    background-color: #ffffff;
+    border: 1px solid #c92a2a;
+    border-radius: 12px;
+
+    color: #c92a2a;
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-perigo:hover {
+    background-color: rgba(201, 42, 42, 0.06);
+}
+
+/* ===== Página de anotações ===== */
+.anotacoes-pagina {
+    width: 100%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.anotacoes-card {
+    width: 100%;
+
+    padding: 24px 20px;
+
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+}
+
+.caixa_anotacao {
+    width: 100%;
+    height: 260px;
+    resize: none;
+
+    padding: 12px;
+
+    border: 1px solid rgba(27, 77, 46, 0.25);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #1b1b1b;
+    line-height: 1.4;
+
+    background-color: #fafdf9;
+}
+
+.caixa_anotacao:focus {
+    outline: none;
+    border-color: #1b4d2e;
+    box-shadow: 0 0 0 3px rgba(27, 77, 46, 0.12);
+}
+
+/* ===== Responsividade extra para telas bem pequenas ===== */
+@media (max-width: 340px) {
+    .titulo {
+        font-size: 1.4rem;
+    }
+
+    .btn_pg_inicial {
+        width: 160px;
+    }
+
+    .btn_pg_inicial .btn-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .card-add .card-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .cadastro-card {
+        padding: 20px 16px;
+    }
+}

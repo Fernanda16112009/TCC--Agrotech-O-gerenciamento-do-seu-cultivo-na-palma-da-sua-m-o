@@ -16,7 +16,6 @@ const admRoutes = require('./routes/admRoutes')
 const usuarioRoutesPrivado = require('./routes/usuarioPrivadoRoutes')
 const trocarSenhaRoutes = require('./routes/trocarSenhaRoutes')
 const calendarioRoutes = require('./routes/calendarioRoutes')
-const redeSocialRoutes = require('./routes/redeSocialRoutes')
 
 const app = express()
 const port = 8000
@@ -63,8 +62,6 @@ app.use('/adm', verificarLogin, verificarADM, admRoutes)
 app.use('/privado', verificarLogin, privadoRoutes);
 
 app.use('/calendario', verificarLogin, calendarioRoutes);
-
-app.use('/redeSocial', verificarLogin, redeSocialRoutes)
 
 app.use('/trocarSenha', trocarSenhaRoutes);
 
