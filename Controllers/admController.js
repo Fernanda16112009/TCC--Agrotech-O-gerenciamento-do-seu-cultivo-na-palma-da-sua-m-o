@@ -112,6 +112,8 @@ function painelAdm(req, res) {
                 <title>Painel Administrativo — AgroTech</title>
 
                 <link rel="stylesheet" href="/admStyle.css">
+
+                <script src="/js/vlibras.js" defer></script>
             </head>
 
             <body class="bodyAdm">
@@ -290,6 +292,7 @@ function listarPorID(req, res) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Painel Administrativo — AgroTech</title>
             <link rel="stylesheet" href="/admStyle.css">
+            <script src="/js/vlibras.js" defer></script>
         </head>
         <body class= "bodyAdm">
             <aside class="sidebar">

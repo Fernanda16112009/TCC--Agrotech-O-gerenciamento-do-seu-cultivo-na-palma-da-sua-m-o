@@ -151,6 +151,7 @@ function mostrarCategoriasPlanta(req,res){
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Minhas Plantas</title>
                 <link rel="stylesheet" href="/privado/privadoStyle.css">
+                <script src="/js/vlibras.js" defer></script>
             </head>
             <body>
 
@@ -255,6 +256,7 @@ function mostrarCategoriasTipoPlanta(req,res){
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Meus tipo de ${planta}</title>
                 <link rel="stylesheet" href="/privado/privadoStyle.css">
+                <script src="/js/vlibras.js" defer></script>
             </head>
             <body>
 
@@ -360,6 +362,7 @@ function mostrarSafraPlanta(req,res){
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Meus tipo de ${nomeTipoPlanta}</title>
                     <link rel="stylesheet" href="/privado/privadoStyle.css">
+                    <script src="/js/vlibras.js" defer></script>
                 </head>
                 <body>
 
@@ -492,7 +495,8 @@ function mostrarPlantaUsuario(req,res){
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Ver ${nomeTipoPlantaExibicao}</title>
-            <link rel="stylesheet" href="/privado/privadoStyle.css">
+                <link rel="stylesheet" href="/privado/privadoStyle.css">
+                <script src="/js/vlibras.js" defer></script>
             </head>
             <body>
                 <main>
@@ -647,6 +651,7 @@ function anotacoesPlanta(req,res){
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Anotações</title>
                 <link rel="stylesheet" href="/privado/privadoStyle.css">
+                <script src="/js/vlibras.js" defer></script>
             </head>
             <body>
                 <main>

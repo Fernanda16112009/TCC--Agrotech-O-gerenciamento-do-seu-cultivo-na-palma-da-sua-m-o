@@ -169,6 +169,7 @@ function perfil(req, res){
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Meu Perfil</title>
                 <link rel="stylesheet" href="/privado/privadoStyle.css">
+                <script src="/js/vlibras.js" defer></script>
             </head>
             <body>
                 <main>
@@ -273,6 +274,7 @@ function mostrarFormularioEdicao(req, res){
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Editar Usuário</title>
                 <link rel="stylesheet" href="/style.css">
+                <script src="/js/vlibras.js" defer></script>
             </head>
             <body>
                 <header>
