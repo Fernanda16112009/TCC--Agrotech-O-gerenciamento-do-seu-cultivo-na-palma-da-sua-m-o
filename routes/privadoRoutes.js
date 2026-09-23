@@ -28,17 +28,32 @@ router.get('/pragas/:praga', (req, res) => {
     let praga = req.params.praga
 
     switch (praga) {
-        case "praga1":
-            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga1.html'))
+        case "acaros":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'acaros.html'))
             break;
-        case "praga2":
-            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga2.html'))
+        case "lagartasEBrocas":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'lagartasEBrocas.html'))
             break;
-        case "praga3":
-            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga3.html'))
+        case "lesmasECaramujos":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'lesmasECaramujos.html'))
             break;
-        case "praga4":
-            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'praga4.html'))
+        case "moscaBranca":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'moscaBranca.html'))
+            break;
+        case "moscaDaCenoura":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'moscaDaCenoura.html'))
+            break;
+        case "moscaDasFrutas":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'moscaDasFrutas.html'))
+            break;
+        case "nematoides":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'nematoides.html'))
+            break;
+        case "pulgoes":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'pulgoes.html'))
+            break;
+        case "tripes":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'tripes.html'))
             break;
     }
 });

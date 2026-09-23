@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,38 +9,87 @@
 </head>
 <body>
     <main>
-        <div>
-            <h1>Área de pragas</h1>
-            <h3 class="subtitulo">Qual praga está atacando sua plantação? Escolha uma da lista e nos te ensinaremos como resolver</h3><br><br>
-            <div class="praga">
-                <form action="/privado/pragas/praga1" method="get">
-                    <button class="btn_pg_inicial">Praga 1</button><br><br>
+        <div class="plantas-container">
+
+            <h1 class="titulo-pagina">Área de pragas</h1>
+            <p class="subtitulo-pagina">Qual praga está atacando sua plantação? Escolha uma da lista e nós te ensinaremos como resolver.</p>
+
+            <div class="plantas-grid">
+
+                <form action="/privado/pragas/acaros" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/acaros.jpg" alt="Ácaros" class="card-icon">
+                        <span>Ácaros</span>
+                    </button>
                 </form>
+
+                <form action="/privado/pragas/lagartasEBrocas" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/lagarto.jpg" alt="Lagartas e Brocas" class="card-icon">
+                        <span>Lagartas e Brocas</span>
+                    </button>
+                </form>
+
+                <form action="/privado/pragas/lesmasECaramujos" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/lesmas.jpg" alt="Lesmas e Caramujos" class="card-icon">
+                        <span>Lesmas e Caramujos</span>
+                    </button>
+                </form>
+
+                <form action="/privado/pragas/moscaBranca" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/moscaBranca.jpg" alt="Mosca Branca" class="card-icon">
+                        <span>Mosca Branca</span>
+                    </button>
+                </form>
+
+                <form action="/privado/pragas/moscaDaCenoura" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/moscaCenoura.jpg" alt="Mosca da Cenoura" class="card-icon">
+                        <span>Mosca da Cenoura</span>
+                    </button>
+                </form>
+
+                <form action="/privado/pragas/moscaDasFrutas" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/moscaFrutas.jpg" alt="Mosca das Frutas" class="card-icon">
+                        <span>Mosca das Frutas</span>
+                    </button>
+                </form>
+
+                <form action="/privado/pragas/nematoides" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/nematoides.jpg" alt="Nematoides" class="card-icon">
+                        <span>Nematoides</span>
+                    </button>
+                </form>
+
+                <form action="/privado/pragas/pulgoes" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/pulgoes.png" alt="Pulgões" class="card-icon">
+                        <span>Pulgões</span>
+                    </button>
+                </form>
+
+                <form action="/privado/pragas/tripes" method="get">
+                    <button class="card-planta">
+                        <img src="/privado/img/tripes.jpg" alt="Tripes" class="card-icon">
+                        <span>Tripes</span>
+                    </button>
+                </form>
+
             </div>
 
-            <div class="praga">
-                <form action="/privado/pragas/praga2" method="get">
-                    <button class="btn_pg_inicial">Praga 2</button><br><br>
-                </form>
-            </div>
-
-            <div class="praga">
-                <form action="/privado/pragas/praga3" method="get">
-                    <button class="btn_pg_inicial">Praga 3</button><br><br>
-                </form>
-            </div>
-
-            <div class="praga">
-                <form action="/privado/pragas/praga4" method="get">
-                    <button class="btn_pg_inicial">Praga 4</button><br><br>
-                </form>
-            </div>
-            
-            <br><br>
             <form action="/privado/calendario" method="get">
-                    <button class="btn_pg_inicial">Voltar</button><br><br>
-            </form>  
-        </div>   
+                <button class="btn-voltar" type="submit" title="Voltar">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </form>
+
+        </div>
     </main>
     <footer>
 
@@ -66,8 +115,3 @@
     </footer>
 </body>
 </html>
-
-
-
-
-
