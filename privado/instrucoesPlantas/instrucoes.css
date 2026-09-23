@@ -44,6 +44,46 @@ body {
 }
 
 /* =========================
+   BOTÃO VOLTAR
+   ========================= */
+.topo-instrucoes {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 24px;
+}
+
+.btn-voltar {
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #1b1b1b;
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.2);
+
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.btn-voltar:hover {
+    transform: translateY(-2px);
+}
+
+.btn-voltar:active {
+    transform: scale(0.9);
+}
+
+.btn-voltar svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* =========================
    CABEÇALHO DA PLANTA (FOTO + TÍTULO)
    ========================= */
 .cabecalho-planta {
@@ -153,6 +193,40 @@ body {
 
 .metodo-plantio p {
     margin-bottom: 0;
+}
+
+/* =========================
+   BOTÃO IR PARA O CALENDÁRIO
+   ========================= */
+.form-calendario {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn_pg_inicial {
+    padding: 14px 28px;
+
+    background-color: #1b4d2e;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.18);
+
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn_pg_inicial:hover {
+    background-color: #163f26;
+    transform: translateY(-2px);
+}
+
+.btn_pg_inicial:active {
+    transform: scale(0.97);
 }
 
 /* =========================

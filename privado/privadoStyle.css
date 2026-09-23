@@ -143,6 +143,16 @@ main {
     text-align: center;
 }
 
+/* Variante sem ícone (ex: página de Configurações): um pouco mais de respiro vertical */
+.btn_pg_inicial--texto {
+    padding: 16px 24px;
+}
+
+/* Variante para ações de saída/risco (ex: "Sair") */
+.btn_pg_inicial--perigo span {
+    color: #c92a2a;
+}
+
 /* ===== Grade de plantas (ex: Minhas Plantas) ===== */
 .plantas-container {
     width: 100%;
@@ -323,6 +333,11 @@ main {
     object-fit: contain;
 }
 
+.btn-voltar svg {
+    width: 20px;
+    height: 20px;
+}
+
 /* ===== Footer (original) ===== */
 footer {
     width: 100%;
@@ -415,6 +430,8 @@ footer {
 
 .campo input[type="text"],
 .campo input[type="date"],
+.campo input[type="email"],
+.campo input[type="tel"],
 .campo select {
     width: 100%;
 
@@ -443,6 +460,8 @@ footer {
 
 .campo input[type="text"]:focus,
 .campo input[type="date"]:focus,
+.campo input[type="email"]:focus,
+.campo input[type="tel"]:focus,
 .campo select:focus {
     outline: none;
     border-color: #1b4d2e;
@@ -575,11 +594,6 @@ footer {
     top: 16px;
     left: 16px;
     color: #ffffff;
-}
-
-.btn-voltar svg {
-    width: 20px;
-    height: 20px;
 }
 
 .btn-anotacoes {

@@ -1,0 +1,504 @@
+/* =========================================================
+   PAINEL ADMINISTRATIVO
+   IMPORTANTE:
+   Todas as regras abaixo começam com .bodyAdm
+   para não alterar as outras páginas.
+   ========================================================= */
+
+
+/* =========================
+   ESTRUTURA DO ADM
+   ========================= */
+
+.bodyAdm,
+.bodyAdm * {
+    box-sizing: border-box;
+}
+
+.bodyAdm {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 0;
+
+    text-align: center;
+}
+
+
+/* =========================
+   MENU DO ADM
+   ========================= */
+
+.bodyAdm .sidebar {
+    width: 100%;
+
+    margin: 0;
+    padding: 22px 35px;
+
+    background: #1b4d2e;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    row-gap: 14px;
+    gap: 14px;
+}
+
+.bodyAdm .sidebar-logo {
+    font-size: 2rem;
+    font-weight: bold;
+
+    color: white;
+}
+
+.bodyAdm .sidebar-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px 14px;
+}
+
+.bodyAdm .nav-label {
+    font-weight: bold;
+
+    color: #dcebd8;
+}
+
+.bodyAdm .sidebar-nav a {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    padding: 8px 14px;
+
+    border-radius: 6px;
+
+    transition: 0.2s;
+}
+
+.bodyAdm .sidebar-nav a:hover {
+    background: #27613c;
+}
+
+/* Em telas menores, a logo fica em cima e a navegação embaixo, ocupando toda a largura */
+@media (max-width: 700px) {
+    .bodyAdm .sidebar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 22px;
+    }
+
+    .bodyAdm .sidebar-nav {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+
+/* =========================
+   CONTEÚDO DO ADM
+   ========================= */
+
+.bodyAdm .content {
+    width: 100%;
+    max-width: 1150px;
+
+    margin: 0 auto;
+
+    padding: 35px 25px 45px;
+
+    display: block;
+
+    text-align: center;
+}
+
+
+/* =========================
+   TÍTULO DO ADM
+   ========================= */
+
+.bodyAdm .titulo-adm {
+    margin-bottom: 30px;
+
+    font-size: 2.4rem;
+    font-weight: bold;
+
+    color: #1b4d2e;
+}
+
+
+/* =========================
+   ESTATÍSTICAS
+   ========================= */
+
+.bodyAdm .stats {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 30px;
+}
+
+.bodyAdm .stat-card {
+    min-width: 220px;
+
+    padding: 18px 30px;
+
+    background: white;
+
+    border: 1px solid #d9e6d5;
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 5px;
+}
+
+.bodyAdm .stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+
+    color: #1b4d2e;
+}
+
+.bodyAdm .stat-label {
+    font-size: 0.95rem;
+
+    color: #555;
+}
+
+
+/* =========================
+   CARD PRINCIPAL
+   ========================= */
+
+.bodyAdm .card {
+    width: 100%;
+
+    padding: 25px;
+
+    background: white;
+
+    border: 1px solid #d9e6d5;
+    border-radius: 12px;
+
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+
+    text-align: left;
+}
+
+
+/* =========================
+   CABEÇALHO DA SEÇÃO
+   ========================= */
+
+.bodyAdm .section-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.bodyAdm .section-header h2 {
+    font-size: 1.6rem;
+
+    color: #1b4d2e;
+}
+
+
+/* =========================
+   BOTÕES EXCLUSIVOS DO ADM
+   ========================= */
+
+/*
+   IMPORTANTE:
+   Estes botões NÃO alteram o .btn das outras páginas.
+*/
+
+.bodyAdm .btn {
+    width: auto;
+    height: auto;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 14px;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 0.9rem;
+    font-weight: bold;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+/* Botão verde */
+
+.bodyAdm .btn-adm-primary {
+    background: #79B86C;
+    color: white;
+}
+
+.bodyAdm .btn-adm-primary:hover {
+    background: #67a45b;
+}
+
+
+/* Botão secundário */
+
+.bodyAdm .btn-adm-secondary {
+    background: #e4eee1;
+    color: #1b4d2e;
+}
+
+.bodyAdm .btn-adm-secondary:hover {
+    background: #d3e4cf;
+}
+
+
+/* Botão editar */
+
+.bodyAdm .btn.edit {
+    background: #79B86C;
+    color: white;
+
+    padding: 6px 11px;
+
+    font-size: 0.82rem;
+}
+
+.bodyAdm .btn.edit:hover {
+    background: #67a45b;
+}
+
+
+/* Botão excluir */
+
+.bodyAdm .btn.delete {
+    background: #c62828;
+    color: white;
+
+    padding: 6px 11px;
+
+    font-size: 0.82rem;
+}
+
+.bodyAdm .btn.delete:hover {
+    background: #a51f1f;
+}
+
+
+/* =========================
+   FORMULÁRIO DE BUSCA
+   ========================= */
+
+.bodyAdm .search-form {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.bodyAdm .search-form input {
+    flex: 1;
+
+    height: 40px;
+
+    padding: 0 14px;
+
+    border: 1px solid #ccdcca;
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #f8fbf7;
+
+    font-size: 0.95rem;
+}
+
+.bodyAdm .search-form input:focus {
+    border-color: #79B86C;
+
+    background: white;
+}
+
+
+/* =========================
+   INFORMAÇÃO DA BUSCA
+   ========================= */
+
+.bodyAdm .search-info {
+    margin-bottom: 15px;
+
+    color: #555;
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================
+   TABELA
+   ========================= */
+
+.bodyAdm .tabela-container {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.bodyAdm table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: white;
+
+    font-size: 0.9rem;
+}
+
+
+/* Linhas e colunas */
+
+.bodyAdm table th,
+.bodyAdm table td {
+    padding: 11px 10px;
+
+    border: 1px solid #d5e0d2;
+
+    text-align: center;
+}
+
+
+/* Cabeçalho */
+
+.bodyAdm table th {
+    background: #e7f1e4;
+
+    color: #1b4d2e;
+
+    font-weight: bold;
+}
+
+
+/* Linhas */
+
+.bodyAdm table tbody tr:nth-child(even) {
+    background: #f8fbf7;
+}
+
+.bodyAdm table tbody tr:hover {
+    background: #eef7eb;
+}
+
+
+/* =========================
+   AÇÕES DA TABELA
+   ========================= */
+
+.bodyAdm .acoes {
+    white-space: nowrap;
+}
+
+.bodyAdm .inline-form {
+    display: inline;
+}
+
+
+/* =========================
+   NENHUM USUÁRIO
+   ========================= */
+
+.bodyAdm .empty-state {
+    padding: 25px;
+
+    text-align: center;
+
+    color: #666;
+
+    font-size: 0.95rem;
+}
+
+
+/* =========================
+   FOOTER (mesmo padrão das outras páginas)
+   ========================= */
+
+.bodyAdm footer {
+    width: 100%;
+
+    margin-top: auto;
+
+    background: #1b4d2e;
+    color: #fff;
+
+    text-align: center;
+
+    padding: 28px 20px;
+
+    font-size: 1rem;
+}
+
+.bodyAdm .footer-conteudo {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.bodyAdm .footer-conteudo h3 {
+    margin: 0;
+
+    font-size: 1.5rem;
+}
+
+.bodyAdm .footer-conteudo p {
+    margin: 0;
+}
+
+.bodyAdm .footer-conteudo a {
+    color: #fff;
+
+    text-decoration: underline;
+}
+
+.bodyAdm .footer-conteudo a:hover {
+    opacity: 0.8;
+}
+
+.bodyAdm .footer-conteudo .copyright {
+    margin-top: 8px;
+
+    font-size: 0.85rem;
+}

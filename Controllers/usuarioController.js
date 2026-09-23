@@ -168,46 +168,54 @@ function perfil(req, res){
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Meu Perfil</title>
-                <link rel="stylesheet" href="/style.css">
+                <link rel="stylesheet" href="/privado/privadoStyle.css">
             </head>
             <body>
                 <main>
-                    <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
-                        <fieldset>
-                            <legend><b>Meu Perfil</b></legend>
+                    <div class="cadastro-pagina">
 
-                            <br>
+                        <h1 class="titulo-pagina">Meu Perfil</h1>
 
-                            <label for="nome">Nome Completo:</label>
-                            <input type="text" name="nome" id="nome" value="${u.nome}" required>
+                        <div class="cadastro-card">
+                            <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
 
-                            <br><br>
+                                <div class="campo">
+                                    <label for="nome" class="form_pergunta">Nome completo</label>
+                                    <input type="text" name="nome" id="nome" value="${u.nome}" required>
+                                </div>
 
-                            <label for="email">E-mail:</label>
-                            <input type="email" name="email" id="email" value="${u.email}" required>
+                                <div class="campo">
+                                    <label for="email" class="form_pergunta">E-mail</label>
+                                    <input type="email" name="email" id="email" value="${u.email}" required>
+                                </div>
 
-                            <br><br>
+                                <div class="campo">
+                                    <label for="telefone" class="form_pergunta">Telefone</label>
+                                    <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
+                                </div>
 
-                            <label for="telefone">Telefone:</label>
-                            <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
+                                <div class="campo">
+                                    <label for="nome_usuario" class="form_pergunta">Nome de usuário</label>
+                                    <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
+                                </div>
 
-                            <br><br>
+                                <button type="submit" class="btn-cadastro">Salvar alterações</button>
+                            </form>
 
-                            <label for="nome_usuario">Nome de usuário:</label>
-                            <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
+                            <form action="/usuarios/emailRecuperarSenha" method="get" required class="form-voltar">
+                                <button type="submit" class="btn-secundario">Trocar senha</button>
+                            </form>
+                        </div>
 
-                            <br><br>
+                        <form action="/" method="get">
+                            <button class="btn-voltar" type="submit" title="Voltar">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </form>
 
-                            <button type="submit">Salvar alterações</button>
-                        </fieldset>
-                    </form>
-                    <form action="/usuarios/emailRecuperarSenha" method="get" required>
-                        <button type="submit" class="btn"> Trocar senha</button>
-                    </form>
-                    <br>
-                    <form action="/" method="get" required>
-                        <button type="submit" class="btn">Voltar</button>
-                    </form>
+                    </div>
                 </main>
                 <footer>
 
@@ -267,39 +275,46 @@ function mostrarFormularioEdicao(req, res){
                 <link rel="stylesheet" href="/style.css">
             </head>
             <body>
+                <header>
+                    <h1 class="titulo">AgroTech</h1>
+                    <h2 class="subtitulo">Editar Usuário</h2>
+                </header>
+
                 <main>
-                    <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
-                        <fieldset>
-                            <legend><b>Editar Usuário</b></legend>
+                    <div class="editar-usuario-pagina">
 
-                            <br>
+                        <div class="editar-usuario-card">
+                            <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
 
-                            <label for="nome">Nome Completo:</label>
-                            <input type="text" name="nome" id="nome" value="${u.nome}" required>
+                                <div class="elemento_form">
+                                    <label for="nome">Nome Completo</label>
+                                    <input type="text" name="nome" id="nome" value="${u.nome}" required>
+                                </div>
 
-                            <br><br>
+                                <div class="elemento_form">
+                                    <label for="email">E-mail</label>
+                                    <input type="email" name="email" id="email" value="${u.email}" required>
+                                </div>
 
-                            <label for="email">E-mail:</label>
-                            <input type="email" name="email" id="email" value="${u.email}" required>
+                                <div class="elemento_form">
+                                    <label for="telefone">Telefone</label>
+                                    <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
+                                </div>
 
-                            <br><br>
+                                <div class="elemento_form">
+                                    <label for="nome_usuario">Nome de usuário</label>
+                                    <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
+                                </div>
 
-                            <label for="telefone">Telefone:</label>
-                            <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
+                                <button type="submit" class="btn">Salvar alterações</button>
+                            </form>
+                        </div>
 
-                            <br><br>
+                        <div class="editar-usuario-acoes">
+                            <a href="/adm" class="btn-secundario">Voltar ao painel</a>
+                        </div>
 
-                            <label for="nome_usuario">Nome de usuário:</label>
-                            <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
-
-                            <br><br>
-
-                            <button type="submit">Salvar alterações</button>
-                        </fieldset>
-                    </form>
-
-                    <br>
-                    <a href="/adm">Voltar ao painel</a>
+                    </div>
                 </main>
                 <footer>
 

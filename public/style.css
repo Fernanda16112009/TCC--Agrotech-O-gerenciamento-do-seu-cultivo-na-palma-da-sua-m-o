@@ -215,12 +215,24 @@ input::placeholder {
     margin-top: 15px;
 }
 
+/* Botão secundário: contorno (outline), para se diferenciar
+   claramente do botão principal (.btn), seguindo o mesmo padrão
+   visual usado em privadoStyle.css */
 .btn-secundario {
-    background: #79B86C;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: none;
+    color: #1b4d2e;
+
+    border: 1px solid rgba(27, 77, 46, 0.35);
+
+    text-decoration: none;
 }
 
 .btn-secundario:hover {
-    background: #79B86C;
+    background: rgba(27, 77, 46, 0.06);
 }
 
 .btn-recuperar {
@@ -431,433 +443,6 @@ footer {
     margin-top: 8px;
 
     font-size: 0.85rem;
-}
-/* =========================================================
-   PAINEL ADMINISTRATIVO
-   IMPORTANTE:
-   Todas as regras abaixo começam com .bodyAdm
-   para não alterar as outras páginas.
-   ========================================================= */
-
-
-/* =========================
-   ESTRUTURA DO ADM
-   ========================= */
-
-.bodyAdm {
-    min-height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-
-    margin: 0;
-    padding: 0;
-
-    text-align: center;
-}
-
-
-/* =========================
-   MENU DO ADM
-   ========================= */
-
-.bodyAdm .sidebar {
-    width: 100%;
-
-    margin: 0;
-    padding: 16px 35px;
-
-    background: #1b4d2e;
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 25px;
-}
-
-.bodyAdm .sidebar-logo {
-    font-size: 1.7rem;
-    font-weight: bold;
-
-    color: white;
-}
-
-.bodyAdm .sidebar-nav {
-    display: flex;
-    align-items: center;
-
-    gap: 25px;
-}
-
-.bodyAdm .nav-label {
-    font-weight: bold;
-
-    color: #dcebd8;
-}
-
-.bodyAdm .sidebar-nav a {
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 0.95rem;
-    font-weight: bold;
-
-    padding: 7px 12px;
-
-    border-radius: 6px;
-
-    transition: 0.2s;
-}
-
-.bodyAdm .sidebar-nav a:hover {
-    background: #27613c;
-}
-
-
-/* =========================
-   CONTEÚDO DO ADM
-   ========================= */
-
-.bodyAdm .content {
-    width: 100%;
-    max-width: 1150px;
-
-    margin: 0 auto;
-
-    padding: 35px 25px 45px;
-
-    display: block;
-
-    text-align: center;
-}
-
-
-/* =========================
-   TÍTULO DO ADM
-   ========================= */
-
-.bodyAdm .titulo-adm {
-    margin-bottom: 30px;
-
-    font-size: 2.4rem;
-    font-weight: bold;
-
-    color: #1b4d2e;
-}
-
-
-/* =========================
-   ESTATÍSTICAS
-   ========================= */
-
-.bodyAdm .stats {
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-
-    margin-bottom: 30px;
-}
-
-.bodyAdm .stat-card {
-    min-width: 220px;
-
-    padding: 18px 30px;
-
-    background: white;
-
-    border: 1px solid #d9e6d5;
-    border-radius: 12px;
-
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    gap: 5px;
-}
-
-.bodyAdm .stat-number {
-    font-size: 2rem;
-    font-weight: bold;
-
-    color: #1b4d2e;
-}
-
-.bodyAdm .stat-label {
-    font-size: 0.95rem;
-
-    color: #555;
-}
-
-
-/* =========================
-   CARD PRINCIPAL
-   ========================= */
-
-.bodyAdm .card {
-    width: 100%;
-
-    padding: 25px;
-
-    background: white;
-
-    border: 1px solid #d9e6d5;
-    border-radius: 12px;
-
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
-
-    text-align: left;
-}
-
-
-/* =========================
-   CABEÇALHO DA SEÇÃO
-   ========================= */
-
-.bodyAdm .section-header {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 20px;
-
-    margin-bottom: 20px;
-}
-
-.bodyAdm .section-header h2 {
-    font-size: 1.6rem;
-
-    color: #1b4d2e;
-}
-
-
-/* =========================
-   BOTÕES EXCLUSIVOS DO ADM
-   ========================= */
-
-/*
-   IMPORTANTE:
-   Estes botões NÃO alteram o .btn das outras páginas.
-*/
-
-.bodyAdm .btn {
-    width: auto;
-    height: auto;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 8px 14px;
-
-    border: none;
-    border-radius: 7px;
-
-    font-size: 0.9rem;
-    font-weight: bold;
-
-    text-decoration: none;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-
-/* Botão verde */
-
-.bodyAdm .btn-adm-primary {
-    background: #79B86C;
-    color: white;
-}
-
-.bodyAdm .btn-adm-primary:hover {
-    background: #67a45b;
-}
-
-
-/* Botão secundário */
-
-.bodyAdm .btn-adm-secondary {
-    background: #e4eee1;
-    color: #1b4d2e;
-}
-
-.bodyAdm .btn-adm-secondary:hover {
-    background: #d3e4cf;
-}
-
-
-/* Botão editar */
-
-.bodyAdm .btn.edit {
-    background: #79B86C;
-    color: white;
-
-    padding: 6px 11px;
-
-    font-size: 0.82rem;
-}
-
-.bodyAdm .btn.edit:hover {
-    background: #67a45b;
-}
-
-
-/* Botão excluir */
-
-.bodyAdm .btn.delete {
-    background: #c62828;
-    color: white;
-
-    padding: 6px 11px;
-
-    font-size: 0.82rem;
-}
-
-.bodyAdm .btn.delete:hover {
-    background: #a51f1f;
-}
-
-
-/* =========================
-   FORMULÁRIO DE BUSCA
-   ========================= */
-
-.bodyAdm .search-form {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 20px;
-}
-
-.bodyAdm .search-form input {
-    flex: 1;
-
-    height: 40px;
-
-    padding: 0 14px;
-
-    border: 1px solid #ccdcca;
-    border-radius: 7px;
-
-    outline: none;
-
-    background: #f8fbf7;
-
-    font-size: 0.95rem;
-}
-
-.bodyAdm .search-form input:focus {
-    border-color: #79B86C;
-
-    background: white;
-}
-
-
-/* =========================
-   INFORMAÇÃO DA BUSCA
-   ========================= */
-
-.bodyAdm .search-info {
-    margin-bottom: 15px;
-
-    color: #555;
-
-    font-size: 0.9rem;
-}
-
-
-/* =========================
-   TABELA
-   ========================= */
-
-.bodyAdm .tabela-container {
-    width: 100%;
-
-    overflow-x: auto;
-}
-
-.bodyAdm table {
-    width: 100%;
-
-    border-collapse: collapse;
-
-    background: white;
-
-    font-size: 0.9rem;
-}
-
-
-/* Linhas e colunas */
-
-.bodyAdm table th,
-.bodyAdm table td {
-    padding: 11px 10px;
-
-    border: 1px solid #d5e0d2;
-
-    text-align: center;
-}
-
-
-/* Cabeçalho */
-
-.bodyAdm table th {
-    background: #e7f1e4;
-
-    color: #1b4d2e;
-
-    font-weight: bold;
-}
-
-
-/* Linhas */
-
-.bodyAdm table tbody tr:nth-child(even) {
-    background: #f8fbf7;
-}
-
-.bodyAdm table tbody tr:hover {
-    background: #eef7eb;
-}
-
-
-/* =========================
-   AÇÕES DA TABELA
-   ========================= */
-
-.bodyAdm .acoes {
-    white-space: nowrap;
-}
-
-.bodyAdm .inline-form {
-    display: inline;
-}
-
-
-/* =========================
-   NENHUM USUÁRIO
-   ========================= */
-
-.bodyAdm .empty-state {
-    padding: 25px;
-
-    text-align: center;
-
-    color: #666;
-
-    font-size: 0.95rem;
 }
 
 /* =========================
@@ -1259,5 +844,158 @@ body:has(.postagem) .comentario {
 
     body:has(.postagem) .postagem > p:nth-of-type(3) {
         font-size: 0.95rem;
+    }
+}
+
+/* =========================================================
+   EDITAR USUÁRIO (painel admin)
+   Usa o mesmo header (.titulo/.subtitulo) e os mesmos campos
+   (.elemento_form) das outras páginas, dentro de um card branco,
+   seguindo o padrão visual de privadoStyle.css.
+   ========================================================= */
+
+.editar-usuario-pagina {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 0 20px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.editar-usuario-card {
+    width: 100%;
+
+    padding: 28px 24px;
+
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+
+    text-align: left;
+}
+
+.editar-usuario-card .elemento_form:last-of-type {
+    margin-bottom: 28px;
+}
+
+.editar-usuario-acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.editar-usuario-acoes .btn-secundario {
+    width: 100%;
+    height: 48px;
+
+    border-radius: 24px;
+
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+@media (max-width: 340px) {
+    .editar-usuario-card {
+        padding: 22px 18px;
+    }
+}
+
+/* =========================================================
+   PÁGINA INICIAL (pública)
+   Escopado em .pagina-inicial para não alterar .titulo/.subtitulo/
+   .form usados nas outras páginas (login, cadastro etc.).
+   ========================================================= */
+
+.pagina-inicial header {
+    margin-top: 44px;
+    margin-bottom: 8px;
+    padding: 0 20px;
+}
+
+/* Texto maior porém não "gritado": tira o efeito de logo (caixa alta,
+   contorno branco, sombra dura) e usa um degradê suave, mais legível
+   para uma frase de boas-vindas */
+.pagina-inicial .titulo {
+    font-size: 2.3rem;
+    font-weight: 800;
+    line-height: 1.25;
+
+    text-transform: none;
+    letter-spacing: 0.3px;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+
+    background: linear-gradient(90deg, #1b4d2e, #3f8f5f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pagina-inicial .subtitulo {
+    margin-top: 10px;
+    margin-bottom: 0;
+
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.4;
+
+    color: #3f6b4d;
+}
+
+.pagina-inicial main {
+    padding: 20px;
+}
+
+/* O texto de apresentação vira um card branco, com parágrafos
+   separados (em vez de um bloco único cortado por <br><br>) */
+.pagina-inicial .form {
+    width: 100%;
+    max-width: 520px;
+
+    padding: 28px 26px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(27, 77, 46, 0.12);
+
+    text-align: left;
+}
+
+.pagina-inicial .form p {
+    font-size: 1.03rem;
+    line-height: 1.65;
+    color: #333;
+}
+
+.pagina-inicial .form form {
+    display: flex;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.pagina-inicial .btn {
+    width: 100%;
+    max-width: 220px;
+}
+
+@media (max-width: 400px) {
+    .pagina-inicial .titulo {
+        font-size: 1.8rem;
+    }
+
+    .pagina-inicial .subtitulo {
+        font-size: 1rem;
+    }
+
+    .pagina-inicial .form {
+        padding: 22px 18px;
     }
 }
