@@ -31,8 +31,11 @@ router.get('/pragas/:praga', (req, res) => {
         case "acaros":
             res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'acaros.html'))
             break;
-        case "lagartasEBrocas":
-            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'lagartasEBrocas.html'))
+        case "brocas":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'brocas.html'))
+            break;
+        case "lagartas":
+            res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'lagartas.html'))
             break;
         case "lesmasECaramujos":
             res.sendFile (path.join(__dirname, '..', 'privado', 'pragas', 'lesmasECaramujos.html'))
