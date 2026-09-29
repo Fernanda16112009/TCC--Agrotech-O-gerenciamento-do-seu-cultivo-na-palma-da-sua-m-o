@@ -75,8 +75,8 @@ function criarPlantaUsuario(req, res) {
 
             switch (tipoPlanta){
 
-                case "morangoAlbino":
-                    res.redirect('/privado/instrucoesPlantas/morangoAlbino');
+                case "morangoAlbion":
+                    res.redirect('/privado/instrucoesPlantas/morangoAlbion');
                     break;
                 case "morangoCaminoReal":
                     res.redirect('/privado/instrucoesPlantas/morangoCaminoReal');
@@ -221,7 +221,7 @@ function mostrarCategoriasTipoPlanta(req,res){
         }
 
         const imagensPorTipo = {
-            morangoAlbino: 'morangoAlb.png',
+            morangoAlbion: 'morangoAlb.png',
             morangoCaminoReal: 'morangoCam.png',
             morangoSanAndreas: 'morangoSan.png',
             cenouraTradicional: 'cenouraTrad.png',
@@ -327,7 +327,7 @@ function mostrarSafraPlanta(req,res){
             }
 
             const imagensPorTipo = {
-                morangoAlbino: 'morangoAlb.png',
+                morangoAlbion: 'morangoAlb.png',
                 morangoCaminoReal: 'morangoCam.png',
                 morangoSanAndreas: 'morangoSan.png',
                 cenouraTradicional: 'cenouraTrad.png',
@@ -472,7 +472,7 @@ function mostrarPlantaUsuario(req,res){
         }
 
         const imagensPorTipo = {
-            morangoAlbino: 'morangoAlb.png',
+            morangoAlbion: 'morangoAlb.png',
             morangoCaminoReal: 'morangoCam.png',
             morangoSanAndreas: 'morangoSan.png',
             cenouraTradicional: 'cenouraTrad.png',

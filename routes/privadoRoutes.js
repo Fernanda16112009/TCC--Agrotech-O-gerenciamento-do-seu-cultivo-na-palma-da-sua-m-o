@@ -24,6 +24,10 @@ router.get('/areaDePragas', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'areaDePragas.html'));
 });
 
+router.get('/Intrucoes', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'privado', 'mostrarTodasIntrucoes.html'));
+});
+
 router.get('/pragas/:praga', (req, res) => {
     let praga = req.params.praga
 
@@ -92,7 +96,7 @@ router.get('/instrucoesPlantas/:tipoPlanta', (req, res) => {
     let tipoPlanta = req.params.tipoPlanta
 
     switch (tipoPlanta) {    
-        case "morangoAlbino":
+        case "morangoAlbion":
             res.sendFile(path.join(__dirname, '..', 'privado', 'instrucoesPlantas','morangoAlbion.html'));
             break;
         case "morangoCaminoReal":
@@ -133,8 +137,6 @@ router.get('/cadastroPlantaUsuario.js', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'privado', 'cadastroPlantaUsuario.js'));
 });
 
-router.get('/teste', (req, res) => {
-    res.sendFile(path.join (__dirname, '..','teste.html'));
-});
+
 
 module.exports = router

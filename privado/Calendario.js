@@ -90,11 +90,17 @@ async function pegarClima(plantas) {
 }
 
 async function iniciar() {
-    await pegarPlantasCalendario();
-    await pegarPlantasAdmCalendario();
-    await pegarClima(plantas)
-    Choveu()
-    renderizar();
+    try {
+        await pegarPlantasCalendario();
+        await pegarPlantasAdmCalendario();
+        await pegarClima(plantas)
+        Choveu()
+        renderizar();
+    } finally {
+        document.getElementById('carregando').style.display = 'none';
+        document.getElementById('tabela-calendario').style.display = '';
+        document.getElementById('botoes-calendario').style.display = 'flex';
+    }
 }
 
 

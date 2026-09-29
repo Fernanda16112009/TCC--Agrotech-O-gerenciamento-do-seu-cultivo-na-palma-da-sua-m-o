@@ -367,3 +367,37 @@ footer p{
     font-size: 0.9rem;
     text-align: left;
 }
+
+/* TELA DE CARREGAMENTO */
+
+.oculto {
+    display: none !important;
+}
+
+.carregando {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 60px 20px;
+}
+
+.carregando p {
+    color: #1b4d2e;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #c8e6c9;
+    border-top-color: #2e7d32;
+    border-radius: 50%;
+    animation: girar 0.9s linear infinite;
+}
+
+@keyframes girar {
+    to { transform: rotate(360deg); }
+}

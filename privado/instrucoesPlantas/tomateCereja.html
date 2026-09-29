@@ -13,13 +13,11 @@
         <section id="instrucoes-cultivo" class="secao-instrucoes">
 
             <div class="topo-instrucoes">
-                <form action="/" method="get">
-                    <button class="btn-voltar" type="submit" title="Voltar">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </form>
+                <button class="btn-voltar" type="button" title="Voltar" onclick="history.back()">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
             
             <header class="cabecalho-planta">
@@ -73,9 +71,12 @@
                     <li><strong>Bactericidas:</strong> Oxicloreto de cobre.</li>
                 </ul>
             </article>
-            <form action="/privado/calendario" method="get" required>
-                <button class="btn_pg_inicial">Ir para o calendário</button><br><br>
-            </form> 
+            <form action="/privado/calendario" method="get" required class="form-calendario">
+                <button class="btn_pg_inicial">Ir para o calendário</button>
+            </form>
+            <form action="/" method="get" required class="form-calendario">
+                <button class="btn_pg_inicial">Ir para a página inicial</button>
+            </form>
         </section>
     </main>
 </body>
