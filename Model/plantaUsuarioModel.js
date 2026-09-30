@@ -56,9 +56,22 @@ function atualizarSafraNome(safraNome, idUsuario, idPlanta, callback){
         WHERE idUsuario = ?
         AND idPlanta = ?
         `
-    console.log(safraNome)
     conexao.query(sql, [
         safraNome,
+        idUsuario,
+        idPlanta,
+    ], callback)
+}
+
+function adicionarImagem(idUsuario, idPlanta, imagem, callback){
+    const sql =`        
+        UPDATE plantausuario
+        SET url = ?
+        WHERE idUsuario = ?
+        AND idPlanta =  ?
+        `
+    conexao.query(sql, [
+        imagem,
         idUsuario,
         idPlanta,
     ], callback)
@@ -123,6 +136,7 @@ module.exports = {
     buscarSafra,   
     buscarPlantaPorIdPlanta,
     atualizarSafraNome,
+    adicionarImagem,
     atualizarLocalizacao,    
     cadastrarAnotacao,
     buscarAnotacoes,

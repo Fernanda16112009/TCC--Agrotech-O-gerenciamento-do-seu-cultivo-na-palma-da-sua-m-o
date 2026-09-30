@@ -1,5 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const path = require('path');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const plantaUsuarioController = require('../Controllers/plantaUsuarioController')
 
@@ -11,6 +14,8 @@ router.get('/minhasPlantas', plantaUsuarioController.mostrarCategoriasPlanta);
 router.get('/:idPlanta/:planta/:tipoPlanta/anotacoes', plantaUsuarioController.anotacoesPlanta);
 
 router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta/anotacoes', plantaUsuarioController.cadastrarAnotacao);
+
+router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta/imagem', upload.single('imagem'), plantaUsuarioController.adicionarImagemSafra);
 
 router.post('/:idPlanta/deletar', plantaUsuarioController.deletarPlanta);
 
@@ -26,3 +31,4 @@ router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta', plantaUsuarioController
 router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta/localizacao', plantaUsuarioController.atualizarLocalizacao);
 
 module.exports = router
+

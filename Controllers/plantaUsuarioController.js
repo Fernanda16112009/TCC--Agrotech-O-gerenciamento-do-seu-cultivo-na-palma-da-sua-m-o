@@ -1,5 +1,9 @@
 const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 const plantaADMModel = require('../Model/plantaAdmModel');
+require("dotenv").config();
+const cloudinary = require("cloudinary").v2;
+const fs = require('fs/promises');
+
 
 function pegarPlantasCalendario(req,res) {
     const idUsuario = req.session.usuario.idUsuario;
@@ -340,13 +344,15 @@ function mostrarSafraPlanta(req,res){
             };
 
             const cardPlanta = resultado.map(p =>{
+
                 const nomeSafra = formatarNomePlanta(p.safraNome)
-                const imagemTipoPlanta = imagensPorTipo[p.tipoPlanta] || '';
+                const imagemTipoPlanta = p.url || `/privado/img/${imagensPorTipo[p.tipoPlanta] || ""}`;
+
 
                 return `
                     <form action="/planta/${planta}/${p.tipoPlanta}/${p.idPlanta}" method="get" required>
                         <button class="card-planta">
-                            <img src="/privado/img/${imagemTipoPlanta}" alt="${nomeTipoPlanta}" class="card-icon">
+                            <img src="${imagemTipoPlanta}" alt="${nomeTipoPlanta}" class="card-icon">
                             <span class="card-titulo">${nomeSafra}</span>
                             <span class="card-subtitulo">Ver detalhes</span>
                         </button>
@@ -484,7 +490,7 @@ function mostrarPlantaUsuario(req,res){
             tomateSaladete: 'tomateSal.png'
         };
 
-        const imagemPlanta = `/privado/img/${imagensPorTipo[p.tipoPlanta] || ''}`;
+        const imagemPlanta = p.url || `/privado/img/${imagensPorTipo[p.tipoPlanta] || ""}`;
         const nomeTipoPlantaExibicao = formatarNomeExibicao(p.tipoPlanta);
         const nomeSafraExibicao = p.safraNome.charAt(0).toUpperCase() + p.safraNome.slice(1);
 
@@ -528,6 +534,12 @@ function mostrarPlantaUsuario(req,res){
                         </div>
 
                         <div class="info-card">
+
+                            <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/imagem" method="post" enctype="multipart/form-data" class="form-foto">
+                                <label for="imagem" class="form_pergunta">Foto da sua plantação</label>
+                                <input type="file" id="imagem" name="imagem" class="imagem" accept="image/*">
+                                <button type="submit" class="btn-foto">Adicionar foto da plantação</button>
+                            </form>
 
                             <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}" method="post" class="campo">
                                 <label for="safraNome" class="form_pergunta">Nome da safra</label>
@@ -606,6 +618,32 @@ function mostrarPlantaUsuario(req,res){
         res.send(html)
 
 
+    })
+
+}
+
+async function adicionarImagemSafra(req,res){
+
+    const idUsuario = req.session.usuario.idUsuario;
+    const idPlanta = req.params.idPlanta;
+    const planta = req.params.planta
+    const tipoPlanta = req.params.tipoPlanta
+
+
+    const resultado = await cloudinary.uploader.upload(req.file.path);
+    const imagem = resultado.secure_url;
+
+
+    await fs.unlink(req.file.path);
+
+    plantaUsuarioModel.adicionarImagem(idUsuario, idPlanta, imagem, (erro) => {
+
+        if (erro) {
+            console.log(erro);
+            return res.send('Erro ao adiconar imagem.');
+        }
+
+        res.redirect(`/planta/${planta}/${tipoPlanta}/${idPlanta}`);
     })
 
 }
@@ -728,6 +766,7 @@ module.exports = {
     atualizarSafraNome,
     atualizarLocalizacao,
     mostrarPlantaUsuario,
+    adicionarImagemSafra,
     cadastrarAnotacao,
     anotacoesPlanta,
     deletarPlanta
