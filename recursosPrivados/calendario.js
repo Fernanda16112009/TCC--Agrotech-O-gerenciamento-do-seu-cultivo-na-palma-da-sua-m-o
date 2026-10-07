@@ -7,7 +7,7 @@ let plantasAdm = []
 let clima = []
 
 const imagensPorTipo = {
-    morangoAlbino: 'morangoAlb.png',
+    morangoAlbion: 'morangoAlb.png',
     morangoCaminoReal: 'morangoCam.png',
     morangoSanAndreas: 'morangoSan.png',
     cenouraTradicional: 'cenouraTrad.png',

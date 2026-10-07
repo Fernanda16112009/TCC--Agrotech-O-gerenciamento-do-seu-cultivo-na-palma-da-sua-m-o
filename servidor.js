@@ -1,12 +1,8 @@
 const express = require('express')
 const path = require('path')
 const session = require('express-session')
-const bodyParser = require('body-parser')
-const bcrypt = require('bcryptjs')
-const { Resend } = require('resend');
-const dotenv = require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const cloudinary = require("cloudinary").v2;
+require('dotenv').config();
+
 
 
 const usuarioRoutes = require('./routes/usuarioRoutes')
@@ -20,11 +16,18 @@ const calendarioRoutes = require('./routes/calendarioRoutes')
 const app = express()
 const port = 8000
 
+if(!process.env.SESSION_SECRET){
+    throw new Error("Defina um secret no .env")
+}
 // Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(session({secret:'1234'}))
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized:false
+}
+))
 
 function verificarLogin(req, res, next){
 
@@ -44,10 +47,17 @@ function verificarADM(req,res, next){
     }
 }
 
+function checarHtml(req,res,next){
+    if(req.path.toLowerCase().endsWith('html')){
+        return res.status(404).send("Não é permitido acessar arquivos html")
+    }else{
+        next()
+    }
+}
 // Arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')))
-app.use('/trocarSenha', express.static(path.join(__dirname, 'trocarSenha')))
-app.use('/privado', verificarLogin, express.static(path.join(__dirname, 'privado')))
+app.use('/trocarSenha', checarHtml, express.static(path.join(__dirname, 'trocarSenha')))
+app.use('/privado', verificarLogin,  express.static(path.join(__dirname, 'recursosPrivados')))
 
 // Rotas
 app.use('/usuarios', usuarioRoutes)

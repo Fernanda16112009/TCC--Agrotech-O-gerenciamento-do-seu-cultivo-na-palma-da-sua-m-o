@@ -32,19 +32,20 @@
                         class="form_pergunta"
                         id="email"
                         placeholder="joao@email.com"
-                        onchange="emailValido()"
+                        required
+                        oninput="emailValido()"
                     >
 
                     <div class="error" id="email-invalido-erro">
-                        Seu email deve conter @...
+                        Digite um email válido, como joao@email.com
                     </div>
 
                     <div class="error" id="email-obrigatorio">
                         Email é obrigatório
                     </div>
 
-                    <div class="error" id="email-existe-erro">
-                        Não existe uma conta com esse email
+                    <div class="sucesso" id="email-enviado" hidden>
+                        Se esse email estiver cadastrado, enviamos o link de recuperação.
                     </div>
                 </div>
 

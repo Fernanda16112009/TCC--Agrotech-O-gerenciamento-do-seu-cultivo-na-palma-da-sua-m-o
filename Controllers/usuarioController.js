@@ -2,29 +2,10 @@ const usuarioModel = require('../Model/usuarioModel');
 const bcrypt = require('bcryptjs')
 const { Resend } = require('resend');
 const jwt = require('jsonwebtoken');
-const fs = require('fs/promises');
+const resend = new Resend(process.env.RESEND_API_KEY)
 
-function buscarEmail (req,res){
-
-    usuarioModel.buscarEmail((erro, emails) => {
-        if(erro){
-            console.log(erro)
-            return res.send('Erro ao buscar os emails')
-        }
-        return res.json(emails)
-    })
-}
-
-function buscarNomeUsuario(req,res){
-    
-    usuarioModel.buscarNomeUsuario((erro, nomes) =>{
-        if (erro){
-            console.log(erro)
-            return res.send('Erro ao buscar nome de usuario.')
-        }
-        return res.json(nomes);
-
-    })
+if (!process.env.JWT) {
+    throw new Error('Variável JWT não definida no .env');
 }
 
 async function montarSecret(id) {
@@ -56,6 +37,11 @@ async function montarToken(email) {
                 return;
             }
 
+            if(resultados.length === 0){
+                resolve (null)
+                return
+            }
+
 
             const id = resultados[0].idUsuario;
             const senha = resultados[0].senha
@@ -73,6 +59,15 @@ async function montarToken(email) {
 async function criarUsuario(req, res) {
 
     req.body.role = "user"
+
+    if (typeof req.body.email !== 'string') {
+        return res.status(400).send('Email inválido')
+    }
+
+    if (typeof req.body.senha !== 'string') {
+        return res.status(400).send('Senha inválida')
+    }
+
     req.body.email = req.body.email.trim().toLowerCase();
 
     if (req.body.senha.length < 6) {
@@ -85,9 +80,14 @@ async function criarUsuario(req, res) {
         req.body.senha = await bcrypt.hash(req.body.senha, 10);
 
         usuarioModel.criarUsuario(req.body, (erro) => {
+
             if (erro) {
+                if(erro.code === 'ER_DUP_ENTRY'){
+                 return res.redirect('/usuarios/cadastroUsuario?erro=email')
+                }
+
                 console.log(erro)
-                return res.send('Erro ao cadastrar usuário.')
+                return res.status(500).send('Erro ao cadastrar usuário.')
             }
         
 
@@ -95,7 +95,7 @@ async function criarUsuario(req, res) {
         })
     }catch(erro){
         console.log(erro);
-        res.status(500).res.send("Erro ao criptografar a senha.");
+        res.status(500).send("Erro ao criptografar a senha.");
     }
     
 }
@@ -152,7 +152,7 @@ function perfil(req, res){
 
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar usuário.')
+            return res.status(500).send('Erro ao buscar usuário.')
         }
         if (resultados.length === 0) {
             return res.send('Usuário não encontrado.')
@@ -188,16 +188,6 @@ function perfil(req, res){
                                 <div class="campo">
                                     <label for="email" class="form_pergunta">E-mail</label>
                                     <input type="email" name="email" id="email" value="${u.email}" required>
-                                </div>
-
-                                <div class="campo">
-                                    <label for="telefone" class="form_pergunta">Telefone</label>
-                                    <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
-                                </div>
-
-                                <div class="campo">
-                                    <label for="nome_usuario" class="form_pergunta">Nome de usuário</label>
-                                    <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
                                 </div>
 
                                 <button type="submit" class="btn-cadastro">Salvar alterações</button>
@@ -257,7 +247,7 @@ function mostrarFormularioEdicao(req, res){
 
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar usuário.')
+            return res.status(500).send('Erro ao buscar usuário.')
         }
         if (resultados.length === 0) {
             return res.send('Usuário não encontrado.')
@@ -296,16 +286,6 @@ function mostrarFormularioEdicao(req, res){
                                 <div class="elemento_form">
                                     <label for="email">E-mail</label>
                                     <input type="email" name="email" id="email" value="${u.email}" required>
-                                </div>
-
-                                <div class="elemento_form">
-                                    <label for="telefone">Telefone</label>
-                                    <input type="tel" name="telefone" id="telefone" value="${u.telefone}">
-                                </div>
-
-                                <div class="elemento_form">
-                                    <label for="nome_usuario">Nome de usuário</label>
-                                    <input type="text" name="nome_usuario" id="nome_usuario" value="${u.nome_usuario}">
                                 </div>
 
                                 <button type="submit" class="btn">Salvar alterações</button>
@@ -354,35 +334,53 @@ function atualizarUsuario(req, res) {
     usuarioModel.atualizarUsuario(idUsuario, req.body, (erro) => {
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao atualizar usuário.')
+            return res.status(500).send('Erro ao atualizar usuário.')
         }
         res.redirect('/adm')
     })
 }
 
-async function enviarEmail (req,res) {
+async function enviarEmail(req, res) {
 
-    const emailEnviar = req.body.email
-
-    const resetURL = await montarToken(emailEnviar)
-
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    (async function () {
-    const { data, error } = await resend.emails.send({
-        from: 'Acme <onboarding@resend.dev>',
-        to: [`${emailEnviar}`],
-        subject: 'Hello World',
-        html: `${resetURL}`,
-    });
-
-    if (error) {
-        return console.error({ error });
+    if (typeof req.body.email !== 'string') {
+        return res.status(400).send('Email inválido')
     }
 
-    })();
+    const emailEnviar = req.body.email.trim().toLowerCase();
 
-    res.redirect('/')
+    if (!emailEnviar) {
+        return res.status(400).send('Email vazio')
+    }
+
+    let resetURL
+    try {
+        resetURL = await montarToken(emailEnviar)
+    } catch (erro) {
+        console.error(erro)
+        return res.status(500).send('Erro ao montar token')
+    }
+
+    if (resetURL) {
+        try {
+            const { error } = await resend.emails.send({
+                from: 'Agrotech <onboarding@resend.dev>',
+                to: [emailEnviar],
+                subject: 'Recuperação de senha - AgroTech',
+                html: `
+                    <p>Clique no link abaixo para trocar sua senha. Ele vale por 1 hora.</p>
+                    <p><a href="${resetURL}">Trocar minha senha</a></p>
+                `,
+            });
+
+            if (error) {
+                console.error({ error });
+            }
+        } catch (erro) {
+            console.error({ erro });
+        }
+    }
+
+    return res.redirect('/usuarios/emailRecuperarSenha?enviado=1')
 }
 
 async function atualizarSenha(req,res){
@@ -397,7 +395,7 @@ async function atualizarSenha(req,res){
     usuarioModel.atualizarSenha(req.body, (erro) =>{
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao atualizar senha.')
+            return res.status(500).send('Erro ao atualizar senha.')
         }
     })
     res.redirect('/')
@@ -409,15 +407,13 @@ function deletarUsuario(req, res) {
     usuarioModel.deletarUsuario(idUsuario, (erro) => {
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao excluir usuário.')
+            return res.status(500).send('Erro ao excluir usuário.')
         }
         res.redirect('/adm')
     })
 }
 
 module.exports = {
-    buscarEmail,
-    buscarNomeUsuario,
     montarSecret,
     criarUsuario,
     logarUsuario,

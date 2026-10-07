@@ -26,14 +26,11 @@ CREATE TABLE `usuarios` (
   `idUsuario` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `telefone` varchar(20) NOT NULL,
   `senha` varchar(255) NOT NULL,
-  `nome_usuario` varchar(100) NOT NULL,
-  `role` varchar(45) NOT NULL,
+  `role` enum('user','adm') NOT NULL,
   PRIMARY KEY (`idUsuario`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `nome_usuario` (`nome_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +39,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (34,'Olivia','olivia@gmail.com','444444444444','$2b$10$uLGapokEnbATTLGWReSJcebHo2u0HVEQBdJpQXTnx4b4gTqAWyxTi','olivia123','user'),(35,'Bibi','bibi@gmail.com','3333333333','$2b$10$gIeuejVPQFQdjGvgW0OIkOgOxzn.5heM2Um1VulmB8rtP1BHmBv6W','bibi123','user'),(36,'usuario','usuario@gmail.com','44447','$2b$10$WSmfqzGy3xstW5UkO0u2UeanjFNP3oe2BNcgV1LyH5ltRSpFmdc.u','usuario1234','user'),(37,'usuario2','ususu@gmail.com','55555555555555','$2b$10$P.lI1zt6duXG3yGeizoVpudIyppPQHoZRU8xB8Fqdjri.G43HY9Ma','usuario234567','user'),(38,'usario3','usuario3@gmail.com','44444444444','$2b$10$ZOVekt4LvMgRJvqj0WFCaON0YnrruFufB4sQlfBw3U0qkfA5CqxAW','usuariominha senha','user'),(39,'Admin','admin@gmail','54564665','$2b$10$IdbkGjYr2fsJ0IuTB1DL2eFkk8/z.V4BAm6CVzGMHubIea9RIzidu','admin123','adm'),(41,'usua4','usu@gmail','77777777777','$2b$10$4vrj.0tvjZDdxKK9rsr4u.9puR5uCnMrjCMX0OD/aKwClZPRVgCpy','123456','user'),(44,'Fernanda Bertotti','fernandabertotti7@gmail.com','555555','$2b$10$jGozq55Wn7Zz1DBIUlMEfOpPXYmzRs0QSAJGQId/3iUJqr1AtaP0y','fernanda123','user'),(45,'Bel','bel@gmail.com','333333333333','$2b$10$jKKfXyJ2zNn60woMERrG.OSfD2wvxXoZGn8LTSxGDON8VfEtNa.zu','bel123456','user'),(46,'Bianca','bianca@gmail.com','4444444444','$2b$10$TnVbUbmprt9SOEflJkjU4e3OXwDIY8PscY.Tpt63njoskgP3gU.Xy','bianca123','user'),(47,'leticia','leticia@gmail.com','345678','$2b$10$2e6K4T5sfIZQD5GAC7NMOek6L8uZSo3yhceP05WFkHpVE6E5NM8d6','leticia','user'),(48,'fernanda','fernanda@gmail.com','234567','$2b$10$pK6mITpojK8Qv4YMcvt0RO6twp657uvxUBhwqKZrX3sSJTjeb8jSi','fer','user');
+INSERT INTO `usuarios` VALUES (1,'usuario','usuario@gmail.com','$2b$10$1V4lXlLojdhDA6CyD2Cl6OnaZkquVuA5ooIYbFq89liaIy77Ct6Wm','user'),(2,'adm','admin@gmail.com','$2b$10$F0YgWkbcwIEPxYAKuFyi0ehs1NzopXQvy1Xeb8AmxZMTglvG1zDw2','adm'),(3,'fernanda','fernandabertotti7@gmail.com','$2b$10$SLzNt4q1nhpaFcexmto7xuQWwfLvbG674u2y2HdfjcrwwnDTORKLC','user');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-23 11:55:23
+-- Dump completed on 2026-10-07 17:17:31

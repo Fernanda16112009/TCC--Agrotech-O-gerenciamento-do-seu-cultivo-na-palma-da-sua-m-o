@@ -1,9 +1,26 @@
 const plantaUsuarioModel = require('../Model/plantaUsuarioModel');
 const plantaADMModel = require('../Model/plantaAdmModel');
+const tiposPorPlanta = require('../Constantes/plantas')
 require("dotenv").config();
 const cloudinary = require("cloudinary").v2;
 const fs = require('fs/promises');
 
+const imagensPorTipo = {
+    morangoAlbion: 'morangoAlb.png',
+    morangoCaminoReal: 'morangoCam.png',
+    morangoSanAndreas: 'morangoSan.png',
+    cenouraTradicional: 'cenouraTrad.png',
+    pepinoCaipira: 'pepinoCai.png',
+    pepinoConserva: 'pepinoCon.png',
+    pepinoJapones: 'pepinoJap.png',
+    tomateCereja: 'tomateCer.png',
+    tomateLongaVida: 'tomateLon.png',
+    tomateSaladete: 'tomateSal.png'
+};
+
+const diasAtraso = 60
+const diasAdiantado = 30
+const formato = /^\d{4}-\d{2}-\d{2}$/
 
 function pegarPlantasCalendario(req,res) {
     const idUsuario = req.session.usuario.idUsuario;
@@ -11,7 +28,7 @@ function pegarPlantasCalendario(req,res) {
     plantaUsuarioModel.buscarPlantasCalendario(idUsuario, (erro, resultados) => {
         if (erro) {
             console.log(erro);
-            return res.send('Erro ao buscar plantas do calendário.');
+            return res.status(500).send('Erro ao buscar plantas do calendário.');
         }
         return res.json(resultados);
         
@@ -23,7 +40,7 @@ function pegarPlantasADMCalendario(req,res) {
     plantaADMModel.buscarPlantasAdmCalendario( (erro, resultados) => {
         if (erro) {
             console.log(erro);
-            return res.send('Erro ao buscar plantas do calendário.');
+            return res.status(500).send('Erro ao buscar plantas do calendário.');
         }
 
         return res.json(resultados);
@@ -36,25 +53,109 @@ function formatarNomePlanta(texto) {
     return comEspacos.charAt(0).toUpperCase() + comEspacos.slice(1);
 }
 
-function criarPlantaUsuario(req, res) {
-    
-    req.body.idUsuario = req.session.usuario.idUsuario;
-    
-    if(!req.body.latitude || !req.body.longitude){
-        return res.status(400).send(
-            "A localização é necessaria"
-        )
+function validarData(textoData){
+
+
+    if(!textoData){
+        return { erro: "É necessário uma data para plantio" }
+    }
+
+    if(typeof textoData !== 'string' || !formato.test(textoData)){
+        return { erro: "É necessário uma data válida para plantio" }
+    }
+
+    const diaPlantacao = new Date(textoData)
+
+    if(Number.isNaN(diaPlantacao.getTime()) || diaPlantacao.toISOString().slice(0, 10) !== textoData){
+        return { erro: "É necessário uma data válida para plantio" }
+    }
+
+    // 4) janela de dias: "hoje" também em meia-noite UTC
+    const agora = new Date()
+    const hojeUTC = Date.UTC(agora.getFullYear(), agora.getMonth(), agora.getDate())
+
+    const diferencaDias = Math.round((diaPlantacao.getTime() - hojeUTC) / 86400000)
+
+    if(diferencaDias > diasAdiantado || diferencaDias < -diasAtraso){
+        return { erro: `O dia da plantação deve estar entre ${diasAtraso} dias atrás e ${diasAdiantado} dias à frente` }
+    }
+
+    return { valor: textoData }
+}
+
+function validarCadastroPlanta(formulario){
+
+    const tipoPlanta = formulario.tipoPlanta
+    const planta = formulario.planta
+    const latitude = Number(formulario.latitude)
+    const longitude = Number(formulario.longitude)
+    const quantidade = Number(formulario.quantidade)
+    const agrotoxico = formulario.agrotoxico
+
+    if(!Object.hasOwn(tiposPorPlanta, planta)){
+        return { erro: "Sua planta não é válida" }
+    }
+
+    if(!tiposPorPlanta[planta].includes(tipoPlanta)){
+        return { erro: "O tipo da sua planta não é válido" }
+    }
+
+    if(agrotoxico !== "sim" && agrotoxico !== "nao"){
+        return { erro: "A resposta para agrotóxico deve ser sim ou não" }
     }
 
 
-    const idUsuario = req.body.idUsuario
-    
+    if(!Number.isFinite(latitude) || !Number.isFinite(longitude) || !latitude || !longitude){
+        return { erro: "A localização é necessaria" }
+    }
+
+    if(!Number.isInteger(quantidade) || quantidade <= 0){
+        return { erro: "Quantidade de sementes inválida" }
+    }
+
+    return { valor: 
+        {
+            latitude: latitude,
+            longitude:longitude, 
+            quantidade:quantidade
+        }
+    }
+
+}
+
+
+
+
+function criarPlantaUsuario(req, res) {
+
+    req.body.idUsuario = req.session.usuario.idUsuario;
+
     const tipoPlanta = req.body.tipoPlanta
+
+    const idUsuario = req.body.idUsuario
+
+    const formularioValido = validarCadastroPlanta(req.body)
+
+    if (formularioValido.erro){
+        return res.status(400).send(formularioValido.erro)
+    }
+
+    const data = validarData(req.body.data_plantacao)
+
+    if (data.erro){
+        return res.status(400).send(data.erro)
+    }
+
+
+    req.body.quantidade = formularioValido.valor.quantidade
+    req.body.longitude = formularioValido.valor.longitude
+    req.body.latitude = formularioValido.valor.latitude  
+    req.body.data_plantacao = data.valor
 
     plantaUsuarioModel.buscarNumeroSafra(idUsuario, tipoPlanta, (erro, resultado) =>{
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar numero da safra.')
+            return res.status(500).send('Erro ao buscar numero da safra.')
         }
 
         let safraNumero
@@ -74,46 +175,14 @@ function criarPlantaUsuario(req, res) {
         plantaUsuarioModel.criarPlantaUsuario(req.body, (erro) => {
             if (erro) {
                 console.log(erro)
-                return res.send('Erro ao cadastrar planta.')
+                return res.status(500).send('Erro ao cadastrar planta.')
             }
 
-            switch (tipoPlanta){
+            res.redirect(`/privado/instrucoesPlantas/${tipoPlanta}`);
 
-                case "morangoAlbion":
-                    res.redirect('/privado/instrucoesPlantas/morangoAlbion');
-                    break;
-                case "morangoCaminoReal":
-                    res.redirect('/privado/instrucoesPlantas/morangoCaminoReal');
-                    break;
-                case "morangoSanAndreas":
-                    res.redirect('/privado/instrucoesPlantas/morangoSanAndreas');
-                    break;
-                case "cenouraTradicional":
-                    res.redirect('/privado/instrucoesPlantas/cenouraTradicional');
-                    break;
-                case "pepinoCaipira":
-                    res.redirect('/privado/instrucoesPlantas/pepinoCaipira');
-                    break;
-                case "pepinoConserva":
-                    res.redirect('/privado/instrucoesPlantas/pepinoConserva');
-                    break;
-                case "pepinoJapones":
-                    res.redirect('/privado/instrucoesPlantas/pepinoJapones');
-                    break;
-                case "tomateCereja":
-                    res.redirect('/privado/instrucoesPlantas/tomateCereja');
-                    break;
-                case "tomateLongaVida":
-                    res.redirect('/privado/instrucoesPlantas/tomateLongaVida');
-                    break;
-                case "tomateSaladete":
-                    res.redirect('/privado/instrucoesPlantas/tomateSaladete');
-                    break;
-            } 
         })
 
     })
-
 
 }
 
@@ -124,9 +193,8 @@ function mostrarCategoriasPlanta(req,res){
     plantaUsuarioModel.checarCategoriaPlanta(idUsuario, (erro,resultado) =>{
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar categoria das plantas.')
+            return res.status(500).send('Erro ao buscar categoria das plantas.')
         }
-
         const imagensPorPlanta = {
             morango: 'morango.webp',
             cenoura: 'cenoura.png',
@@ -221,21 +289,10 @@ function mostrarCategoriasTipoPlanta(req,res){
     plantaUsuarioModel.checarCategoriaTipoPlanta(idUsuario, planta, (erro, resultados) =>{
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar categoria dos tipos das plantas.')
+            return res.status(500).send('Erro ao buscar categoria dos tipos das plantas.')
         }
 
-        const imagensPorTipo = {
-            morangoAlbion: 'morangoAlb.png',
-            morangoCaminoReal: 'morangoCam.png',
-            morangoSanAndreas: 'morangoSan.png',
-            cenouraTradicional: 'cenouraTrad.png',
-            pepinoCaipira: 'pepinoCai.png',
-            pepinoConserva: 'pepinoCon.png',
-            pepinoJapones: 'pepinoJap.png',
-            tomateCereja: 'tomateCer.png',
-            tomateLongaVida: 'tomateLon.png',
-            tomateSaladete: 'tomateSal.png'
-        };
+
 
         const cardPlanta = resultados.map(p =>{
             const nomeTipoPlanta = formatarNomePlanta(p.tipoPlanta);
@@ -320,107 +377,100 @@ function mostrarSafraPlanta(req,res){
     plantaUsuarioModel.buscarSafra(idUsuario, planta, tipoPlanta, (erro, resultado) => {
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar safra das plantas.')
+            return res.status(500).send('Erro ao buscar safra das plantas.')
         }
-        const nomeTipoPlanta = formatarNomePlanta(resultado[0].tipoPlanta);
-        plantaUsuarioModel.atualizarSafraNome(resultado[0].safraNome, idUsuario, resultado[0].idPlanta, (erro) =>{
-            
-            if (erro) {
+
+        if(resultado.length <= 0){
             console.log(erro)
-            return res.send('Erro ao atualizar o nome da safra.')
-            }
+            return res.status(404).send('Essa safra não existe')
+        }
 
-            const imagensPorTipo = {
-                morangoAlbion: 'morangoAlb.png',
-                morangoCaminoReal: 'morangoCam.png',
-                morangoSanAndreas: 'morangoSan.png',
-                cenouraTradicional: 'cenouraTrad.png',
-                pepinoCaipira: 'pepinoCai.png',
-                pepinoConserva: 'pepinoCon.png',
-                pepinoJapones: 'pepinoJap.png',
-                tomateCereja: 'tomateCer.png',
-                tomateLongaVida: 'tomateLon.png',
-                tomateSaladete: 'tomateSal.png'
-            };
+        const nomeTipoPlanta = formatarNomePlanta(resultado[0].tipoPlanta);
+        
+        
+        if (erro) {
+        console.log(erro)
+        return res.status(500).send('Erro ao atualizar o nome da safra.')
+        }
 
-            const cardPlanta = resultado.map(p =>{
+        const cardPlanta = resultado.map(p =>{
 
-                const nomeSafra = formatarNomePlanta(p.safraNome)
-                const imagemTipoPlanta = p.url || `/privado/img/${imagensPorTipo[p.tipoPlanta] || ""}`;
+            const nomeSafra = formatarNomePlanta(p.safraNome)
+            const imagemTipoPlanta = p.url || `/privado/img/${imagensPorTipo[p.tipoPlanta] || ""}`;
 
 
-                return `
-                    <form action="/planta/${planta}/${p.tipoPlanta}/${p.idPlanta}" method="get" required>
-                        <button class="card-planta">
-                            <img src="${imagemTipoPlanta}" alt="${nomeTipoPlanta}" class="card-icon">
-                            <span class="card-titulo">${nomeSafra}</span>
-                            <span class="card-subtitulo">Ver detalhes</span>
-                        </button>
-                    </form>`
-                }).join("")
+            return `
+                <form action="/planta/${planta}/${p.tipoPlanta}/${p.idPlanta}" method="get" required>
+                    <button class="card-planta">
+                        <img src="${imagemTipoPlanta}" alt="${nomeTipoPlanta}" class="card-icon">
+                        <span class="card-titulo">${nomeSafra}</span>
+                        <span class="card-subtitulo">Ver detalhes</span>
+                    </button>
+                </form>`
+            }).join("")
 
-            
-            const html = `
-                <!DOCTYPE html>
-                <html lang="pt-BR">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Meus tipo de ${nomeTipoPlanta}</title>
-                    <link rel="stylesheet" href="/privado/privadoStyle.css">
-                    <script src="/js/vlibras.js" defer></script>
-                </head>
-                <body>
+        
+        const html = `
+            <!DOCTYPE html>
+            <html lang="pt-BR">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Meus tipo de ${nomeTipoPlanta}</title>
+                <link rel="stylesheet" href="/privado/privadoStyle.css">
+                <script src="/js/vlibras.js" defer></script>
+            </head>
+            <body>
 
-                    <main>
-                        <div class="plantas-container">
-                            <h1 class="titulo-pagina">Meus tipos de ${nomeTipoPlanta}</h1>
+                <main>
+                    <div class="plantas-container">
+                        <h1 class="titulo-pagina">Meus tipos de ${nomeTipoPlanta}</h1>
 
-                            <div class="plantas-grid">
-                                ${cardPlanta}
-                            </div>
-
-                            <form action="/planta/minhasPlantas" method="get">
-                                <button class="btn-voltar" type="submit" title="Voltar">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    </main>
-                    <footer>
-
-                        <div class="footer-conteudo">
-
-                            <h3>AgroTech</h3>
-
-                            <p>
-                                O gerenciamento do plantio na palma da sua mão.
-                            </p>
-
-                            <p>
-                                Sugestões, críticas ou dúvidas?
-                                <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
-                            </p>
-
-                            <p class="copyright">
-                                © 2026 AgroTech. Todos os direitos reservados.
-                            </p>
-
+                        <div class="plantas-grid">
+                            ${cardPlanta}
                         </div>
 
-                    </footer>
-                </body>
-                </html>
-            `
-            res.send(html)
-        })
+                        <form action="/planta/minhasPlantas" method="get">
+                            <button class="btn-voltar" type="submit" title="Voltar">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </main>
+                <footer>
+
+                    <div class="footer-conteudo">
+
+                        <h3>AgroTech</h3>
+
+                        <p>
+                            O gerenciamento do plantio na palma da sua mão.
+                        </p>
+
+                        <p>
+                            Sugestões, críticas ou dúvidas?
+                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                        </p>
+
+                        <p class="copyright">
+                            © 2026 AgroTech. Todos os direitos reservados.
+                        </p>
+
+                    </div>
+
+                </footer>
+            </body>
+            </html>
+        `
+        res.send(html)
+    
     })
 }
 
 function atualizarSafraNome(req,res){
-    const idUsuario = req.params.idUsuario
+    const idUsuario = req.session.usuario.idUsuario
     const idPlanta = req.params.idPlanta
     const safraNome = req.body.safraNome
     const planta = req.params.planta
@@ -429,14 +479,14 @@ function atualizarSafraNome(req,res){
     plantaUsuarioModel.atualizarSafraNome(safraNome, idUsuario, idPlanta, (erro) =>{
             if (erro) {
             console.log(erro)
-            return res.send('Erro ao atualizar o nome da safra.')
+            return res.status(500).send('Erro ao atualizar o nome da safra.')
         }
         return res.redirect(`/planta/${planta}/${tipoPlanta}/${idPlanta}`)
     })
 }
 
 function atualizarLocalizacao(req,res){
-    const idUsuario = req.params.idUsuario
+    const idUsuario = req.session.usuario.idUsuario
     const idPlanta = req.params.idPlanta
     const localizacao = req.body
     const planta = req.params.planta
@@ -445,7 +495,7 @@ function atualizarLocalizacao(req,res){
     plantaUsuarioModel.atualizarLocalizacao(localizacao, idUsuario, idPlanta, (erro) =>{
             if (erro) {
             console.log(erro)
-            return res.send('Erro ao atualizar localizacao.')
+            return res.status(500).send('Erro ao atualizar localizacao.')
         }
         return res.redirect(`/planta/${planta}/${tipoPlanta}/${idPlanta}`)
     })
@@ -461,11 +511,17 @@ function mostrarPlantaUsuario(req,res){
     plantaUsuarioModel.buscarPlantaPorIdPlanta(idUsuario, idPlanta, (erro, resultados) => {
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao buscar planta.')
+            return res.status(500).send('Erro ao buscar planta.')
         }
 
+        let p
 
-        const p = resultados[0];
+        if(resultados.length <= 0){
+            console.log(erro)
+            return res.status(500).send('Essa planta não existe')
+        }else{
+            p = resultados[0];
+        }
 
         const agrotoxico = p.agrotoxico === "nao" ? "Não" : "Sim";
 
@@ -477,19 +533,6 @@ function mostrarPlantaUsuario(req,res){
                 .replace(/^./, (c) => c.toUpperCase());
         }
 
-        const imagensPorTipo = {
-            morangoAlbion: 'morangoAlb.png',
-            morangoCaminoReal: 'morangoCam.png',
-            morangoSanAndreas: 'morangoSan.png',
-            cenouraTradicional: 'cenouraTrad.png',
-            pepinoCaipira: 'pepinoCai.png',
-            pepinoConserva: 'pepinoCon.png',
-            pepinoJapones: 'pepinoJap.png',
-            tomateCereja: 'tomateCer.png',
-            tomateLongaVida: 'tomateLon.png',
-            tomateSaladete: 'tomateSal.png'
-        };
-
         const imagemPlanta = p.url || `/privado/img/${imagensPorTipo[p.tipoPlanta] || ""}`;
         const nomeTipoPlantaExibicao = formatarNomeExibicao(p.tipoPlanta);
         const nomeSafraExibicao = p.safraNome.charAt(0).toUpperCase() + p.safraNome.slice(1);
@@ -500,7 +543,7 @@ function mostrarPlantaUsuario(req,res){
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Ver ${nomeTipoPlantaExibicao}</title>
+                <title>Ver ${nomeSafraExibicao}</title>
                 <link rel="stylesheet" href="/privado/privadoStyle.css">
                 <script src="/js/vlibras.js" defer></script>
             </head>
@@ -518,10 +561,10 @@ function mostrarPlantaUsuario(req,res){
                             </form>
 
                             <div class="planta-imagem-wrapper">
-                                <img src="${imagemPlanta}" alt="${nomeTipoPlantaExibicao}" class="planta-imagem">
+                                <img src="${imagemPlanta}" alt="${nomeSafraExibicao}" class="planta-imagem">
                             </div>
 
-                            <p class="planta-nome">${nomeTipoPlantaExibicao}</p>
+                            <p class="planta-nome">${nomeSafraExibicao}</p>
 
                             <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="get">
                                 <button class="btn-anotacoes" type="submit" title="Suas anotações">
@@ -535,13 +578,13 @@ function mostrarPlantaUsuario(req,res){
 
                         <div class="info-card">
 
-                            <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/imagem" method="post" enctype="multipart/form-data" class="form-foto">
+                            <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}/imagem" method="post" enctype="multipart/form-data" class="form-foto">
                                 <label for="imagem" class="form_pergunta">Foto da sua plantação</label>
                                 <input type="file" id="imagem" name="imagem" class="imagem" accept="image/*">
                                 <button type="submit" class="btn-foto">Adicionar foto da plantação</button>
                             </form>
 
-                            <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}" method="post" class="campo">
+                            <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}" method="post" class="campo">
                                 <label for="safraNome" class="form_pergunta">Nome da safra</label>
                                 <textarea id="safraNome" name="safraNome" class="safraNome">${nomeSafraExibicao}</textarea>
                                 <button type="submit" class="btn-secundario">Trocar nome da safra</button>
@@ -564,7 +607,7 @@ function mostrarPlantaUsuario(req,res){
 
                             <div class="campo">
                                 <label for="btn_mapa" class="form_pergunta">Gostaria de mudar a localização da sua planta? Certifique-se de estar no local exato em que você gostaria de plantar</label>
-                                <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/localizacao" method="post" class="form-localizacao">
+                                <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}/localizacao" method="post" class="form-localizacao">
                                     <input type="hidden" id="longitude" name="longitude" required>
                                     <input type="hidden" id="latitude" name="latitude" required>
                                     <button type="button" id="btn_mapa" class="btn-localizacao">Selecionar localização</button>
@@ -630,21 +673,36 @@ async function adicionarImagemSafra(req,res){
     const tipoPlanta = req.params.tipoPlanta
 
 
-    const resultado = await cloudinary.uploader.upload(req.file.path);
-    const imagem = resultado.secure_url;
+    if(!req.file){
+        return res.status(400).send('Envie uma imagem JPG, PNG ou WEBP.');
+    }
 
+    try{
+        const resultado = await cloudinary.uploader.upload(req.file.path);
+        const imagem = resultado.secure_url;
 
-    await fs.unlink(req.file.path);
+        plantaUsuarioModel.adicionarImagem(idUsuario, idPlanta, imagem, (erro) => {
 
-    plantaUsuarioModel.adicionarImagem(idUsuario, idPlanta, imagem, (erro) => {
+            if (erro) {
+                console.log(erro);
+                return res.status(500).send('Erro ao salvar imagem.');
+            }
 
-        if (erro) {
-            console.log(erro);
-            return res.send('Erro ao adiconar imagem.');
+            res.redirect(`/planta/${planta}/${tipoPlanta}/${idPlanta}`);
+        })
+    }catch(erro){
+        console.log(erro)
+        return res.status(500).send('Falha ao salvar imagem.');
+
+    }finally{
+
+        try{
+            await fs.unlink(req.file.path);
+        }catch(erro){
+            console.log(erro)
         }
-
-        res.redirect(`/planta/${planta}/${tipoPlanta}/${idPlanta}`);
-    })
+        
+    }
 
 }
 
@@ -658,7 +716,7 @@ function cadastrarAnotacao(req,res){
     plantaUsuarioModel.cadastrarAnotacao(req.body, idUsuario, idPlanta,  (erro,) => {
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao cadastrar planta.')
+            return res.status(500).send('Erro ao cadastrar planta.')
         }
 
         res.redirect(`/planta/${idPlanta}/${planta}/${tipoPlanta}/anotacoes`);
@@ -675,11 +733,18 @@ function anotacoesPlanta(req,res){
     plantaUsuarioModel.buscarAnotacoes(idUsuario, idPlanta, (erro, resultado) => {
         if (erro) {
             console.log(erro);
-            return res.send('Erro ao buscar anotação');
+            return res.status(500).send('Erro ao buscar anotação');
         }
 
+        let a
 
-        const a = resultado[0]
+        if(resultado.length <= 0){
+            console.log(erro)
+            return res.status(500).send('Essa anotação não existe')
+        }else{
+            a = resultado[0];
+        }
+
 
         const html = `
             <!DOCTYPE html>
@@ -697,7 +762,7 @@ function anotacoesPlanta(req,res){
                         <h1 class="titulo-pagina">Anotações</h1>
 
                         <div class="anotacoes-card">
-                            <form action="/planta/${idUsuario}/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post" class="campo">
+                            <form action="/planta/${idPlanta}/${planta}/${tipoPlanta}/anotacoes" method="post" class="campo">
                                 <label for="caixa_anotacao" class="form_pergunta">Escreva suas anotações</label>
                                 <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" placeholder="Digite suas anotações">${a.comentarios || ""}</textarea>
                                 <button type="submit" class="btn-cadastro">Salvar anotações</button>
@@ -750,7 +815,7 @@ function deletarPlanta(req, res) {
     plantaUsuarioModel.deletarPlanta(idUsuario, idPlanta,  (erro) => {
         if (erro) {
             console.log(erro)
-            return res.send('Erro ao excluir planta.')
+            return res.status(500).send('Erro ao excluir planta.')
         }
         res.redirect('/planta/minhasPlantas')
     })

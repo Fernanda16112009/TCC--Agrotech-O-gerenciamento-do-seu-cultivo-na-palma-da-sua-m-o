@@ -3,15 +3,13 @@ const conexao = require('../Config/config')
 function criarUsuario(usuario, callback) {
     const sql = `
         INSERT INTO usuarios
-        (nome, email, telefone, senha, nome_usuario, role)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (nome, email, senha, role)
+        VALUES (?, ?, ?, ? )
     `
     conexao.query(sql, [
         usuario.nome,
         usuario.email,
-        usuario.telefone,
         usuario.senha,
-        usuario.nome_usuario,
         usuario.role
     ], callback)
 }
@@ -41,19 +39,10 @@ function buscarUsuarioPorNome(nome, callback) {
     conexao.query(sql, [`%${nome}%`], callback)
 }
 
-function buscarNomeUsuario(callback){
-    const sql = `SELECT nome_usuario FROM usuarios ORDER BY nome`
-    conexao.query(sql, callback)
-}
 
 function buscarSenhaPorId(idUsuario, callback) {
     const sql = `SELECT senha FROM usuarios WHERE idUsuario = ?`
     conexao.query(sql, [idUsuario], callback)
-}
-
-function buscarEmail(callback){
-    const sql = `SELECT email FROM usuarios ORDER BY nome`
-    conexao.query(sql, callback)
 }
 
 function buscarIDSenha(email, callback){
@@ -65,14 +54,12 @@ function atualizarUsuario(idUsuario, usuario, callback) {
 
     const sql = `
         UPDATE usuarios
-        SET nome = ?, email = ?, telefone = ?, nome_usuario = ?
+        SET nome = ?, email = ?
         WHERE idUsuario = ?
     `
     conexao.query(sql, [
         usuario.nome,
         usuario.email,
-        usuario.telefone,
-        usuario.nome_usuario,
         idUsuario
     ], callback)
 }
@@ -102,9 +89,7 @@ module.exports = {
     listarUsuariosID,
     buscarUsuarioPorId,
     buscarUsuarioPorNome,
-    buscarNomeUsuario,
     buscarSenhaPorId,    
-    buscarEmail,
     buscarIDSenha,
     atualizarUsuario,
     atualizarSenha,

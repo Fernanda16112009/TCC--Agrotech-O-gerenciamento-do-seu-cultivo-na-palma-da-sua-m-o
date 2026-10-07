@@ -1,45 +1,32 @@
-const emailValidado = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-async function emailValido() {
-
+function emailValido() {
     const email = document.getElementById('email').value.trim();
-    const botao = document.getElementById('btn_cadastro')
+    const botao = document.getElementById('btn_cadastro');
 
-    botao.disabled = true
+    // Cada execução parte do zero: esconde tudo e desabilita o botão
+    document.getElementById('email-obrigatorio').style.display = "none";
+    document.getElementById('email-invalido-erro').style.display = "none";
+    document.getElementById('email-enviado').style.display = "none";
+    botao.disabled = true;
 
     if (!email) {
         document.getElementById('email-obrigatorio').style.display = "block";
         return;
-    } else {
-        document.getElementById('email-obrigatorio').style.display = "none";
     }
 
-    if (!emailValidado.test(email)) {
+    if (!formatoEmail.test(email)) {
         document.getElementById('email-invalido-erro').style.display = "block";
         return;
-    } else {
-        document.getElementById('email-invalido-erro').style.display = "none";
     }
 
-    const bancoEmail = await fetch('/usuarios/bancoemails');
-    const be = await bancoEmail.json();
+    // Passou nas duas verificações
+    botao.disabled = false;
+}
 
-    let existeEmail = false
+// Mensagem de resultado vinda do servidor (?enviado=1)
+const params = new URLSearchParams(window.location.search);
 
-    for (let i = 0; i < be.length; i++) {
-
-        if (email === be[i].email) {      
-                existeEmail = true
-                break
-        }
-    }
-
-    if(existeEmail === false){
-        document.getElementById('email-existe-erro').style.display = "block";
-        botao.disabled = true;
-        return
-    }else{
-        document.getElementById('email-existe-erro').style.display = "none";
-        botao.disabled = false;
-    }
+if (params.get('enviado') === '1') {
+    document.getElementById('email-enviado').style.display = "block";
 }

@@ -20,8 +20,6 @@ function painelAdm(req, res) {
                 <td>${u.idUsuario}</td>
                 <td>${u.nome}</td>
                 <td>${u.email}</td>
-                <td>${u.telefone}</td>
-                <td>${u.nome_usuario}</td>
                 <td class="acoes">
                     <a class="btn edit" href="/priUsuarios/${u.idUsuario}/editar">
                         Editar
@@ -56,8 +54,6 @@ function painelAdm(req, res) {
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Email</th>
-                                <th>Telefone</th>
-                                <th>Nome de Usuário</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -126,13 +122,13 @@ function painelAdm(req, res) {
 
                     <nav class="sidebar-nav">
 
-                        <a href="/adm/usuarios">
+                        <a class = "btn-nav" href="/adm/usuarios">
                             Listar usuários
                         </a>
 
-                        <a href="/priUsuarios/sair">
-                            Sair
-                        </a>
+                        <form action="/priUsuarios/sair" method="post" required>
+                            <button  class ="btn-nav">Sair</button>
+                        </form>
 
                     </nav>
 
@@ -255,8 +251,6 @@ function listarPorID(req, res) {
             <td>${u.idUsuario}</td>
             <td>${u.nome}</td>
             <td>${u.email}</td>
-            <td>${u.telefone}</td>
-            <td>${u.nome_usuario}</td>
             <td>
                 <a class="btn edit" href="/priUsuarios/${u.idUsuario}/editar">Editar</a>
                 <form action="/priUsuarios/${u.idUsuario}/deletar" method="POST" class="inline-form">
@@ -274,8 +268,6 @@ function listarPorID(req, res) {
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Email</th>
-                        <th>Telefone</th>
-                        <th>Nome de Usuário</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -300,14 +292,15 @@ function listarPorID(req, res) {
                     <div class="sidebar-logo">
                         AgroTech
                     </div>
-
                     <nav class="sidebar-nav">
 
-                        <a href="/adm">Painel geral</a>
-
-                        <a href="/priUsuarios/sair">
-                            Sair
+                        <a class = "btn-nav" href="/adm/usuarios">
+                            Listar usuários
                         </a>
+
+                        <form action="/priUsuarios/sair" method="post" required>
+                            <button  class ="btn-nav">Sair</button>
+                        </form>
 
                     </nav>
 

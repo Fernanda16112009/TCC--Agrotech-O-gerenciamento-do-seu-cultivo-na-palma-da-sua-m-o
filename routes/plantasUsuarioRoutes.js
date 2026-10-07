@@ -2,8 +2,14 @@ const express = require('express')
 const router = express.Router()
 const path = require('path');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-
+const upload = multer({
+    dest: 'uploads/',
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const permitidos = ['image/jpeg', 'image/png', 'image/webp'];
+        cb(null, permitidos.includes(file.mimetype));
+    }
+});
 const plantaUsuarioController = require('../Controllers/plantaUsuarioController')
 
 router.post('/', plantaUsuarioController.criarPlantaUsuario);
@@ -13,9 +19,9 @@ router.get('/minhasPlantas', plantaUsuarioController.mostrarCategoriasPlanta);
 
 router.get('/:idPlanta/:planta/:tipoPlanta/anotacoes', plantaUsuarioController.anotacoesPlanta);
 
-router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta/anotacoes', plantaUsuarioController.cadastrarAnotacao);
+router.post('/:idPlanta/:planta/:tipoPlanta/anotacoes', plantaUsuarioController.cadastrarAnotacao);
 
-router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta/imagem', upload.single('imagem'), plantaUsuarioController.adicionarImagemSafra);
+router.post('/:idPlanta/:planta/:tipoPlanta/imagem', upload.single('imagem'), plantaUsuarioController.adicionarImagemSafra);
 
 router.post('/:idPlanta/deletar', plantaUsuarioController.deletarPlanta);
 
@@ -26,9 +32,9 @@ router.get('/:planta/:tipoPlanta', plantaUsuarioController.mostrarSafraPlanta);
 
 router.get('/:planta/:tipoPlanta/:idPlanta', plantaUsuarioController.mostrarPlantaUsuario);
 
-router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta', plantaUsuarioController.atualizarSafraNome);
+router.post('/:idPlanta/:planta/:tipoPlanta', plantaUsuarioController.atualizarSafraNome);
 
-router.post('/:idUsuario/:idPlanta/:planta/:tipoPlanta/localizacao', plantaUsuarioController.atualizarLocalizacao);
+router.post('/:idPlanta/:planta/:tipoPlanta/localizacao', plantaUsuarioController.atualizarLocalizacao);
 
 module.exports = router
 

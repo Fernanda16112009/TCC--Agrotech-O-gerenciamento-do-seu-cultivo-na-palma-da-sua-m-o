@@ -71,8 +71,10 @@
     color: #dcebd8;
 }
 
-.bodyAdm .sidebar-nav a {
+.bodyAdm .sidebar-nav .btn-nav {
     color: white;
+
+    background-color: #27613c;
 
     text-decoration: none;
 
@@ -86,7 +88,7 @@
     transition: 0.2s;
 }
 
-.bodyAdm .sidebar-nav a:hover {
+.bodyAdm .sidebar-nav .btn-nav:hover {
     background: #27613c;
 }
 

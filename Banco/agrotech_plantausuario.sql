@@ -30,15 +30,17 @@ CREATE TABLE `plantausuario` (
   `safraNumero` int NOT NULL,
   `safraNome` varchar(300) DEFAULT NULL,
   `quantidade` int NOT NULL,
-  `longitude` varchar(100) NOT NULL,
-  `latitude` varchar(100) NOT NULL,
+  `longitude` decimal(9,6) NOT NULL,
+  `latitude` decimal(9,6) NOT NULL,
   `data_plantacao` date NOT NULL,
   `agrotoxico` enum('sim','nao') NOT NULL,
   `comentarios` text,
+  `url` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`idPlanta`),
   KEY `idUsuario` (`idUsuario`),
-  CONSTRAINT `plantausuario_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `plantausuario_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`),
+  CONSTRAINT `chk_quantidade_positiva` CHECK ((`quantidade` > 0))
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +49,7 @@ CREATE TABLE `plantausuario` (
 
 LOCK TABLES `plantausuario` WRITE;
 /*!40000 ALTER TABLE `plantausuario` DISABLE KEYS */;
-INSERT INTO `plantausuario` VALUES (1,36,'morango','morangoSanAndreas',1,'morangoSanAndreas safra 1',8986,'-54.08312151721972','-25.299195714292246','2026-09-23','sim',NULL),(2,36,'morango','morangoCaminoReal',1,'morangoCaminoReal safra 1',34,'-54.08312151721972','-25.299195714292246','2026-09-03','sim',NULL),(3,36,'morango','morangoSanAndreas',2,'morangoSanAndreas safra 2',34,'-54.08312151721972','-25.299195714292246','2026-09-08','nao',NULL),(4,36,'pepino','pepinoConserva',1,'pepinoConserva safra 1',99,'-54.08313377800377','-25.299247168612077','2026-09-04','nao',NULL),(5,36,'pepino','pepinoJapones',1,'pepinoJapones safra 1',99,'-54.08313377800377','-25.299247168612077','2026-09-10','sim',NULL),(6,36,'tomate','tomateCereja',1,'tomateCereja safra 1',99,'-54.08313377800377','-25.299247168612077','2026-09-04','sim',NULL),(7,36,'tomate','tomateLongaVida',1,'tomateLongaVida safra 1',34,'-54.08313377800377','-25.299247168612077','2026-09-10','sim',NULL);
+INSERT INTO `plantausuario` VALUES (1,1,'tomate','tomateCereja',1,'tomateCereja safra 1',8986,-54.083227,-25.299201,'2026-10-16','sim',NULL,NULL),(2,1,'cenoura','cenouraTradicional',1,'cenouraTradicional safra 1',34,-54.083227,-25.299201,'2026-10-28','sim','funcionaaaa','https://res.cloudinary.com/iucjf5bn/image/upload/v1791404161/lyh7azxbgwl2xrpebvex.png'),(3,1,'tomate','tomateCereja',2,'tomateCereja safra 2',34,-54.083227,-25.299201,'2026-10-03','sim',NULL,NULL);
 /*!40000 ALTER TABLE `plantausuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +62,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-23 11:55:23
+-- Dump completed on 2026-10-07 17:17:31

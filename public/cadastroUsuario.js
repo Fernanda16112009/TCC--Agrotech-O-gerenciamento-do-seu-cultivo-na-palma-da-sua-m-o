@@ -1,56 +1,40 @@
-
 const emailValidado = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function camposVazios(){
+function camposVazios() {
 
     const nome = document.getElementById('nome').value.trim();
-    document.getElementById('nome-obrigatorio').style.display = nome ? "none" : "block"
+    document.getElementById('nome-obrigatorio').style.display = nome ? "none" : "block";
 
-    const telefone = document.getElementById('telefone').value.trim();
-    document.getElementById('telefone-obrigatorio').style.display = telefone ? "none" : "block"
-
-    if (!nome || !telefone) {
+    if (!nome) {
         return false;
     }
 
     return true;
 }
 
-async function emailValido() {
+function emailValido() {
 
     const email = document.getElementById('email').value.trim();
+
+    // Esconde as mensagens de formato; cada execução parte do zero
+    document.getElementById('email-obrigatorio').style.display = "none";
+    document.getElementById('email-invalido-erro').style.display = "none";
 
     if (!email) {
         document.getElementById('email-obrigatorio').style.display = "block";
         return false;
-    } else {
-        document.getElementById('email-obrigatorio').style.display = "none";
     }
 
     if (!emailValidado.test(email)) {
         document.getElementById('email-invalido-erro').style.display = "block";
         return false;
-    } else {
-        document.getElementById('email-invalido-erro').style.display = "none";
     }
 
-    const bancoEmail = await fetch('/usuarios/bancoemails');
-    const be = await bancoEmail.json();
-
-    for (let i = 0; i < be.length; i++) {
-
-        if (email === be[i].email) {
-            document.getElementById('email-existe-erro').style.display = "block";
-            return false;
-        }
-    }
-
-    document.getElementById('email-existe-erro').style.display = "none";
-
+    // Se o e-mail já existe, quem avisa é o servidor (?erro=email)
     return true;
 }
 
-function senhaValida(){
+function senhaValida() {
 
     const senha = document.getElementById('senha').value.trim();
 
@@ -71,49 +55,25 @@ function senhaValida(){
     }
 }
 
-async function nomeUsuarioValida(){
 
-    const nome_usuario = document.getElementById('nome_usuario').value.trim();
-
-    if (!nome_usuario) {
-        document.getElementById('nome_usuario-obrigatorio').style.display = "block";
-        return false;
-    }
-
-    document.getElementById('nome_usuario-obrigatorio').style.display = "none";
-    document.getElementById('nome_usuario-invalido-erro').style.display = "none";
-
-    const bancoNome = await fetch('/usuarios/buscarNomes');
-    const bn = await bancoNome.json();
-
-    for (let i = 0; i < bn.length; i++) {
-
-        if (nome_usuario === bn[i].nome_usuario) {
-
-            document.getElementById('nome_usuario-invalido-erro').style.display = "block";
-
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-async function formularioValido(){
+function formularioValido() {
 
     const campos = camposVazios();
-    const email = await emailValido();
+    const email = emailValido();
     const senha = senhaValida();
-    const nomeUsuario = await nomeUsuarioValida();
 
-    if (campos && email && senha && nomeUsuario) {
-
-        document.getElementById('btn_cadastro').disabled = false;
-
-    } else {
-
-        document.getElementById('btn_cadastro').disabled = true;
-
-    }
+    document.getElementById('btn_cadastro').disabled =
+        !(campos && email && senha);
 }
+
+// Erros de duplicidade vindos do servidor
+const params = new URLSearchParams(window.location.search);
+
+if (params.get('erro') === 'email') {
+    document.getElementById('email-existe-erro').style.display = "block";
+}
+
+// A mensagem do servidor some quando a pessoa mexe no campo em questão
+document.getElementById('email').addEventListener('input', () => {
+    document.getElementById('email-existe-erro').style.display = "none";
+});
