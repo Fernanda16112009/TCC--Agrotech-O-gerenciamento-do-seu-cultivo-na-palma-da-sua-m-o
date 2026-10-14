@@ -38,9 +38,11 @@ CREATE TABLE `plantausuario` (
   `url` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`idPlanta`),
   KEY `idUsuario` (`idUsuario`),
-  CONSTRAINT `plantausuario_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`),
+  CONSTRAINT `fk_plantausuario_usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`) ON DELETE CASCADE,
+  CONSTRAINT `chk_latitude` CHECK ((`latitude` between -(90) and 90)),
+  CONSTRAINT `chk_longitude` CHECK ((`longitude` between -(180) and 180)),
   CONSTRAINT `chk_quantidade_positiva` CHECK ((`quantidade` > 0))
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +51,7 @@ CREATE TABLE `plantausuario` (
 
 LOCK TABLES `plantausuario` WRITE;
 /*!40000 ALTER TABLE `plantausuario` DISABLE KEYS */;
-INSERT INTO `plantausuario` VALUES (1,1,'tomate','tomateCereja',1,'tomateCereja safra 1',8986,-54.083227,-25.299201,'2026-10-16','sim',NULL,NULL),(2,1,'cenoura','cenouraTradicional',1,'cenouraTradicional safra 1',34,-54.083227,-25.299201,'2026-10-28','sim','funcionaaaa','https://res.cloudinary.com/iucjf5bn/image/upload/v1791404161/lyh7azxbgwl2xrpebvex.png'),(3,1,'tomate','tomateCereja',2,'tomateCereja safra 2',34,-54.083227,-25.299201,'2026-10-03','sim',NULL,NULL);
+INSERT INTO `plantausuario` VALUES (1,1,'tomate','tomateCereja',1,'TomateCereja',8986,-54.083290,-25.299027,'2026-10-16','sim','I not ','https://res.cloudinary.com/iucjf5bn/image/upload/v1791910872/kw3wnlzcbgoah5x82yos.jpg'),(2,1,'cenoura','cenouraTradicional',1,'CenouraTradicional ',34,-54.083234,-25.299182,'2026-10-28','sim','Anotacao teste','https://res.cloudinary.com/iucjf5bn/image/upload/v1791479203/qlff5db1x3cftd4mokum.png'),(3,1,'tomate','tomateCereja',2,'TomateCereja novo nome',34,-54.083234,-25.299182,'2026-10-03','sim',NULL,'https://res.cloudinary.com/iucjf5bn/image/upload/v1791478793/jczmbets6gnycm3kwevp.jpg'),(4,3,'morango','morangoCaminoReal',1,'MorangoCaminoReal ',99,-54.094681,-25.300260,'2026-10-16','sim','tsevcfdc','https://res.cloudinary.com/iucjf5bn/image/upload/v1791584363/brihlhnijxwizvfjoizg.webp'),(5,1,'morango','morangoAlbion',1,'morangoAlbion safra 1',8986,-54.083290,-25.299028,'2026-10-16','nao',NULL,NULL);
 /*!40000 ALTER TABLE `plantausuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +64,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-07 17:17:31
+-- Dump completed on 2026-10-14 15:23:48

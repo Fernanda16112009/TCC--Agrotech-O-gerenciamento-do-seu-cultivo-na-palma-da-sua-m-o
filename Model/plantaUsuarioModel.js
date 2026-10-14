@@ -84,7 +84,6 @@ function atualizarLocalizacao(localizacao, idUsuario, idPlanta, callback){
         WHERE idUsuario = ?
         AND idPlanta = ?
         `
-        console.log(localizacao)
     conexao.query(sql, [
         localizacao.longitude,
         localizacao.latitude,

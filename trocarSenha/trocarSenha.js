@@ -1,8 +1,10 @@
-console.log("JS conectado");
 const parametros = new URLSearchParams(window.location.search);
 
 const id = parametros.get('id');
 document.getElementById('idUsuario').value = id;
+
+const token = parametros.get('token');
+document.getElementById('token').value = token;
 
 
 function validarSenha(){

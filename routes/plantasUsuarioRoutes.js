@@ -14,14 +14,19 @@ const plantaUsuarioController = require('../Controllers/plantaUsuarioController'
 
 router.post('/', plantaUsuarioController.criarPlantaUsuario);
 
-// Rotas específicas primeiro
 router.get('/minhasPlantas', plantaUsuarioController.mostrarCategoriasPlanta);
 
-router.get('/:idPlanta/:planta/:tipoPlanta/anotacoes', plantaUsuarioController.anotacoesPlanta);
+router.get('/:idPlanta/mostrar', plantaUsuarioController.mostrarPlantaUsuario);
 
-router.post('/:idPlanta/:planta/:tipoPlanta/anotacoes', plantaUsuarioController.cadastrarAnotacao);
+router.get('/:idPlanta/veranotacoes', plantaUsuarioController.anotacoesPlanta);
 
-router.post('/:idPlanta/:planta/:tipoPlanta/imagem', upload.single('imagem'), plantaUsuarioController.adicionarImagemSafra);
+router.post('/:idPlanta/cadastraranotacoes', plantaUsuarioController.cadastrarAnotacao);
+
+router.post('/:idPlanta/imagem', upload.single('imagem'), plantaUsuarioController.adicionarImagemSafra);
+
+router.post('/:idPlanta/nomesafra', plantaUsuarioController.atualizarSafraNome);
+
+router.post('/:idPlanta/localizacao', plantaUsuarioController.atualizarLocalizacao);
 
 router.post('/:idPlanta/deletar', plantaUsuarioController.deletarPlanta);
 
@@ -30,11 +35,7 @@ router.get('/:planta', plantaUsuarioController.mostrarCategoriasTipoPlanta);
 
 router.get('/:planta/:tipoPlanta', plantaUsuarioController.mostrarSafraPlanta);
 
-router.get('/:planta/:tipoPlanta/:idPlanta', plantaUsuarioController.mostrarPlantaUsuario);
 
-router.post('/:idPlanta/:planta/:tipoPlanta', plantaUsuarioController.atualizarSafraNome);
-
-router.post('/:idPlanta/:planta/:tipoPlanta/localizacao', plantaUsuarioController.atualizarLocalizacao);
 
 module.exports = router
 

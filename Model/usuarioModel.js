@@ -14,31 +14,15 @@ function criarUsuario(usuario, callback) {
     ], callback)
 }
 
-function pegarLogin(callback) {
-    const sql = `SELECT idUsuario, email, senha, role FROM usuarios`
-    conexao.query(sql, callback)
-}
-
-function listarUsuarios(callback) {
-    const sql = `SELECT * FROM usuarios ORDER BY nome`
-    conexao.query(sql, callback)
-}
-
-function listarUsuariosID(callback) {
-    const sql = `SELECT * FROM usuarios ORDER BY idUsuario`
-    conexao.query(sql, callback)
+function pegarLogin(email, callback) {
+    const sql = `SELECT idUsuario, senha, role FROM usuarios WHERE email = ?`
+    conexao.query(sql, [email], callback)
 }
 
 function buscarUsuarioPorId(idUsuario, callback) {
-    const sql = `SELECT * FROM usuarios WHERE idUsuario = ?`
+    const sql = `SELECT idUsuario, nome, email FROM usuarios WHERE idUsuario = ?`
     conexao.query(sql, [idUsuario], callback)
 }
-
-function buscarUsuarioPorNome(nome, callback) {
-    const sql = `SELECT * FROM usuarios WHERE nome LIKE ? ORDER BY nome`
-    conexao.query(sql, [`%${nome}%`], callback)
-}
-
 
 function buscarSenhaPorId(idUsuario, callback) {
     const sql = `SELECT senha FROM usuarios WHERE idUsuario = ?`
@@ -76,22 +60,13 @@ function atualizarSenha(usuario, callback) {
     ], callback)
 }
 
-function deletarUsuario(idUsuario, callback) {
-    const sql = `DELETE FROM usuarios WHERE idUsuario = ?`
-    conexao.query(sql, [idUsuario], callback)
-}
-
 
 module.exports = {
     criarUsuario,
     pegarLogin,
-    listarUsuarios,
-    listarUsuariosID,
     buscarUsuarioPorId,
-    buscarUsuarioPorNome,
     buscarSenhaPorId,    
     buscarIDSenha,
     atualizarUsuario,
-    atualizarSenha,
-    deletarUsuario
+    atualizarSenha
 }

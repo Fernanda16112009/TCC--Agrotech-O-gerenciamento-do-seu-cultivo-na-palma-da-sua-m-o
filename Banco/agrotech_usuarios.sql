@@ -30,7 +30,7 @@ CREATE TABLE `usuarios` (
   `role` enum('user','adm') NOT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'usuario','usuario@gmail.com','$2b$10$1V4lXlLojdhDA6CyD2Cl6OnaZkquVuA5ooIYbFq89liaIy77Ct6Wm','user'),(2,'adm','admin@gmail.com','$2b$10$F0YgWkbcwIEPxYAKuFyi0ehs1NzopXQvy1Xeb8AmxZMTglvG1zDw2','adm'),(3,'fernanda','fernandabertotti7@gmail.com','$2b$10$SLzNt4q1nhpaFcexmto7xuQWwfLvbG674u2y2HdfjcrwwnDTORKLC','user');
+INSERT INTO `usuarios` VALUES (1,'usuarioteste','usuario@gmail.com','$2b$10$1V4lXlLojdhDA6CyD2Cl6OnaZkquVuA5ooIYbFq89liaIy77Ct6Wm','user'),(2,'adm','admin@gmail.com','$2b$10$F0YgWkbcwIEPxYAKuFyi0ehs1NzopXQvy1Xeb8AmxZMTglvG1zDw2','adm'),(3,'fernanda','fernandabertotti7@gmail.com','$2b$10$YNrbvQxbjo0cXv.8Lu/MH.6DIxNlDblWBm42d29WYN4H7kmZlFk5C','user');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-07 17:17:31
+-- Dump completed on 2026-10-14 15:23:48

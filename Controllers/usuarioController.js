@@ -1,8 +1,10 @@
 const usuarioModel = require('../Model/usuarioModel');
+const validar = require('../Constantes/validar')
 const bcrypt = require('bcryptjs')
 const { Resend } = require('resend');
 const jwt = require('jsonwebtoken');
 const resend = new Resend(process.env.RESEND_API_KEY)
+
 
 if (!process.env.JWT) {
     throw new Error('Variável JWT não definida no .env');
@@ -16,6 +18,12 @@ async function montarSecret(id) {
             if (erro) {
                 reject(erro)
                 return;
+            }
+
+            
+            if(resultados.length === 0){
+                resolve (null)
+                return
             }
 
             const senha = resultados[0].senha
@@ -60,21 +68,27 @@ async function criarUsuario(req, res) {
 
     req.body.role = "user"
 
-    if (typeof req.body.email !== 'string') {
-        return res.status(400).send('Email inválido')
+    const nome = validar.validarNome(req.body.nome)
+
+    if (nome.erro){
+        return res.status(400).send(nome.erro)
     }
 
-    if (typeof req.body.senha !== 'string') {
-        return res.status(400).send('Senha inválida')
+    const email = validar.validarEmail(req.body.email)
+
+    if (email.erro){
+        return res.status(400).send(email.erro)
     }
 
-    req.body.email = req.body.email.trim().toLowerCase();
+    const senha = validar.validarSenha(req.body.senha)
 
-    if (req.body.senha.length < 6) {
-        return res.status(400).send(
-            "A senha precisa ter pelo menos 6 caracteres."
-        );
+    if (senha.erro){
+        return res.status(400).send(senha.erro)
     }
+    
+    req.body.email = email.value
+        req.body.nome = nome.value
+
     
     try{
         req.body.senha = await bcrypt.hash(req.body.senha, 10);
@@ -102,50 +116,63 @@ async function criarUsuario(req, res) {
 
 async function logarUsuario(req, res){
 
-    usuarioModel.pegarLogin( async (erro, loginValor) => {
+    const resultadoEmail = validar.validarEmail(req.body.email)
+
+    if (resultadoEmail.erro){
+        return res.status(400).send(resultadoEmail.erro)
+    }
+
+    if (typeof req.body.senha !== 'string') {
+        return res.status(400).send ("Senha inválida") 
+    }
+
+    const email = resultadoEmail.value
+
+    const usuariosenha = req.body.senha
+
+    usuarioModel.pegarLogin( email, async (erro, resultado) => {
         if (erro) {
             console.log(erro);
-            return send("Erro");
+            return res.status(500).send("Erro ao ao busca senha.");
         }
 
-        const usuarioemail = req.body.email.trim().toLowerCase()
-        const usuariosenha = req.body.senha
+        if (resultado.length === 0) {
+            return res.redirect('/usuarios/login?erro=login')
+        }
 
+        const senhaCorreta = await bcrypt.compare(
+            usuariosenha,
+            resultado[0].senha
+        )
 
-        for (let i = 0; i < loginValor.length; i++){
-
-            if(usuarioemail === loginValor[i].email){
-
-                const senhaCorreta = await bcrypt.compare(
-                    usuariosenha,
-                    loginValor[i].senha
-                )
-
-                if(senhaCorreta){
-                    req.session.usuario = loginValor[i]
-
-                    if (req.session.usuario.role === "adm"){
-                        return res.redirect('/adm')
-                    }
-
-                    return res.redirect('/')
-                }
-
-                return res.redirect('/usuarios/login?erro=login')
+        if(senhaCorreta){
+            req.session.usuario = {
+                idUsuario: resultado[0].idUsuario,
+                role: resultado[0].role
             }
+
+            if (req.session.usuario.role === "adm"){
+                return res.redirect('/adm')
+            }
+
+            return res.redirect('/')
         }
+
         return res.redirect('/usuarios/login?erro=login')
     })
 }
 
 function logout(req,res){
-    req.session.destroy();
-    return res.redirect('/')
+    req.session.destroy(() =>{ return res.redirect('/')});  
 }
 
 function perfil(req, res){
 
     const idUsuario = req.session.usuario.idUsuario;
+
+    const erroEmail = req.query.erro === 'email'
+    ? '<p class="mensagem-erro">Esse e-mail já está em uso por outra conta.</p>'
+    : ''
 
     usuarioModel.buscarUsuarioPorId(idUsuario, (erro, resultados) => {
 
@@ -155,7 +182,7 @@ function perfil(req, res){
             return res.status(500).send('Erro ao buscar usuário.')
         }
         if (resultados.length === 0) {
-            return res.send('Usuário não encontrado.')
+            return res.status(404).send('Usuário não encontrado.')
         }
 
         const u = resultados[0]
@@ -178,16 +205,17 @@ function perfil(req, res){
                         <h1 class="titulo-pagina">Meu Perfil</h1>
 
                         <div class="cadastro-card">
-                            <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
+                            ${erroEmail}
+                            <form action="/priUsuarios/editar" method="POST">
 
                                 <div class="campo">
                                     <label for="nome" class="form_pergunta">Nome completo</label>
-                                    <input type="text" name="nome" id="nome" value="${u.nome}" required>
+                                    <input type="text" name="nome" id="nome" value="${validar.escaparHtml(u.nome)}" required>
                                 </div>
 
                                 <div class="campo">
                                     <label for="email" class="form_pergunta">E-mail</label>
-                                    <input type="email" name="email" id="email" value="${u.email}" required>
+                                    <input type="email" name="email" id="email" value="${validar.escaparHtml(u.email)}" required>
                                 </div>
 
                                 <button type="submit" class="btn-cadastro">Salvar alterações</button>
@@ -238,119 +266,53 @@ function perfil(req, res){
     })
 
 }
-
-function mostrarFormularioEdicao(req, res){
-    const { idUsuario } = req.params 
-
-    usuarioModel.buscarUsuarioPorId(idUsuario, (erro, resultados) => {
-
-
-        if (erro) {
-            console.log(erro)
-            return res.status(500).send('Erro ao buscar usuário.')
-        }
-        if (resultados.length === 0) {
-            return res.send('Usuário não encontrado.')
-        }
-
-        const u = resultados[0]
-
-
-        const html = `
-            <!DOCTYPE html>
-            <html lang="pt-BR">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Editar Usuário</title>
-                <link rel="stylesheet" href="/style.css">
-                <script src="/js/vlibras.js" defer></script>
-            </head>
-            <body>
-                <header>
-                    <h1 class="titulo">AgroTech</h1>
-                    <h2 class="subtitulo">Editar Usuário</h2>
-                </header>
-
-                <main>
-                    <div class="editar-usuario-pagina">
-
-                        <div class="editar-usuario-card">
-                            <form action="/priUsuarios/${u.idUsuario}/editar" method="POST">
-
-                                <div class="elemento_form">
-                                    <label for="nome">Nome Completo</label>
-                                    <input type="text" name="nome" id="nome" value="${u.nome}" required>
-                                </div>
-
-                                <div class="elemento_form">
-                                    <label for="email">E-mail</label>
-                                    <input type="email" name="email" id="email" value="${u.email}" required>
-                                </div>
-
-                                <button type="submit" class="btn">Salvar alterações</button>
-                            </form>
-                        </div>
-
-                        <div class="editar-usuario-acoes">
-                            <a href="/adm" class="btn-secundario">Voltar ao painel</a>
-                        </div>
-
-                    </div>
-                </main>
-                <footer>
-
-                    <div class="footer-conteudo">
-
-                        <h3>AgroTech</h3>
-
-                        <p>
-                            O gerenciamento do plantio na palma da sua mão.
-                        </p>
-
-                        <p>
-                            Sugestões, críticas ou dúvidas?
-                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
-                        </p>
-
-                        <p class="copyright">
-                            © 2026 AgroTech. Todos os direitos reservados.
-                        </p>
-
-                    </div>
-
-                </footer>
-            </body>
-            </html>
-        `
-
-        res.send(html)
-    })
-}
  
 function atualizarUsuario(req, res) {
-    const { idUsuario } = req.params || req.session.usuario.idUsuario;
+    const idUsuario  = req.session.usuario.idUsuario;
+
+    const nome = validar.validarNome(req.body.nome)
+
+    if (nome.erro){
+        return res.status(400).send(nome.erro)
+    }
+
+    const email = validar.validarEmail(req.body.email)
+
+    if (email.erro){
+        return res.status(400).send(email.erro)
+    }
+    
+    req.body.email = email.value
+    req.body.nome = nome.value
+
+    if(idUsuario === "0"){
+        res.status(404).send("Id inválido")
+    }
+
 
     usuarioModel.atualizarUsuario(idUsuario, req.body, (erro) => {
         if (erro) {
+            if (erro.code ==='ER_DUP_ENTRY'){
+                return res.redirect(`/priUsuarios/perfil?erro=email`)
+            }
             console.log(erro)
             return res.status(500).send('Erro ao atualizar usuário.')
         }
-        res.redirect('/adm')
+
+        res.redirect('/priUsuarios/perfil')
     })
 }
 
 async function enviarEmail(req, res) {
 
-    if (typeof req.body.email !== 'string') {
-        return res.status(400).send('Email inválido')
+
+    const resultadoEmail = validar.validarEmail(req.body.email)
+
+    if (resultadoEmail.erro){
+        return res.status(400).send(resultadoEmail.erro)
     }
 
-    const emailEnviar = req.body.email.trim().toLowerCase();
-
-    if (!emailEnviar) {
-        return res.status(400).send('Email vazio')
-    }
+    const emailEnviar = resultadoEmail.value
 
     let resetURL
     try {
@@ -383,34 +345,64 @@ async function enviarEmail(req, res) {
     return res.redirect('/usuarios/emailRecuperarSenha?enviado=1')
 }
 
+
 async function atualizarSenha(req,res){
 
-     if (req.body.senha.length < 6) {
-        return res.status(400).send(
-            "A senha precisa ter pelo menos 6 caracteres."
-        );
+    try{
+
+        const resultadoSenha = validar.validarSenha(req.body.senha)
+
+        if (resultadoSenha.erro){
+            return res.status(400).send(resultadoSenha.erro)
+        }
+
+        const resultadoConfirmacao = validar.validarSenhaTrocar(req.body.senha, req.body.senhaValida)
+
+        if (resultadoConfirmacao.erro){
+            return res.status(400).send(resultadoConfirmacao.erro)
+        }
+
+        req.body.senha = resultadoConfirmacao.value
+
+        if (typeof req.body.idUsuario !== 'string') {
+            return res.status(400).send('Id inválido')
+        }
+
+        if (typeof req.body.token !== 'string') {
+            return res.status(400).send('Token inválido')
+        }
+
+
+        try{
+            const secret = await montarSecret(req.body.idUsuario)
+
+            if (!secret){
+                return res.status(400).send("Token inválido ou expirado")
+            }
+            const decoded = jwt.verify(req.body.token, secret)
+            req.body.idUsuario= decoded.id
+
+        }catch(erro){
+            console.log(erro)
+            return res.status(400).send('Token inválido ou expirado')
+        }
+
+        req.body.senha = await bcrypt.hash(req.body.senha, 10);
+
+        usuarioModel.atualizarSenha(req.body, (erro) =>{
+            if (erro) {
+                console.log(erro)
+                return res.status(500).send('Erro ao atualizar senha.')
+            }
+
+            res.redirect('/')
+        })
+        
+    }catch(erro){
+        console.log(erro)
+        return res.status(500).send('Erro ao atualizar senha.')
     }
-    req.body.senha = await bcrypt.hash(req.body.senha, 10);
 
-    usuarioModel.atualizarSenha(req.body, (erro) =>{
-        if (erro) {
-            console.log(erro)
-            return res.status(500).send('Erro ao atualizar senha.')
-        }
-    })
-    res.redirect('/')
-}
-
-function deletarUsuario(req, res) {
-    const { idUsuario } = req.params
-
-    usuarioModel.deletarUsuario(idUsuario, (erro) => {
-        if (erro) {
-            console.log(erro)
-            return res.status(500).send('Erro ao excluir usuário.')
-        }
-        res.redirect('/adm')
-    })
 }
 
 module.exports = {
@@ -419,9 +411,7 @@ module.exports = {
     logarUsuario,
     logout,
     perfil,
-    mostrarFormularioEdicao,
     atualizarUsuario,
     enviarEmail,
-    atualizarSenha,
-    deletarUsuario
+    atualizarSenha
 }

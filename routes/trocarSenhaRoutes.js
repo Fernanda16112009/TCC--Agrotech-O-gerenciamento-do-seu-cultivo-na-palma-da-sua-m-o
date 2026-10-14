@@ -12,11 +12,11 @@ router.get('/trocarSenha', async (req, res) => {
     const token = req.query.token;
 
     try{
-        const secret =  await usuarioController.montarSecret(id)
-
         if (!token) {
         return res.redirect('/');
         }
+
+        const secret =  await usuarioController.montarSecret(id)
 
         jwt.verify(token, secret, (err, decoded) =>{
             if (err){
@@ -26,8 +26,9 @@ router.get('/trocarSenha', async (req, res) => {
             res.sendFile(path.join(__dirname, '..', 'trocarSenha','trocarSenha.html')) 
         })
 
-    }catch{
-        return console.log('erro')
+    }catch(erro){
+        console.log(erro)
+        return res.status(404).send('Sessão expirada')
     }
 })
 

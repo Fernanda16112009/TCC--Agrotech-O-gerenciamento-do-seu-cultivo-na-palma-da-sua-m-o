@@ -504,3 +504,12 @@
 
     font-size: 0.85rem;
 }
+
+.mensagem-erro {
+    color: #b00020;
+    background: #fdecea;
+    border: 1px solid #f5c2c0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+}
