@@ -1,59 +1,34 @@
 const parametros = new URLSearchParams(window.location.search);
 
-const id = parametros.get('id');
-document.getElementById('idUsuario').value = id;
+document.getElementById('idUsuario').value = parametros.get('id') || '';
+document.getElementById('token').value = parametros.get('token') || '';
 
-const token = parametros.get('token');
-document.getElementById('token').value = token;
+function alternarErro(idElemento, mostrar) {
+    document.getElementById(idElemento).style.display = mostrar ? 'block' : 'none';
+}
 
+function validarSenha() {
+    const senha = document.getElementById('senha').value;
+    const senhaValida = document.getElementById('senhaValida').value;
 
-function validarSenha(){
-    
-    const senha = document.getElementById('senha').value.trim();
-    const senhaValida = document.getElementById('senhaValida').value.trim();
-    let verifica = false
+    const senhaPreenchida = senha.length > 0;
+    const senhaValidaPreenchida = senhaValida.length > 0;
+    const senhaTamanhoOk = senha.length >= 6;
+    const senhaValidaTamanhoOk = senhaValida.length >= 6;
+    const senhasIguais = senha === senhaValida;
 
-    if(!senha){
-        document.getElementById('senha-obrigatoria').style.display = "block";
-        verifica = false
-    }else{
-        document.getElementById('senha-obrigatoria').style.display = "none";
-        verifica = true
-    }
+    alternarErro('senha-obrigatoria', !senhaPreenchida);
+    alternarErro('senha-invalido-erro', senhaPreenchida && !senhaTamanhoOk);
+    alternarErro('senha-valida-obrigatoria', !senhaValidaPreenchida);
+    alternarErro('senha-valida-invalido-erro', senhaValidaPreenchida && !senhaValidaTamanhoOk);
+    alternarErro('senha-igual', senhaPreenchida && senhaValidaPreenchida && !senhasIguais);
 
-    if(!senhaValida){
-        document.getElementById('senha-valida-obrigatoria').style.display = "block";
-        verifica = false
-    }else{
-        document.getElementById('senha-valida-obrigatoria').style.display = "none";
-        verifica = true
-    }
- 
-    if (senha.length >=6 ){
-        document.getElementById('senha-invalido-erro').style.display = "none"
-        verifica = true
-    }else{
-        document.getElementById('senha-invalido-erro').style.display = "block"    }
-        verifica = false
-    if(senhaValida.length >=6){
-        document.getElementById('senha-valida-invalido-erro').style.display = "none"
-        verifica = true
-    }else{
-        document.getElementById('senha-valida-invalido-erro').style.display = "block"
-        verifica = false
-    }
+    const formularioValido =
+        senhaPreenchida &&
+        senhaValidaPreenchida &&
+        senhaTamanhoOk &&
+        senhaValidaTamanhoOk &&
+        senhasIguais;
 
-    if(senhaValida !== senha){
-        document.getElementById('senha-igual').style.display= "block"
-        verifica = false
-    }else{
-        document.getElementById('senha-igual').style.display= "none"
-        verifica = true
-    }
-
-    if (verifica === true){
-        document.getElementById('btn-atualizar').disabled = false
-    }else{
-        document.getElementById('btn-atualizar').disabled = true
-    }
+    document.getElementById('btn-atualizar').disabled = !formularioValido;
 }

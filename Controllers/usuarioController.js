@@ -3,8 +3,8 @@ const validar = require('../Constantes/validar')
 const bcrypt = require('bcryptjs')
 const { Resend } = require('resend');
 const jwt = require('jsonwebtoken');
-const resend = new Resend(process.env.RESEND_API_KEY)
-
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
+if (!resend) console.warn('RESEND_API_KEY não definida: a recuperação de senha não enviará e-mails.')
 
 if (!process.env.JWT) {
     throw new Error('Variável JWT não definida no .env');
@@ -56,7 +56,7 @@ async function montarToken(email) {
 
             const  secret = process.env.JWT + senha; 
             const  token = jwt.sign( { id : id, email : email }, secret, { expiresIn : '1h' }); 
-            const resetURL = `http://localhost:8000/trocarSenha/trocarSenha?id=${id}&token=${token}`;
+            const resetURL = `${process.env.BASE_URL || 'http://localhost:8000'}/trocarSenha/trocarSenha?id=${id}&token=${token}`;
 
             resolve(resetURL)
         })
@@ -87,7 +87,7 @@ async function criarUsuario(req, res) {
     }
     
     req.body.email = email.value
-        req.body.nome = nome.value
+    req.body.nome = nome.value
 
     
     try{
@@ -133,7 +133,7 @@ async function logarUsuario(req, res){
     usuarioModel.pegarLogin( email, async (erro, resultado) => {
         if (erro) {
             console.log(erro);
-            return res.status(500).send("Erro ao ao busca senha.");
+            return res.status(500).send("Erro ao buscar usuário.");
         }
 
         if (resultado.length === 0) {
@@ -285,10 +285,6 @@ function atualizarUsuario(req, res) {
     req.body.email = email.value
     req.body.nome = nome.value
 
-    if(idUsuario === "0"){
-        res.status(404).send("Id inválido")
-    }
-
 
     usuarioModel.atualizarUsuario(idUsuario, req.body, (erro) => {
         if (erro) {
@@ -322,7 +318,7 @@ async function enviarEmail(req, res) {
         return res.status(500).send('Erro ao montar token')
     }
 
-    if (resetURL) {
+if (resetURL && resend) {
         try {
             const { error } = await resend.emails.send({
                 from: 'Agrotech <onboarding@resend.dev>',

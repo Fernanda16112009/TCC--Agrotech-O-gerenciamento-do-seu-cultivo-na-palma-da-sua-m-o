@@ -28,7 +28,7 @@ router.get('/trocarSenha', async (req, res) => {
 
     }catch(erro){
         console.log(erro)
-        return res.status(404).send('Sessão expirada')
+        return res.status(500).send('Sessão expirada')
     }
 })
 

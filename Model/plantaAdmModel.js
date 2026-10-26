@@ -3,7 +3,7 @@ const conexao = require('../Config/config')
 function buscarPlantasAdmCalendario(callback) {
     const sql = `
         SELECT tipoPlanta, tempoDeColheita
-        FROM plantaADM
+        FROM plantaadm
     `;
 
     conexao.query(sql, callback);

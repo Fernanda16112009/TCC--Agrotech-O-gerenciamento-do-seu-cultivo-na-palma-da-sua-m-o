@@ -1,6 +1,7 @@
 const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-let dataAtual = new Date(2026, 8, 1);
+const hoje = new Date();
+let dataAtual = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
 
 let plantas = []
 let plantasAdm = []
@@ -69,23 +70,28 @@ async function pegarPlantasAdmCalendario() {
 }
 
 async function pegarClima(plantas) {
-    for( const p of plantas){
+    clima = [];
+
+    for (const p of plantas) {
         if (p.latitude == null || p.longitude == null) {
-            console.warn(`Planta "${p.safraNome}" ainda não tem localização definida, pulando busca de clima.`)
-            continue
+            console.warn(`Planta "${p.safraNome}" ainda não tem localização definida, pulando busca de clima.`);
+            continue;
         }
 
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${p.latitude}&longitude=${p.longitude}&daily=rain_sum&timezone=auto`;
 
-        const resultado = await fetch(url)
+        try {
+            const resultado = await fetch(url);
 
-        if (!resultado.ok) {
-            console.error(`Erro ao buscar clima de "${p.safraNome}":`, resultado.status, await resultado.text())
-            continue
+            if (!resultado.ok) {
+                console.error(`Erro ao buscar clima de "${p.safraNome}":`, resultado.status, await resultado.text());
+                continue;
+            }
+
+            clima.push({ nomeSafra: p.safraNome, resultado: await resultado.json() });
+        } catch (erro) {
+            console.error(`Falha de rede ao buscar clima de "${p.safraNome}":`, erro);
         }
-
-        clima.push( { nomeSafra:p.safraNome , resultado: await resultado.json()})
-
     }
 }
 
@@ -93,16 +99,17 @@ async function iniciar() {
     try {
         await pegarPlantasCalendario();
         await pegarPlantasAdmCalendario();
-        await pegarClima(plantas)
-        Choveu()
-        renderizar();
+        await pegarClima(plantas);
+        Choveu();
+    } catch (erro) {
+        console.error('Erro ao iniciar o calendário:', erro);
     } finally {
+        renderizar();
         document.getElementById('carregando').style.display = 'none';
         document.getElementById('tabela-calendario').style.display = '';
         document.getElementById('botoes-calendario').style.display = 'flex';
     }
 }
-
 
 function Choveu() {
 
@@ -229,12 +236,14 @@ async function renderizar() {
 
         const dataCalendario = new Date(ano, mes, dia);
 
-        plantas.forEach(async p  => {
+        plantas.forEach(p => {
             const dataPlanta = new Date(p.data_plantacao);
             const plantaAdm = plantasAdm.find(adm => adm.tipoPlanta === p.tipoPlanta);
-            const diasPassados = (dataCalendario - dataPlanta) / (1000 * 60 * 60 * 24);
-            const dataColheita = new Date(dataPlanta)
-            dataColheita.setDate(dataColheita.getDate()+ plantaAdm.tempoDeColheita)
+
+            if (!plantaAdm) return;
+
+            const dataColheita = new Date(dataPlanta);
+            dataColheita.setDate(dataColheita.getDate() + plantaAdm.tempoDeColheita);
 
             if (
                 dataPlanta.getUTCDate() === dia &&

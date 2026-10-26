@@ -1,57 +1,66 @@
-if(document.getElementById('planta')){
-    const parametros = new URLSearchParams(window.location.search);
+const DIAS_ATRASO = 60;
+const DIAS_ADIANTADO = 30;
 
-    const planta = parametros.get('planta');
-    document.getElementById('planta').value = planta;
-
-    const tipoPlanta = parametros.get('tipo');
-    document.getElementById('tipoPlanta').value = tipoPlanta;
-}
-
-
-
-function pegarLocalizacao() {
-
-    let longitudeReq = document.querySelector("#longitude");
-    let latitudeReq =  document.querySelector("#latitude");
-    
-    let mensagem= document.querySelector("#mensagemLocalizacao");
-
-    function localizaçãoSucesso(position) {
-
-        let latitude = position.coords.latitude;
-        let longitude = position.coords.longitude; 
-
-        longitudeReq.value = longitude;
-        latitudeReq.value = latitude;
-
-        mensagem.textContent = "Localização definida com sucesso";
-
-    }
-
-    function localizaçãoErro(){
-       mensagem.textContent = "Erro ao definir localização";
-    }
-
-    if (!navigator.geolocation) {
-    mensagem.textContent = "Geolocation não funciona no seu navegador";
-    } else {
-    navigator.geolocation.getCurrentPosition(localizaçãoSucesso, localizaçãoErro);
-    }
-}
-
-document.querySelector("#btn_mapa").addEventListener("click", pegarLocalizacao);
-
-
-/* ===== Validação do formulário de cadastro ===== */
+const parametros = new URLSearchParams(window.location.search);
 const formCadastroPlanta = document.getElementById('formCadastroPlanta');
 
-if (formCadastroPlanta) {
+// Data local no formato YYYY-MM-DD, igual ao valor do input type="date".
+function formatarDataIso(data) {
+    const ano = data.getFullYear();
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const dia = String(data.getDate()).padStart(2, '0');
+    return `${ano}-${mes}-${dia}`;
+}
 
-    const regrasValidacao = {
+function dataComDeslocamento(dias) {
+    const data = new Date();
+    data.setDate(data.getDate() + dias);
+    return formatarDataIso(data);
+}
+
+if (formCadastroPlanta) {
+    document.getElementById('planta').value = parametros.get('planta') || '';
+    document.getElementById('tipoPlanta').value = parametros.get('tipo') || '';
+
+    /* ===== Localização ===== */
+    const campoLatitude = document.getElementById('latitude');
+    const campoLongitude = document.getElementById('longitude');
+    const mensagemLocalizacao = document.getElementById('mensagemLocalizacao');
+
+    function localizacaoSucesso(posicao) {
+        campoLatitude.value = posicao.coords.latitude;
+        campoLongitude.value = posicao.coords.longitude;
+        mensagemLocalizacao.textContent = 'Localização definida com sucesso';
+        revalidarSeInvalido(regras.localizacao);
+    }
+
+    function localizacaoErro() {
+        mensagemLocalizacao.textContent = 'Erro ao definir localização';
+    }
+
+    document.getElementById('btn_mapa').addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            mensagemLocalizacao.textContent = 'Geolocalização não funciona no seu navegador';
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(localizacaoSucesso, localizacaoErro);
+    });
+
+    /* ===== Data: limites do seletor ===== */
+    const campoData = document.getElementById('data_plantacao');
+    const dataMinima = dataComDeslocamento(-DIAS_ATRASO);
+    const dataMaxima = dataComDeslocamento(DIAS_ADIANTADO);
+
+    // Limita o calendário nativo; a validação abaixo continua valendo.
+    campoData.min = dataMinima;
+    campoData.max = dataMaxima;
+
+    /* ===== Regras de validação ===== */
+    const regras = {
         quantidade: {
-            elementoErro: 'erro-quantidade',
-            elementoCampo: 'campo-quantidade',
+            campo: 'campo-quantidade',
+            erro: 'erro-quantidade',
+            input: 'quantidade',
             validar() {
                 const valor = document.getElementById('quantidade').value.trim();
                 if (valor === '') return 'Informe a quantidade de sementes.';
@@ -60,85 +69,85 @@ if (formCadastroPlanta) {
             }
         },
         localizacao: {
-            elementoErro: 'erro-localizacao',
-            elementoCampo: 'campo-localizacao',
+            campo: 'campo-localizacao',
+            erro: 'erro-localizacao',
+            input: null,
             validar() {
-                const latitude = document.getElementById('latitude').value.trim();
-                const longitude = document.getElementById('longitude').value.trim();
-                if (latitude === '' || longitude === '') return 'Selecione a localização da plantação.';
+                if (!campoLatitude.value || !campoLongitude.value) return 'Selecione a localização da plantação.';
                 return null;
             }
         },
         data_plantacao: {
-            elementoErro: 'erro-data_plantacao',
-            elementoCampo: 'campo-data_plantacao',
+            campo: 'campo-data_plantacao',
+            erro: 'erro-data_plantacao',
+            input: 'data_plantacao',
             validar() {
-                const valor = document.getElementById('data_plantacao').value.trim();
+                const valor = campoData.value;
                 if (valor === '') return 'Informe a data em que a planta foi plantada.';
+                // Texto no formato YYYY-MM-DD compara certo como string.
+                if (valor < dataMinima || valor > dataMaxima) {
+                    return `O dia da plantação deve estar entre ${DIAS_ATRASO} dias atrás e ${DIAS_ADIANTADO} dias à frente.`;
+                }
                 return null;
             }
         },
         agrotoxico: {
-            elementoErro: 'erro-agrotoxico',
-            elementoCampo: 'campo-agrotoxico',
+            campo: 'campo-agrotoxico',
+            erro: 'erro-agrotoxico',
+            input: 'agrotoxico',
             validar() {
-                const valor = document.getElementById('agrotoxico').value;
-                if (valor === '') return 'Selecione uma opção.';
+                if (document.getElementById('agrotoxico').value === '') return 'Selecione uma opção.';
                 return null;
             }
         }
     };
 
-    function mostrarErroCampo(regra, mensagem) {
-        document.getElementById(regra.elementoCampo).classList.add('campo-invalido');
-        document.getElementById(regra.elementoErro).textContent = mensagem;
+    function mostrarErro(regra, mensagem) {
+        document.getElementById(regra.campo).classList.add('campo-invalido');
+        document.getElementById(regra.erro).textContent = mensagem;
     }
 
-    function limparErroCampo(regra) {
-        document.getElementById(regra.elementoCampo).classList.remove('campo-invalido');
-        document.getElementById(regra.elementoErro).textContent = '';
+    function limparErro(regra) {
+        document.getElementById(regra.campo).classList.remove('campo-invalido');
+        document.getElementById(regra.erro).textContent = '';
     }
 
-    function validarFormularioCadastro() {
-        let formularioValido = true;
-        let primeiroCampoInvalido = null;
+    // Só atualiza um campo que já foi marcado como inválido,
+    // para não mostrar erro antes da primeira tentativa de envio.
+    function revalidarSeInvalido(regra) {
+        if (!document.getElementById(regra.campo).classList.contains('campo-invalido')) return;
+        const mensagem = regra.validar();
+        mensagem ? mostrarErro(regra, mensagem) : limparErro(regra);
+    }
 
-        Object.values(regrasValidacao).forEach((regra) => {
-            const mensagemErro = regra.validar();
+    function validarFormulario() {
+        let primeiroInvalido = null;
 
-            if (mensagemErro) {
-                mostrarErroCampo(regra, mensagemErro);
-                formularioValido = false;
-                if (!primeiroCampoInvalido) {
-                    primeiroCampoInvalido = regra.elementoCampo;
-                }
+        Object.values(regras).forEach((regra) => {
+            const mensagem = regra.validar();
+            if (mensagem) {
+                mostrarErro(regra, mensagem);
+                primeiroInvalido = primeiroInvalido || regra.campo;
             } else {
-                limparErroCampo(regra);
+                limparErro(regra);
             }
         });
 
-        if (primeiroCampoInvalido) {
-            document.getElementById(primeiroCampoInvalido)
-                .scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (primeiroInvalido) {
+            document.getElementById(primeiroInvalido).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return false;
         }
-
-        return formularioValido;
+        return true;
     }
 
-    formCadastroPlanta.addEventListener('submit', function (evento) {
-        if (!validarFormularioCadastro()) {
-            evento.preventDefault();
-        }
+    formCadastroPlanta.addEventListener('submit', (evento) => {
+        if (!validarFormulario()) evento.preventDefault();
     });
 
-    // Limpa a mensagem de erro de cada campo assim que ele fica válido,
-    // sem esperar uma nova tentativa de envio.
-    ['quantidade', 'data_plantacao', 'agrotoxico'].forEach((idCampo) => {
-        document.getElementById(idCampo).addEventListener('input', function () {
-            const regra = regrasValidacao[idCampo];
-            if (!regra.validar()) {
-                limparErroCampo(regra);
-            }
-        });
+    Object.values(regras).forEach((regra) => {
+        if (!regra.input) return;
+        const campo = document.getElementById(regra.input);
+        campo.addEventListener('input', () => revalidarSeInvalido(regra));
+        campo.addEventListener('change', () => revalidarSeInvalido(regra));
     });
 }

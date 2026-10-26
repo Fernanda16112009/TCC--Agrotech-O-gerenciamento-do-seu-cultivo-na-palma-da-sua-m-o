@@ -12,6 +12,13 @@ const upload = multer({
 });
 const plantaUsuarioController = require('../Controllers/plantaUsuarioController')
 
+router.param('idPlanta', (req, res, next, valor) => {
+    if (!/^[1-9]\d*$/.test(valor)) {
+        return res.status(400).send('Id inválido')
+    }
+    next()
+})
+
 router.post('/', plantaUsuarioController.criarPlantaUsuario);
 
 router.get('/minhasPlantas', plantaUsuarioController.mostrarCategoriasPlanta);

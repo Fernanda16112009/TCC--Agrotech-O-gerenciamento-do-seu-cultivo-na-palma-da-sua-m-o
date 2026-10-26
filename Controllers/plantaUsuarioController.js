@@ -6,7 +6,11 @@ require("dotenv").config();
 const cloudinary = require("cloudinary").v2;
 const fs = require('fs/promises');
 
-
+function formatarNomeExibicao(texto) {
+    return texto
+        .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+        .replace(/^./, (c) => c.toUpperCase());
+}
 
 const imagensPorTipo = {
     morangoAlbion: 'morangoAlb.png',
@@ -47,10 +51,6 @@ function pegarPlantasADMCalendario(req,res) {
     });
 }
 
-function formatarNomePlanta(texto) {
-    const comEspacos = texto.replace(/([A-Z])/g, ' $1').trim();
-    return comEspacos.charAt(0).toUpperCase() + comEspacos.slice(1);
-}
 
 function criarPlantaUsuario(req, res) {
 
@@ -134,7 +134,7 @@ function mostrarCategoriasPlanta(req,res){
         };
 
         const cardPlanta = resultado.map(p =>{
-            const nomePlanta = formatarNomePlanta(validar.escaparHtml(p.planta));
+            const nomePlanta = formatarNomeExibicao(validar.escaparHtml(p.planta));
             const imagemPlanta = imagensPorPlanta[p.planta] || '';
 
             return `
@@ -228,11 +228,11 @@ function mostrarCategoriasTipoPlanta(req,res){
         }
 
         if (resultados.length === 0) {
-            return res.status(400).send('Planta não encontrado.')
+            return res.status(404).send('Planta não encontrado.')
         }
 
         const cardPlanta = resultados.map(p =>{
-            const nomeTipoPlanta = formatarNomePlanta(validar.escaparHtml(p.tipoPlanta));
+            const nomeTipoPlanta = formatarNomeExibicao(validar.escaparHtml(p.tipoPlanta));
             const imagemTipoPlanta = imagensPorTipo[p.tipoPlanta] || '';
 
             return `
@@ -318,16 +318,15 @@ function mostrarSafraPlanta(req,res){
         }
 
         if(resultado.length <= 0){
-            console.log(erro)
             return res.status(404).send('Essa safra não existe')
         }
 
-        const nomeTipoPlanta = formatarNomePlanta(resultado[0].tipoPlanta);
+        const nomeTipoPlanta = formatarNomeExibicao(resultado[0].tipoPlanta);
         
 
         const cardPlanta = resultado.map(p =>{
 
-            const nomeSafra = formatarNomePlanta(validar.escaparHtml(p.safraNome))
+            const nomeSafra = formatarNomeExibicao(validar.escaparHtml(p.safraNome))
             const imagemTipoPlanta = p.url || `/privado/img/${imagensPorTipo[p.tipoPlanta] || ""}`;
 
 
@@ -412,7 +411,9 @@ function atualizarSafraNome(req,res){
         return res.status(400).send(safraValida.erro)
     }
 
-    plantaUsuarioModel.atualizarSafraNome(safraNome, idUsuario, idPlanta, (erro) =>{
+    const safraEnviar = safraValida.value
+
+    plantaUsuarioModel.atualizarSafraNome(safraEnviar, idUsuario, idPlanta, (erro) =>{
             if (erro) {
             console.log(erro)
             return res.status(500).send('Erro ao atualizar o nome da safra.')
@@ -459,7 +460,6 @@ function mostrarPlantaUsuario(req,res){
         let p
 
         if(resultados.length <= 0){
-            console.log(erro)
             return res.status(404).send('Essa planta não existe')
         }else{
             p = resultados[0];
@@ -469,11 +469,6 @@ function mostrarPlantaUsuario(req,res){
 
         // Apenas para exibição: transforma "tomateCereja" em "Tomate Cereja"
         // e escolhe a imagem já usada nas outras telas para esse tipo de planta.
-        function formatarNomeExibicao(texto) {
-            return texto
-                .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-                .replace(/^./, (c) => c.toUpperCase());
-        }
 
         const imagemPlanta = p.url || `/privado/img/${imagensPorTipo[p.tipoPlanta] || ""}`;
         const nomeTipoPlantaExibicao = formatarNomeExibicao(validar.escaparHtml(p.tipoPlanta));
@@ -544,7 +539,7 @@ function mostrarPlantaUsuario(req,res){
 
                             <div class="info-item">
                                 <span class="form_pergunta">Dia que sua semente foi plantada</span>
-                                <p class="info-valor">${p.data_plantacao.toLocaleDateString()}</p>
+                                <p class="info-valor">${p.data_plantacao.toLocaleDateString('pt-BR')}</p>
                             </div>
 
                             <div class="campo">
@@ -659,10 +654,10 @@ function cadastrarAnotacao(req,res){
 
     req.body.anotacao = anotacao.value
 
-    plantaUsuarioModel.cadastrarAnotacao(req.body, idUsuario, idPlanta,  (erro,) => {
+    plantaUsuarioModel.cadastrarAnotacao(req.body, idUsuario, idPlanta,  (erro) => {
         if (erro) {
             console.log(erro)
-            return res.status(500).send('Erro ao cadastrar planta.')
+            return res.status(500).send('Erro ao cadastrar anotação.')
         }
 
         res.redirect(`/planta/${idPlanta}/veranotacoes`);
@@ -683,7 +678,6 @@ function anotacoesPlanta(req,res){
         let a
 
         if(resultado.length <= 0){
-            console.log(erro)
             return res.status(404).send('Essa anotação não existe')
         }else{
             a = resultado[0];
@@ -779,4 +773,4 @@ module.exports = {
     cadastrarAnotacao,
     anotacoesPlanta,
     deletarPlanta
-} 
+}

@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "servidor.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon servidor.js"
-  },
+"scripts": {
+  "start": "node servidor.js",
+  "dev": "nodemon servidor.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {

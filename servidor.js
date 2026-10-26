@@ -2,6 +2,8 @@ const express = require('express')
 const path = require('path')
 const session = require('express-session')
 require('dotenv').config();
+const middleware = require('./middlewares')
+
 
 
 
@@ -14,13 +16,17 @@ const trocarSenhaRoutes = require('./routes/trocarSenhaRoutes')
 const calendarioRoutes = require('./routes/calendarioRoutes')
 
 const app = express()
-const port = 8000
+const port = process.env.PORT || 8000
 
 if(!process.env.SESSION_SECRET){
     throw new Error("Defina um secret no .env")
 }
 // Middleware
 app.use(express.urlencoded({ extended: true }))
+app.use((req, res, next) => {
+    req.body ??= {};
+    next();
+});
 app.use(express.json())
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -29,48 +35,23 @@ app.use(session({
 }
 ))
 
-function verificarLogin(req, res, next){
-
-    if(req.session.usuario){
-        next();
-    }else{
-        res.redirect('/');
-    }
-
-}
-
-function verificarADM(req,res, next){
-    if(req.session.usuario.role === "adm"){
-        next()
-    }else{
-        res.redirect('/');
-    }
-}
-
-function checarHtml(req,res,next){
-    if(req.path.toLowerCase().endsWith('html')){
-        return res.status(404).send("Não é permitido acessar arquivos html")
-    }else{
-        next()
-    }
-}
 // Arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')))
-app.use('/trocarSenha', checarHtml, express.static(path.join(__dirname, 'trocarSenha')))
-app.use('/privado', verificarLogin,  express.static(path.join(__dirname, 'recursosPrivados')))
+app.use('/trocarSenha', middleware.checarHtml, express.static(path.join(__dirname, 'trocarSenha')))
+app.use('/privado', middleware.verificarLogin,  express.static(path.join(__dirname, 'recursosPrivados')))
 
 // Rotas
 app.use('/usuarios', usuarioRoutes)
 
-app.use('/priUsuarios', verificarLogin, usuarioRoutesPrivado)
+app.use('/priUsuarios', middleware.verificarLogin, usuarioRoutesPrivado)
 
-app.use('/planta', verificarLogin, plantasUsuarioRoutes)
+app.use('/planta', middleware.verificarLogin, plantasUsuarioRoutes)
 
-app.use('/adm', verificarLogin, verificarADM, admRoutes)
+app.use('/adm', middleware.verificarLogin, middleware.verificarADM, admRoutes)
 
-app.use('/privado', verificarLogin, privadoRoutes);
+app.use('/privado', middleware.verificarLogin, privadoRoutes);
 
-app.use('/calendario', verificarLogin, calendarioRoutes);
+app.use('/calendario', middleware.verificarLogin, calendarioRoutes);
 
 app.use('/trocarSenha', trocarSenhaRoutes);
 
@@ -83,6 +64,33 @@ app.get('/', (req, res) => {
     }else{
     res.sendFile(path.join(__dirname, 'public', 'pg_inicial.html'))
     }
+})
+
+// 404: chega aqui quando nenhuma rota anterior respondeu
+app.use((req, res) => {
+    res.status(404).send('Página não encontrada')
+})
+
+// Erros: precisa ter 4 parâmetros e ser o último app.use
+app.use((err, req, res, next) => {
+    console.error(err)
+
+    if (res.headersSent) {
+        return next(err)
+    }
+
+    if (err.name === 'MulterError') {
+        const mensagem = err.code === 'LIMIT_FILE_SIZE'
+            ? 'A imagem não pode passar de 5 MB.'
+            : 'Erro ao enviar o arquivo.'
+        return res.status(400).send(mensagem)
+    }
+
+    const status = Number.isInteger(err.status) && err.status >= 400 && err.status < 600
+        ? err.status
+        : 500
+
+    res.status(status).send(status < 500 ? 'Requisição inválida.' : 'Erro interno do servidor.')
 })
 
 // Inicialização

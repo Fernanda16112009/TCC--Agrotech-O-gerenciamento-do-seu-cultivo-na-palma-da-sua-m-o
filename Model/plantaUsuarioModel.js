@@ -40,7 +40,7 @@ function checarCategoriaTipoPlanta(idUsuario, planta, callback) {
 }
 
 function buscarSafra(idUsuario, planta, tipoPlanta, callback) {
-    const sql = `SELECT * FROM plantausuario WHERE idUsuario = ? AND planta = ? AND tipoPlanta = ?`
+    const sql = `SELECT idPlanta, tipoPlanta, safraNome FROM plantausuario WHERE idUsuario = ? AND planta = ? AND tipoPlanta = ?`
     conexao.query(sql, [idUsuario, planta, tipoPlanta], callback)
 }
 
