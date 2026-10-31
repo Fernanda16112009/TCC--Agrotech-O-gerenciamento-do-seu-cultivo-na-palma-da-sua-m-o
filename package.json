@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "servidor.js",
-"scripts": {
-  "start": "node servidor.js",
-  "dev": "nodemon servidor.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+  "scripts": {
+    "start": "node servidor.js",
+    "dev": "nodemon servidor.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,6 +15,7 @@
     "body-parser": "^2.3.0",
     "cloudinary": "^2.11.0",
     "dotenv": "^17.4.2",
+    "ejs": "^7.0.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "jsonwebtoken": "^9.0.3",

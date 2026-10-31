@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +8,26 @@
     <script src="/js/vlibras.js" defer></script>
 </head>
 <body>
+
+    <header class="topo-compostagem">
+        <form action="/" method="get">
+            <button type="submit" class="btn-voltar" title="Voltar" aria-label="Voltar">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </form>
+    </header>
+
     <main>
         <article class="compostagem-container">
-            <header class="compostagem-cabecalho">
+            <div class="compostagem-cabecalho">
                 <p class="compostagem-etiqueta">Cuidado natural para o cultivo</p>
-                <h1>Compostagem e adubação</h1>
+                <h1 class="titulo-pagina">Compostagem e adubação</h1>
                 <p class="compostagem-introducao">
                     Transforme resíduos orgânicos em adubo e devolva nutrientes ao solo. Confira como fazer compostagem em caixas ou no solo.
                 </p>
-            </header>
+            </div>
 
             <section class="compostagem-secao" aria-labelledby="materiais">
                 <h2 id="materiais">O que pode e o que não pode</h2>
@@ -88,10 +99,6 @@
                     <figcaption>O composto pronto pode ser misturado à terra para enriquecer o solo.</figcaption>
                 </figure>
             </section>
-
-            <form class="compostagem-voltar" action="/" method="get">
-                <button type="submit">Voltar ao início</button>
-            </form>
         </article>
     </main>
 
@@ -99,9 +106,13 @@
         <div class="footer-conteudo">
             <h3>AgroTech</h3>
             <p>O gerenciamento do plantio na palma da sua mão.</p>
-            <p>Sugestões, críticas ou dúvidas? <a href="mailto:agrotech@email.com">Entre em contato conosco</a></p>
+            <p>
+                Sugestões, críticas ou dúvidas?
+                <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+            </p>
             <p class="copyright">© 2026 AgroTech. Todos os direitos reservados.</p>
         </div>
     </footer>
+
 </body>
 </html>

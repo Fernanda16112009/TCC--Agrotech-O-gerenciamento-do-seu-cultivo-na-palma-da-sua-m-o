@@ -18,6 +18,10 @@
 .bodyAdm {
     min-height: 100vh;
 
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background-color: #eaf6ea;
+    color: #1b4d2e;
+
     display: flex;
     flex-direction: column;
 
@@ -263,12 +267,12 @@
 /* Botão verde */
 
 .bodyAdm .btn-adm-primary {
-    background: #79B86C;
+    background: #1b4d2e;
     color: white;
 }
 
 .bodyAdm .btn-adm-primary:hover {
-    background: #67a45b;
+    background: #163f26;
 }
 
 

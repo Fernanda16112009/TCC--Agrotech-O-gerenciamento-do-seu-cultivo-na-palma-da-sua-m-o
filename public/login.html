@@ -18,14 +18,13 @@
         </nav>
     </header>
 
-
     <main>
 
         <div class="form login">
 
             <h2 class="subtitulo">Entrar</h2>
 
-            <form action="/usuarios/login" method="post">
+            <form id="formLogin" action="/usuarios/login" method="post" novalidate>
 
                 <div class="elemento_form">
 
@@ -36,7 +35,10 @@
                         name="email"
                         id="email"
                         placeholder="joao@email.com"
+                        autocomplete="email"
                     >
+
+                    <span class="error" id="erro-email"></span>
 
                 </div>
 
@@ -50,12 +52,15 @@
                         name="senha"
                         id="senha"
                         placeholder="Digite sua senha"
+                        autocomplete="current-password"
                     >
+
+                    <span class="error" id="erro-senha"></span>
 
                 </div>
 
 
-                <p id="mensagemErro" class="mensagem-erro">
+                <p id="mensagemErro" class="mensagem-erro" hidden>
                     ⚠ Email ou senha incorretos
                 </p>
 
@@ -118,4 +123,3 @@
 </body>
 
 </html>
-

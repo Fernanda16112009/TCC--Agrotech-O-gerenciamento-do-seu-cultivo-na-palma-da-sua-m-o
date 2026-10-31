@@ -1,6 +1,7 @@
 const usuarioModel = require('../Model/usuarioModel')
 const admModel = require('../Model/admModel')
 const validar = require('../Constantes/validar')
+const bcrypt = require('bcryptjs')
 const esc = validar.escaparHtml
 
 // Monta a página do painel. Usada por painelAdm e listarPorID.
@@ -99,7 +100,7 @@ function montarPaginaAdm(usuarios, opcoes) {
 
                     <div class="section-header">
                         <h2>Usuários</h2>
-                        <a class="btn btn-adm-primary" href="/cadastroUsuario.html">+ Novo usuário</a>
+                        <a class="btn btn-adm-primary" href="/adm/cadastrar">+ Novo usuário</a>
                     </div>
 
                     <form class="search-form" action="/adm" method="GET">
@@ -199,6 +200,7 @@ function mostrarFormularioEdicao(req, res){
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Editar Usuário</title>
+                <script src="/js/admEditarUsuario.js" defer></script>
                 <link rel="stylesheet" href="/style.css">
                 <script src="/js/vlibras.js" defer></script>
             </head>
@@ -213,16 +215,18 @@ function mostrarFormularioEdicao(req, res){
                             ${erroEmail}
                         <div class="editar-usuario-card">
                         
-                            <form action="/adm/${validar.escaparHtml(u.idUsuario)}/editar" method="POST">
+                            <form id="formEditarUsuario" action="/adm/${validar.escaparHtml(u.idUsuario)}/editar" method="POST" novalidate>
 
                                 <div class="elemento_form">
                                     <label for="nome">Nome Completo</label>
                                     <input type="text" name="nome" id="nome" value="${validar.escaparHtml(u.nome)}" required>
+                                    <span class="error" id="erro-nome"></span>
                                 </div>
 
                                 <div class="elemento_form">
                                     <label for="email">E-mail</label>
                                     <input type="email" name="email" id="email" value="${validar.escaparHtml(u.email)}" required>
+                                    <span class="error" id="erro-email"></span>
                                 </div>
 
                                 <button type="submit" class="btn">Salvar alterações</button>
@@ -316,10 +320,134 @@ function deletarUsuario(req, res) {
     })
 }
     
+// /adm/cadastrar : formulário de cadastro de novo usuário, feito pelo próprio painel
+function mostrarFormularioCadastro(req, res) {
+
+    const erroEmail = req.query.erro === 'email'
+        ? '<p id="erro-email-existe" class="mensagem-erro">Esse e-mail já está em uso por outra conta.</p>'
+        : ''
+
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Novo Usuário</title>
+            <link rel="stylesheet" href="/style.css">
+            <script src="/js/vlibras.js" defer></script>
+            <script src="/js/admCadastroUsuario.js" defer></script>
+        </head>
+        <body>
+            <header>
+                <h1 class="titulo">AgroTech</h1>
+                <h2 class="subtitulo">Novo Usuário</h2>
+            </header>
+
+            <main>
+                <div class="editar-usuario-pagina">
+                    ${erroEmail}
+                    <div class="editar-usuario-card">
+
+                        <form id="formCadastroUsuario" action="/adm/cadastrar" method="POST" novalidate>
+
+                            <div class="elemento_form">
+                                <label for="nome">Nome Completo</label>
+                                <input type="text" name="nome" id="nome" placeholder="Ex: João da Silva" autocomplete="off">
+                                <span class="error" id="erro-nome"></span>
+                            </div>
+
+                            <div class="elemento_form">
+                                <label for="email">E-mail</label>
+                                <input type="email" name="email" id="email" placeholder="joao@email.com" autocomplete="off">
+                                <span class="error" id="erro-email"></span>
+                            </div>
+
+                            <div class="elemento_form">
+                                <label for="senha">Senha inicial</label>
+                                <input type="password" name="senha" id="senha" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                                <span class="error" id="erro-senha"></span>
+                            </div>
+
+                            <button type="submit" class="btn">Cadastrar usuário</button>
+                        </form>
+                    </div>
+
+                    <div class="editar-usuario-acoes">
+                        <a href="/adm" class="btn-secundario">Voltar ao painel</a>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <div class="footer-conteudo">
+                    <h3>AgroTech</h3>
+                    <p>O gerenciamento do plantio na palma da sua mão.</p>
+                    <p>
+                        Sugestões, críticas ou dúvidas?
+                        <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
+                    </p>
+                    <p class="copyright">© 2026 AgroTech. Todos os direitos reservados.</p>
+                </div>
+            </footer>
+        </body>
+        </html>
+    `)
+}
+
+// POST /adm/cadastrar : cria o usuário (mesma lógica do cadastro público) e volta para o painel
+async function cadastrarUsuario(req, res) {
+
+    const nome = validar.validarNome(req.body.nome)
+
+    if (nome.erro) {
+        return res.status(400).send(nome.erro)
+    }
+
+    const email = validar.validarEmail(req.body.email)
+
+    if (email.erro) {
+        return res.status(400).send(email.erro)
+    }
+
+    const senha = validar.validarSenha(req.body.senha)
+
+    if (senha.erro) {
+        return res.status(400).send(senha.erro)
+    }
+
+    try {
+        const senhaHash = await bcrypt.hash(req.body.senha, 10)
+
+        usuarioModel.criarUsuario({
+            nome: nome.value,
+            email: email.value,
+            senha: senhaHash,
+            role: 'user'
+        }, (erro) => {
+
+            if (erro) {
+                if (erro.code === 'ER_DUP_ENTRY') {
+                    return res.redirect('/adm/cadastrar?erro=email')
+                }
+                console.log(erro)
+                return res.status(500).send('Erro ao cadastrar usuário.')
+            }
+
+            res.redirect('/adm')
+        })
+    } catch (erro) {
+        console.log(erro)
+        res.status(500).send('Erro ao criptografar a senha.')
+    }
+}
+
 module.exports = {
     painelAdm,
     listarPorID,
     mostrarFormularioEdicao,
+    mostrarFormularioCadastro,
+    cadastrarUsuario,
     atualizarUsuario,
     deletarUsuario
 }

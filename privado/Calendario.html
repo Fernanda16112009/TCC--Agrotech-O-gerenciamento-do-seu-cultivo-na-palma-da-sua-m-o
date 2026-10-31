@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,17 @@
     <script src="/js/vlibras.js" defer></script>
 </head>
 <body>
+
+    <header class="topo">
+        <form action="/" method="get">
+            <button type="submit" class="btn-voltar" title="Voltar" aria-label="Voltar">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </form>
+    </header>
+
     <main>
         <div class="calendario-container">
 
@@ -19,12 +30,12 @@
             </div>
 
             <div class="nav-mes">
-                <span class="seta" id="btn-prev">&lt;</span>
+                <button type="button" class="seta" id="btn-prev" aria-label="Mês anterior">&lt;</button>
                 <span class="titulo-mes" id="texto-mes">—</span>
-                <span class="seta" id="btn-next">&gt;</span>
+                <button type="button" class="seta" id="btn-next" aria-label="Próximo mês">&gt;</button>
             </div>
 
-            <table>
+            <table id="tabela-calendario" style="display: none;">
                 <thead>
                     <tr>
                         <th class="red">D</th>
@@ -36,28 +47,31 @@
                         <th class="red">S</th>
                     </tr>
                 </thead>
-                <tbody id="corpo-calendario">
-                </tbody>
+                <tbody id="corpo-calendario"></tbody>
             </table>
 
-            <div class="botoes-calendario">
-                <button type="button" id="btn-abrir-popup-regas" class="btn_pg_inicial">💧 Conferir regas</button>
-                <form action="/" method="get" required>
-                    <button class="btn_pg_inicial">Voltar</button>
-                </form>
-                <form action="/privado/areaDePragas" method="get" required>
-                    <button class="btn_pg_inicial">Área de pragas</button>
-                </form>
-                <form action="/privado/compostagem" method="get">
-                    <button class="btn_pg_inicial">Compostagem e adubação</button>
-                </form>
+            <div id="botoes-calendario" class="botoes-calendario" style="display: none;">
+                <div class="grid-botoes">
+                    <button type="button" id="btn-abrir-popup-regas" class="btn_pg_inicial btn-largo">
+                        💧 Conferir regas
+                    </button>
+
+                    <form action="/privado/areaDePragas" method="get">
+                        <button type="submit" class="btn_pg_inicial">Área de pragas</button>
+                    </form>
+
+                    <form action="/privado/compostagem" method="get">
+                        <button type="submit" class="btn_pg_inicial">Compostagem e adubação</button>
+                    </form>
+                </div>
             </div>
-        </div>     
+
+        </div>
     </main>
 
     <div id="popup-regas" class="popup-fundo">
         <div class="popup">
-            <button id="fechar-popup" class="fechar-popup">&times;</button>
+            <button id="fechar-popup" class="fechar-popup" aria-label="Fechar">&times;</button>
 
             <h2>🌱 Atenção com suas plantas!</h2>
 
@@ -68,9 +82,7 @@
     </div>
 
     <footer>
-
         <div class="footer-conteudo">
-
             <h3>AgroTech</h3>
 
             <p>
@@ -85,9 +97,7 @@
             <p class="copyright">
                 © 2026 AgroTech. Todos os direitos reservados.
             </p>
-
         </div>
-
     </footer>
 
     <script src="/privado/calendario.js"></script>

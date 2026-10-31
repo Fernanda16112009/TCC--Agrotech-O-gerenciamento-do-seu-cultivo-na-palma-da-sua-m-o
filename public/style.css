@@ -8,14 +8,21 @@
     box-sizing: border-box;
 }
 
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
 
 /* =========================
    CORPO DA PÁGINA
    ========================= */
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #eef8ea;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    background: #eaf6ea;
 
     min-height: 100vh;
     display: flex;
@@ -55,10 +62,10 @@ header {
 }
 
 .titulo {
-    font-size: 3rem;
+    font-size: 2.4rem;
     font-weight: bold;
 
-    color: #78B66B;
+    color: #1b4d2e;
 
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -151,32 +158,6 @@ input::placeholder {
 
 
 /* =========================
-   MENSAGEM DE ERRO DO LOGIN
-   ========================= */
-
-.mensagem-erro {
-    display: none;
-
-    width: 100%;
-
-    margin: -5px 0 18px;
-
-    padding: 8px 12px;
-
-    color: #c62828;
-    background: #ffebee;
-
-    border-left: 4px solid #c62828;
-    border-radius: 5px;
-
-    font-size: 0.9rem;
-
-    text-align: left;
-    line-height: 1.3;
-}
-
-
-/* =========================
    BOTÕES
    ========================= */
 
@@ -185,9 +166,9 @@ input::placeholder {
     height: 55px;
 
     border: none;
-    border-radius: 28px;
+    border-radius: 10px;
 
-    background: #79B86C;
+    background: #1b4d2e;
     color: white;
 
     font-size: 1.2rem;
@@ -199,7 +180,7 @@ input::placeholder {
 }
 
 .btn:hover {
-    background: #67a45b;
+    background: #163f26;
 }
 
 .btn:active {
@@ -236,7 +217,19 @@ input::placeholder {
 }
 
 .btn-recuperar {
-    background: #79B86C;
+    background: #1b4d2e;
+}
+
+/* Título da página de login ("Entrar") */
+.login .subtitulo,
+.cadastro .subtitulo {
+    margin-top: 0;
+    margin-bottom: 28px;
+
+    font-size: 2.4rem;
+    font-weight: 700;
+
+    color: #1b4d2e;
 }
 
 
@@ -249,15 +242,6 @@ input::placeholder {
     max-width: 480px;
 
     padding: 10px 30px 30px;
-}
-
-.cadastro .subtitulo {
-    margin-bottom: 30px;
-
-    font-size: 2.2rem;
-    font-weight: bold;
-
-    color: #222;
 }
 
 
@@ -326,7 +310,7 @@ input::placeholder {
     padding: 6px 10px;
 
     color: #099635;
-    background: #ffebee;
+    background: #e8f7ee;
 
     border-left: 4px solid #099635;
     border-radius: 5px;
@@ -344,7 +328,7 @@ input::placeholder {
 
 
 .cadastro .btn:hover {
-    background: #67a45b;
+    background: #163f26;
 }
 
 .cadastro .btn:active {
@@ -355,8 +339,8 @@ input::placeholder {
 /* Botão desativado */
 
 .cadastro .btn:disabled {
-    background: #b8cdb3;
-    color: #eeeeee;
+    background: #7f9c88;
+    color: #ffffff;
 
     cursor: not-allowed;
 }
@@ -652,7 +636,7 @@ footer {
    contorno branco, sombra dura) e usa um degradê suave, mais legível
    para uma frase de boas-vindas */
 .pagina-inicial .titulo {
-    font-size: 2.3rem;
+    font-size: 2.4rem;
     font-weight: 800;
     line-height: 1.25;
 
@@ -661,10 +645,7 @@ footer {
     -webkit-text-stroke: 0;
     text-shadow: none;
 
-    background: linear-gradient(90deg, #1b4d2e, #3f8f5f);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #1b4d2e;
 }
 
 .pagina-inicial .subtitulo {

@@ -22,7 +22,7 @@
 
             <h2 class="subtitulo">Cadastro</h2>
 
-            <form action="/usuarios" method="post">
+            <form id="formCadastro" action="/usuarios" method="post" novalidate>
 
                 <div class="elemento_form">
                     <label for="nome">Qual é o seu nome?</label>
@@ -32,7 +32,7 @@
                         name="nome"
                         id="nome"
                         placeholder="Ex: João da Silva"
-                        onchange="formularioValido()"
+                        autocomplete="name"
                     >
 
                     <div class="error" id="nome-obrigatorio">
@@ -49,15 +49,15 @@
                         name="email"
                         id="email"
                         placeholder="joao@email.com"
-                        onchange="formularioValido()"
+                        autocomplete="email"
                     >
-
-                    <div class="error" id="email-invalido-erro">
-                        ⚠ Seu email deve conter @....com
-                    </div>
 
                     <div class="error" id="email-obrigatorio">
                         ⚠ Email é obrigatório
+                    </div>
+
+                    <div class="error" id="email-invalido-erro">
+                        ⚠ Seu email deve conter @....com
                     </div>
 
                     <div class="error" id="email-existe-erro">
@@ -74,25 +74,20 @@
                         name="senha"
                         id="senha"
                         placeholder="Mínimo 6 caracteres"
-                        onchange="formularioValido()"
+                        autocomplete="new-password"
                     >
-
-                    <div class="error" id="senha-invalido-erro">
-                        ⚠ Sua senha precisa ter no mínimo 6 caracteres
-                    </div>
 
                     <div class="error" id="senha-obrigatoria">
                         ⚠ Senha é obrigatória
                     </div>
+
+                    <div class="error" id="senha-invalido-erro">
+                        ⚠ Sua senha precisa ter no mínimo 6 caracteres
+                    </div>
                 </div>
 
 
-                <button
-                    type="submit"
-                    class="btn"
-                    disabled
-                    id="btn_cadastro"
-                >
+                <button type="submit" class="btn" id="btn_cadastro" disabled>
                     Criar conta
                 </button>
 
@@ -137,4 +132,3 @@
 
 </body>
 </html>
-

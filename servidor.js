@@ -4,9 +4,6 @@ const session = require('express-session')
 require('dotenv').config();
 const middleware = require('./middlewares')
 
-
-
-
 const usuarioRoutes = require('./routes/usuarioRoutes')
 const plantasUsuarioRoutes = require('./routes/plantasUsuarioRoutes')
 const privadoRoutes = require('./routes/privadoRoutes')
@@ -17,6 +14,9 @@ const calendarioRoutes = require('./routes/calendarioRoutes')
 
 const app = express()
 const port = process.env.PORT || 8000
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 if(!process.env.SESSION_SECRET){
     throw new Error("Defina um secret no .env")
