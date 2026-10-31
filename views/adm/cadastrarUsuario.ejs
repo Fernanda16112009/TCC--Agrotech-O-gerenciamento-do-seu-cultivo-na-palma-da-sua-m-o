@@ -1,0 +1,51 @@
+<%- include('../partials/cabecalho', {
+    titulo: 'Novo Usuário',
+    estilos: ['/style.css'],
+    scripts: ['/js/admCadastroUsuario.js']
+}) %>
+<body>
+    <header>
+        <h1 class="titulo">AgroTech</h1>
+        <h2 class="subtitulo">Novo Usuário</h2>
+    </header>
+
+    <main>
+        <div class="editar-usuario-pagina">
+            <% if (erroEmail) { %>
+            <p id="erro-email-existe" class="mensagem-erro">Esse e-mail já está em uso por outra conta.</p>
+            <% } %>
+
+            <div class="editar-usuario-card">
+                <form id="formCadastroUsuario" action="/adm/cadastrar" method="POST" novalidate>
+
+                    <div class="elemento_form">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" name="nome" id="nome" placeholder="Ex: João da Silva" autocomplete="off">
+                        <span class="error" id="erro-nome"></span>
+                    </div>
+
+                    <div class="elemento_form">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email" placeholder="joao@email.com" autocomplete="off">
+                        <span class="error" id="erro-email"></span>
+                    </div>
+
+                    <div class="elemento_form">
+                        <label for="senha">Senha inicial</label>
+                        <input type="password" name="senha" id="senha" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                        <span class="error" id="erro-senha"></span>
+                    </div>
+
+                    <button type="submit" class="btn">Cadastrar usuário</button>
+                </form>
+            </div>
+
+            <div class="editar-usuario-acoes">
+                <a href="/adm" class="btn-secundario">Voltar ao painel</a>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/rodape') %>
+</body>
+</html>

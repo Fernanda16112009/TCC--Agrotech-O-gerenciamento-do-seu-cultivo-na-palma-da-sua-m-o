@@ -1,0 +1,45 @@
+<%- include('../partials/cabecalho', { titulo: 'Meu Perfil', estilos: ['/privado/privadoStyle.css'] }) %>
+<body>
+    <main>
+        <div class="cadastro-pagina">
+
+            <h1 class="titulo-pagina">Meu Perfil</h1>
+
+            <div class="cadastro-card">
+                <% if (erroEmail) { %>
+                <p class="mensagem-erro">Esse e-mail já está em uso por outra conta.</p>
+                <% } %>
+
+                <form action="/priUsuarios/editar" method="POST">
+                    <div class="campo">
+                        <label for="nome" class="form_pergunta">Nome completo</label>
+                        <input type="text" name="nome" id="nome" value="<%= usuario.nome %>" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="email" class="form_pergunta">E-mail</label>
+                        <input type="email" name="email" id="email" value="<%= usuario.email %>" required>
+                    </div>
+
+                    <button type="submit" class="btn-cadastro">Salvar alterações</button>
+                </form>
+
+                <form action="/usuarios/emailRecuperarSenha" method="get" required class="form-voltar">
+                    <button type="submit" class="btn-secundario">Trocar senha</button>
+                </form>
+            </div>
+
+            <form action="/" method="get">
+                <button class="btn-voltar" type="submit" title="Voltar">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </form>
+
+        </div>
+    </main>
+
+    <%- include('../partials/rodape') %>
+</body>
+</html>

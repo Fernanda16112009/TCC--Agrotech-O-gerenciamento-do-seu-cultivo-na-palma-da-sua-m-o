@@ -1,0 +1,82 @@
+<%- include('../partials/cabecalho', { titulo: titulo, estilos: estilos }) %>
+<body>
+    <main>
+        <div class="planta-pagina">
+
+            <div class="planta-hero">
+                <%- include('../partials/botaoVoltar', { destino: '/planta/minhasPlantas', classe: '' }) %>
+
+                <div class="planta-imagem-wrapper">
+                    <img src="<%= imagem %>" alt="<%= nomeSafra %>" class="planta-imagem">
+                </div>
+
+                <p class="planta-nome"><%= nomeSafra %></p>
+
+                <form action="/planta/<%= idPlanta %>/veranotacoes" method="get">
+                    <button class="btn-anotacoes" type="submit" title="Suas anotações">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M7.5 8h7M7.5 11.5h7M7.5 15h4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <div class="info-card">
+
+                <form action="/planta/<%= idPlanta %>/imagem" method="post" enctype="multipart/form-data" class="form-foto">
+                    <label for="imagem" class="form_pergunta">Foto da sua plantação</label>
+                    <input type="file" id="imagem" name="imagem" class="imagem" accept="image/*">
+                    <button type="submit" class="btn-foto">Adicionar foto da plantação</button>
+                </form>
+
+                <form action="/planta/<%= idPlanta %>/nomesafra" method="post" class="campo">
+                    <label for="safraNome" class="form_pergunta">Nome da safra</label>
+                    <textarea id="safraNome" name="safraNome" class="safraNome"><%= nomeSafra %></textarea>
+                    <button type="submit" class="btn-secundario">Trocar nome da safra</button>
+                </form>
+
+                <div class="info-item">
+                    <span class="form_pergunta">Sua planta é</span>
+                    <p class="info-valor"><%= nomeTipoPlanta %></p>
+                </div>
+
+                <div class="info-item">
+                    <span class="form_pergunta">Quantidade de sementes plantadas</span>
+                    <p class="info-valor"><%= quantidade %> sementes plantadas</p>
+                </div>
+
+                <div class="info-item">
+                    <span class="form_pergunta">Dia que sua semente foi plantada</span>
+                    <p class="info-valor"><%= dataPlantacao %></p>
+                </div>
+
+                <div class="campo">
+                    <label for="btn_mapa" class="form_pergunta">Gostaria de mudar a localização da sua planta? Certifique-se de estar no local exato em que você gostaria de plantar</label>
+                    <form action="/planta/<%= idPlanta %>/localizacao" method="post" class="form-localizacao">
+                        <input type="hidden" id="longitude" name="longitude" required>
+                        <input type="hidden" id="latitude" name="latitude" required>
+                        <button type="button" id="btn_mapa" class="btn-localizacao">Selecionar localização</button>
+                        <p id="mensagemLocalizacao" class="mensagem-localizacao"></p>
+                        <button type="submit" class="btn-cadastro">Atualizar localização</button>
+                    </form>
+                </div>
+
+                <div class="info-item">
+                    <span class="form_pergunta">Você está utilizando agrotóxicos?</span>
+                    <p class="info-valor"><%= agrotoxico %></p>
+                </div>
+
+                <form action="/planta/<%= idPlanta %>/deletar" method="post" class="form-deletar">
+                    <button class="btn-perigo" type="submit" onclick="return confirm('Certeza que deseja excluir essa planta?')">Deletar planta</button>
+                </form>
+
+            </div>
+
+        </div>
+    </main>
+
+    <%- include('../partials/rodape') %>
+    <script src="/privado/localizacaoPlanta.js"></script>
+</body>
+</html>

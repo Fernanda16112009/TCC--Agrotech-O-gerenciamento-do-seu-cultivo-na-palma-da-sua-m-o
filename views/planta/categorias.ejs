@@ -1,0 +1,31 @@
+<%- include('../partials/cabecalho', { titulo: titulo, estilos: estilos }) %>
+<body>
+    <main>
+        <div class="plantas-container">
+            <h1 class="titulo-pagina">Qual planta você quer verificar?</h1>
+
+            <div class="plantas-grid">
+                <form action="/privado/escolherPlanta" method="get" required>
+                    <button class="card-planta card-add">
+                        <img src="/privado/img/adicionar.png" alt="Adicionar planta" class="card-icon">
+                        <span>Adicionar planta</span>
+                    </button>
+                </form>
+
+                <% plantas.forEach(function (p) { %>
+                <form action="<%= p.url %>" method="get" required>
+                    <button class="card-planta">
+                        <img src="<%= p.imagem %>" alt="<%= p.nome %>" class="card-icon">
+                        <span><%= p.nome %></span>
+                    </button>
+                </form>
+                <% }) %>
+            </div>
+
+            <%- include('../partials/botaoVoltar', { destino: '/', classe: '' }) %>
+        </div>
+    </main>
+
+    <%- include('../partials/rodape') %>
+</body>
+</html>

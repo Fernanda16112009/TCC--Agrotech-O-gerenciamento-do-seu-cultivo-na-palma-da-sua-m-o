@@ -1,0 +1,45 @@
+<%- include('../partials/cabecalho', {
+    titulo: 'Editar Usuário',
+    estilos: ['/style.css'],
+    scripts: ['/js/admEditarUsuario.js']
+}) %>
+<body>
+    <header>
+        <h1 class="titulo">AgroTech</h1>
+        <h2 class="subtitulo">Editar Usuário</h2>
+    </header>
+
+    <main>
+        <div class="editar-usuario-pagina">
+            <% if (erroEmail) { %>
+            <p class="mensagem-erro">Esse e-mail já está em uso por outra conta.</p>
+            <% } %>
+
+            <div class="editar-usuario-card">
+                <form id="formEditarUsuario" action="/adm/<%= usuario.idUsuario %>/editar" method="POST" novalidate>
+
+                    <div class="elemento_form">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" name="nome" id="nome" value="<%= usuario.nome %>" required>
+                        <span class="error" id="erro-nome"></span>
+                    </div>
+
+                    <div class="elemento_form">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email" value="<%= usuario.email %>" required>
+                        <span class="error" id="erro-email"></span>
+                    </div>
+
+                    <button type="submit" class="btn">Salvar alterações</button>
+                </form>
+            </div>
+
+            <div class="editar-usuario-acoes">
+                <a href="/adm" class="btn-secundario">Voltar ao painel</a>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/rodape') %>
+</body>
+</html>

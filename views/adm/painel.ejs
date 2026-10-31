@@ -1,0 +1,87 @@
+<%- include('../partials/cabecalho', { titulo: 'Painel Administrativo — AgroTech', estilos: ['/admStyle.css'] }) %>
+<body class="bodyAdm">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">AgroTech</div>
+        <nav class="sidebar-nav">
+            <a class="btn-nav" href="/adm">Painel Principal</a>
+            <a class="btn-nav" href="/adm/usuarios">Listar usuários</a>
+            <form action="/priUsuarios/sair" method="post">
+                <button class="btn-nav">Sair</button>
+            </form>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <h1 class="titulo-adm">Painel Administrativo</h1>
+
+        <% if (mostrarStats) { %>
+        <div class="stats">
+            <div class="stat-card">
+                <span class="stat-number"><%= usuarios.length %></span>
+                <span class="stat-label">Usuários cadastrados</span>
+            </div>
+        </div>
+        <% } %>
+
+        <section id="usuarios" class="card">
+
+            <div class="section-header">
+                <h2>Usuários</h2>
+                <a class="btn btn-adm-primary" href="/adm/cadastrar">+ Novo usuário</a>
+            </div>
+
+            <form class="search-form" action="/adm" method="GET">
+                <input type="text" name="busca_usuario" placeholder="Buscar por nome..." value="<%= busca %>">
+                <button class="btn btn-adm-primary" type="submit">Buscar</button>
+                <% if (busca) { %>
+                <a class="btn btn-adm-secondary" href="/adm#usuarios">Limpar</a>
+                <% } %>
+            </form>
+
+            <% if (busca) { %>
+            <p class="search-info"><%= usuarios.length %> resultado(s) para "<%= busca %>"</p>
+            <% } %>
+
+            <% if (usuarios.length === 0) { %>
+            <p class="empty-state">Nenhum usuário encontrado.</p>
+            <% } else { %>
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% usuarios.forEach(function (u) { %>
+                        <tr>
+                            <td><%= u.idUsuario %></td>
+                            <td><%= u.nome %></td>
+                            <td><%= u.email %></td>
+                            <td class="acoes">
+                                <a class="btn edit" href="/adm/<%= u.idUsuario %>/editar">Editar</a>
+
+                                <form action="/adm/<%= u.idUsuario %>/deletar" method="POST" class="inline-form">
+                                    <button class="btn delete" type="submit"
+                                            onclick="return confirm('Excluir este usuário? Todas as plantas dele também serão apagadas.')">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <% } %>
+
+        </section>
+    </main>
+
+    <%- include('../partials/rodape') %>
+</body>
+</html>

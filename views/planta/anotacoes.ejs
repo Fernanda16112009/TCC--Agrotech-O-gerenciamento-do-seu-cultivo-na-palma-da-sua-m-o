@@ -1,0 +1,21 @@
+<%- include('../partials/cabecalho', { titulo: titulo, estilos: estilos }) %>
+<body>
+    <main>
+        <div class="anotacoes-pagina">
+            <h1 class="titulo-pagina">Anotações</h1>
+
+            <div class="anotacoes-card">
+                <form action="/planta/<%= idPlanta %>/cadastraranotacoes" method="post" class="campo">
+                    <label for="caixa_anotacao" class="form_pergunta">Escreva suas anotações</label>
+                    <textarea name="anotacao" id="caixa_anotacao" class="caixa_anotacao" placeholder="Digite suas anotações"><%= comentario %></textarea>
+                    <button type="submit" class="btn-cadastro">Salvar anotações</button>
+                </form>
+            </div>
+
+            <%- include('../partials/botaoVoltar', { destino: '/planta/' + idPlanta + '/mostrar', classe: 'form-voltar' }) %>
+        </div>
+    </main>
+
+    <%- include('../partials/rodape') %>
+</body>
+</html>

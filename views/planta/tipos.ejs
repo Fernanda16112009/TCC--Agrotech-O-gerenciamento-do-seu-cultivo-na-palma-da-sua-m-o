@@ -1,0 +1,25 @@
+<%- include('../partials/cabecalho', { titulo: titulo, estilos: estilos }) %>
+<body>
+    <main>
+        <div class="plantas-container">
+            <h1 class="titulo-pagina">Meus tipos de <%= planta %></h1>
+
+            <div class="plantas-grid">
+                <% tipos.forEach(function (t) { %>
+                <form action="<%= t.url %>" method="get" required>
+                    <button class="card-planta">
+                        <img src="<%= t.imagem %>" alt="<%= t.nome %>" class="card-icon">
+                        <span class="card-titulo"><%= t.nome %></span>
+                        <span class="card-subtitulo">Ver safras de <%= t.nome %></span>
+                    </button>
+                </form>
+                <% }) %>
+            </div>
+
+            <%- include('../partials/botaoVoltar', { destino: '/planta/minhasPlantas', classe: '' }) %>
+        </div>
+    </main>
+
+    <%- include('../partials/rodape') %>
+</body>
+</html>

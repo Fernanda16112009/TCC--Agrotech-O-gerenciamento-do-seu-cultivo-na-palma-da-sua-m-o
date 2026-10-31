@@ -166,16 +166,11 @@ function logout(req,res){
     req.session.destroy(() =>{ return res.redirect('/')});  
 }
 
-function perfil(req, res){
+function perfil(req, res) {
 
     const idUsuario = req.session.usuario.idUsuario;
 
-    const erroEmail = req.query.erro === 'email'
-    ? '<p class="mensagem-erro">Esse e-mail já está em uso por outra conta.</p>'
-    : ''
-
     usuarioModel.buscarUsuarioPorId(idUsuario, (erro, resultados) => {
-
 
         if (erro) {
             console.log(erro)
@@ -185,86 +180,13 @@ function perfil(req, res){
             return res.status(404).send('Usuário não encontrado.')
         }
 
-        const u = resultados[0]
-
-
-        const html = `
-            <!DOCTYPE html>
-            <html lang="pt-BR">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Meu Perfil</title>
-                <link rel="stylesheet" href="/privado/privadoStyle.css">
-                <script src="/js/vlibras.js" defer></script>
-            </head>
-            <body>
-                <main>
-                    <div class="cadastro-pagina">
-
-                        <h1 class="titulo-pagina">Meu Perfil</h1>
-
-                        <div class="cadastro-card">
-                            ${erroEmail}
-                            <form action="/priUsuarios/editar" method="POST">
-
-                                <div class="campo">
-                                    <label for="nome" class="form_pergunta">Nome completo</label>
-                                    <input type="text" name="nome" id="nome" value="${validar.escaparHtml(u.nome)}" required>
-                                </div>
-
-                                <div class="campo">
-                                    <label for="email" class="form_pergunta">E-mail</label>
-                                    <input type="email" name="email" id="email" value="${validar.escaparHtml(u.email)}" required>
-                                </div>
-
-                                <button type="submit" class="btn-cadastro">Salvar alterações</button>
-                            </form>
-
-                            <form action="/usuarios/emailRecuperarSenha" method="get" required class="form-voltar">
-                                <button type="submit" class="btn-secundario">Trocar senha</button>
-                            </form>
-                        </div>
-
-                        <form action="/" method="get">
-                            <button class="btn-voltar" type="submit" title="Voltar">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                        </form>
-
-                    </div>
-                </main>
-                <footer>
-
-                    <div class="footer-conteudo">
-
-                        <h3>AgroTech</h3>
-
-                        <p>
-                            O gerenciamento do plantio na palma da sua mão.
-                        </p>
-
-                        <p>
-                            Sugestões, críticas ou dúvidas?
-                            <a href="mailto:agrotech@email.com">Entre em contato conosco</a>
-                        </p>
-
-                        <p class="copyright">
-                            © 2026 AgroTech. Todos os direitos reservados.
-                        </p>
-
-                    </div>
-
-                </footer>
-            </body>
-            </html>
-        `
-
-        res.send(html)
+        res.render('usuarios/perfil', {
+            titulo: 'Meu Perfil',
+            estilos: ['/privado/privadoStyle.css'],
+            usuario: resultados[0],
+            erroEmail: req.query.erro === 'email'
+        })
     })
-
 }
  
 function atualizarUsuario(req, res) {
